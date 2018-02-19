@@ -2,4 +2,4 @@
 // I don't even know what REST means tbh
 module.exports = function () {
 
-};
+}
