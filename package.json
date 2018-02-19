@@ -1,0 +1,19 @@
+{
+  "name": "ordersoftserver",
+  "version": "1.0.0",
+  "description": "OrderSoft's server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RespectKnightSoftwareLLC/server.git"
+  },
+  "author": "Respected Knight",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RespectKnightSoftwareLLC/server/issues"
+  },
+  "homepage": "https://github.com/RespectKnightSoftwareLLC/server#readme"
+}
