@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/RespectKnightSoftwareLLC/server/issues"
   },
-  "homepage": "https://github.com/RespectKnightSoftwareLLC/server#readme"
+  "homepage": "https://github.com/RespectKnightSoftwareLLC/server#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "ws": "^4.0.0"
+  }
 }
