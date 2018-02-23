@@ -3,10 +3,13 @@ const path = require("path");
 
 var webApp = new express();
 
+// Serve static content
 webApp.use(express.static("public"));
+
 
 var auth = require("./auth.js")(webApp);
 
+// 404 page
 webApp.get("*", (req, res) => {
 	res.send("page not found");
 });
