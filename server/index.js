@@ -5,7 +5,7 @@ var webApp = new express();
 
 // Serve static content
 webApp.use(express.static("public"));
-
+webApp.set("view engine", "ejs");
 
 var auth = require("./auth.js")(webApp);
 

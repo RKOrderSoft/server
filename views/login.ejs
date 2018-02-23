@@ -11,5 +11,8 @@
 			<input type="password" id="login_password" name="password" />
 			<button type="submit">Login</button>
 		</form>
+		<% if (message) { %>
+		<span style="color: red"><%= message %></span>
+		<% } %>
 	</body>
 </html>

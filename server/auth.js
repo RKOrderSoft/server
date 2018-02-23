@@ -10,11 +10,14 @@ module.exports = function(app) {
 
 	app.route("/login")
 		.get((req, res) => {
-			res.sendFile(__dirname + "/../public/index.html");
+			res.render("login", { message: "" });
 		})
 		.post((req, res) => {
-
+			console.log("nut");
 			db = new sqlite.Database("data/db.sqlite");
+
 			db.close();
+
+			res.render("login", { message: "Incorrect username or password." });
 		});
 }
