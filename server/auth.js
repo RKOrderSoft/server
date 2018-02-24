@@ -13,11 +13,27 @@ module.exports = function(app) {
 			res.render("login", { message: "" });
 		})
 		.post((req, res) => {
-			console.log("nut");
-			db = new sqlite.Database("data/db.sqlite");
+			db = new sqlite.Database("data/db.sqlite", () => {
+				db.get("SELECT * FROM users WHERE identifier = ?", req.body.identifier, (err, row) => {
+					db.close()
 
-			db.close();
+					if (err) {
+						console.error(err);
+						return res.render("login", { message: "Server error: " + err });
+					}
 
-			res.render("login", { message: "Incorrect username or password." });
+					if (row && row.password === req.body.password) {
+						return res.render("login", { message: "Success" });
+					} 
+					return res.render("login", { message: "Incorrect username or password" });
+				});
+			});
+		});
+
+	app.route("/register")
+		.get((req, res) => {
+
+		}).post((req, res) => {
+
 		});
 }
