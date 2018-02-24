@@ -7,11 +7,11 @@ var webApp = new express();
 webApp.use(express.static("public"));
 webApp.set("view engine", "ejs");
 
-var auth = require("./auth-promise.js")(webApp);
+var auth = require("./auth.js")(webApp);
 
 // 404 page
 webApp.get("*", (req, res) => {
-	res.send("page not found");
+	res.render("404", { page: req.path });
 });
 
 webApp.listen(8080);

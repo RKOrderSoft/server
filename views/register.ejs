@@ -7,8 +7,12 @@
 		<form action="", method="post">
 			<label for="login_username">Username</label>
 			<input type="text" id="login_username" name="identifier" />
+
 			<label for="login_password">Password</label>
 			<input type="password" id="login_password" name="password" />
+
+			<label for="level">Access level:</label>
+			<input type="number" id="level" name="accessLevel" />
 			<button type="submit">Register</button>
 		</form>
 		<% if (message) { %>
