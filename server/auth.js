@@ -28,7 +28,7 @@ module.exports = function(app) {
 		})
 		.post(async (req, res) => {
 			// Check that the POST request is in the format we want, i.e. from /login
-			if (!(req.body.password && req.body.identifier)) {
+			if (!(req.body.password && req.body.username)) {
 				return res.render("login", { message: "" });
 			}
 
@@ -39,7 +39,7 @@ module.exports = function(app) {
 				});
 			}
 
-			db.get("SELECT password FROM users WHERE identifier = ?", req.body.identifier)
+			db.get("SELECT password FROM users WHERE username = ?", req.body.username)
 			.then(row => {
 				if (!row) { throw IncorrectDetailsError; }
 				return bcrypt.compare(req.body.password, row.password);
@@ -59,7 +59,7 @@ module.exports = function(app) {
 		})
 		.post(async (req, res) => {
 			// Check the POST request has the data we want
-			if (!(req.body.password && req.body.identifier && req.body.accessLevel)) {
+			if (!(req.body.password && req.body.username && req.body.accessLevel)) {
 				return res.render("register", { message: "" });
 			}
 
@@ -70,21 +70,21 @@ module.exports = function(app) {
 				});
 			}
 
-			db.get("SELECT id FROM users WHERE identifier = ?", req.body.identifier).then(row => {
+			db.get("SELECT id FROM users WHERE username = ?", req.body.username).then(row => {
 				if (row) { throw UserExistsError; }
 				return bcrypt.hash(req.body.password, saltRounds);
 			})
 			.then(hashedPw => {
 				return db.run("INSERT INTO users VALUES (?, ?, ?, ?, datetime('now'))", [
 					uuid(),
-					req.body.identifier,
+					req.body.username,
 					hashedPw,
 					req.body.accessLevel
 				]);
 			})
 			.then(_ => {
 				res.render("register", { 
-					message: "Successfully registered user " + req.body.identifier 
+					message: "Successfully registered user '" + req.body.username + "'"
 				});
 			})
 			.catch(err => {
