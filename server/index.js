@@ -7,7 +7,7 @@ var webApp = new express();
 webApp.use(express.static("public"));
 webApp.set("view engine", "ejs");
 
-var auth = require("./auth.js")(webApp);
+var auth = require("./auth-promise.js")(webApp);
 
 // 404 page
 webApp.get("*", (req, res) => {

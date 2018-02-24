@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+	</head>
+	<body>
+		<form action="", method="post">
+			<label for="login_username">Username</label>
+			<input type="text" id="login_username" name="identifier" />
+			<label for="login_password">Password</label>
+			<input type="password" id="login_password" name="password" />
+			<button type="submit">Register</button>
+		</form>
+		<% if (message) { %>
+		<span style="color: red"><%= message %></span>
+		<% } %>
+	</body>
+</html>
