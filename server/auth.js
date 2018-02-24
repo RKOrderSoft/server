@@ -1,4 +1,3 @@
-// auth thingo
 const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 const sqlite = require("sqlite");
@@ -6,6 +5,7 @@ const ejs = require("ejs");
 const uuid = require("uuid/v1");
 
 module.exports = function(app) {
+	// Use url encoded text from form POST requests
 	app.use(bodyParser.urlencoded({ extended: false }));
 
 	const IncorrectDetailsError = new Error("incorrect username or password");
@@ -13,6 +13,7 @@ module.exports = function(app) {
 
 	const saltRounds = 10;
 
+	// Open db with promise to handle errors
 	var db;
 	sqlite.open("data/db.sqlite")
 	.then(opened => {
@@ -53,6 +54,7 @@ module.exports = function(app) {
 			});
 		});
 
+	// TODO move /register to admin
 	app.route("/register")
 		.get(async (req, res) => {
 			return res.render("register", { message: "" });
