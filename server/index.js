@@ -1,13 +1,24 @@
 const express = require("express");
-const path = require("path");
 
 var webApp = new express();
+
+// Open db with promise to handle errors
+var db;
+sqlite.open("data/db.sqlite")
+.then(opened => {
+	db = opened;
+})
+.catch(err => {
+	console.error("Error opening database: " + err);
+});
 
 // Serve static content
 webApp.use(express.static("public"));
 webApp.set("view engine", "ejs");
 
-var auth = require("./auth.js")(webApp);
+// Call components
+var auth = require("./auth.js")(webApp, db);
+
 
 // 404 page
 webApp.get("*", (req, res) => {

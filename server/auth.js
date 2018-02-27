@@ -4,7 +4,7 @@ const sqlite = require("sqlite");
 const ejs = require("ejs");
 const uuid = require("uuid/v1");
 
-module.exports = function(app) {
+module.exports = function(app, db) {
 	// Use url encoded text from form POST requests
 	app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -12,16 +12,6 @@ module.exports = function(app) {
 	const UserExistsError = new Error("user already exists");
 
 	const saltRounds = 10;
-
-	// Open db with promise to handle errors
-	var db;
-	sqlite.open("data/db.sqlite")
-	.then(opened => {
-		db = opened;
-	})
-	.catch(err => {
-		console.error("Error opening database: " + err);
-	});
 
 	app.route("/login")
 		.get(async (req, res) => {
@@ -46,7 +36,7 @@ module.exports = function(app) {
 				return bcrypt.compare(req.body.password, row.password);
 			})
 			.then(result => {
-				if (!result) { throw IncorrectDetailsError }
+				if (!result) { throw IncorrectDetailsError; }
 				res.render("login", { message: "Success" });
 			})
 			.catch(err => {
@@ -72,7 +62,8 @@ module.exports = function(app) {
 				});
 			}
 
-			db.get("SELECT id FROM users WHERE username = ?", req.body.username).then(row => {
+			db.get("SELECT id FROM users WHERE username = ?", req.body.username)
+			.then(row => {
 				if (row) { throw UserExistsError; }
 				return bcrypt.hash(req.body.password, saltRounds);
 			})
