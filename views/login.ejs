@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		
+		<link rel="stylesheet" href="common.css" />
 	</head>
 	<body>
 		<form action="", method="post">
@@ -12,7 +12,7 @@
 			<button type="submit">Login</button>
 		</form>
 		<% if (message) { %>
-		<span style="color: red"><%= message %></span>
+		<span style="color: red" id="message"><%= message %></span>
 		<% } %>
 	</body>
 </html>

@@ -1,4 +1,5 @@
 const express = require("express");
+const sqlite = require("sqlite");
 
 var webApp = new express();
 
@@ -18,11 +19,13 @@ webApp.set("view engine", "ejs");
 
 // Call components
 var auth = require("./auth.js")(webApp, db);
-
+var api = require("./api.js")(webApp, db);
 
 // 404 page
 webApp.get("*", (req, res) => {
 	res.render("404", { page: req.path });
 });
 
-webApp.listen(8080);
+webApp.listen(8080, () => {
+	console.log("HTTP server started at port 8080");
+});

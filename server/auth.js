@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
-const sqlite = require("sqlite");
 const ejs = require("ejs");
 const uuid = require("uuid/v1");
 
