@@ -1,4 +1,11 @@
 // The realtime/WebSocket server for kitchen and POS interfaces.
-module.exports = function() {
+const ws = require("ws");
 
+module.exports = function() {
+	const server = new ws.Server({ port: 8090 });
+	server.on('connection', (socket) => {
+		socket.on('message', (msg) => {
+			console.log(msg);
+		});
+	});
 }

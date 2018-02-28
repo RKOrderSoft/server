@@ -4,6 +4,7 @@ const ejs = require("ejs");
 const uuid = require("uuid/v1");
 
 module.exports = function(app, db) {
+	console.log("auth started");
 	// Use url encoded text from form POST requests
 	app.use(bodyParser.urlencoded({ extended: false }));
 
