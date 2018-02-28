@@ -1,60 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="viewport" content="width=device-width" />
 		<link rel="stylesheet" href="common.css" />
-		<style>
-			@media (max-width: 400px) {
-				#login_box {
-					width: 100vw;
-					border-radius: 0px;
-				}
-			}
-
-			#login_box {
-				display: flex;
-				flex-direction: column;
-				width: 400px;
-				padding: 30px;
-				box-shadow: 0px 0px 30px rgba(0,0,0,0.4);
-				border-radius: 10px;
-				background-color: white;
-			}
-
-			#message {
-				text-align: center;
-				background: rgba();
-				color: red;
-				margin: 5px;
-				padding: 5px;
-				border: 1px solid red;
-				border-radius: 5px;
-			}
-
-			body {
-				background-color: #2c333f;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-
-			h1 {
-				text-align: center;
-				margin: 5px;
-				font-weight: 400;
-			}
-
-			label, input, button {
-				margin: 5px 0px 5px 0px;
-			}
-
-			button {
-				width: 100px;
-			}
-
-		</style>
+		<link rel="stylesheet" href="login.css" />
 	</head>
 	<body>
+		<span class="logo" id="main_logo">OrderSoft</span>
+		<span id="restaurant_name">Restaurant Name</span>
 		<form action="", method="post" id="login_box">
 			<h1>Login</h1>
 

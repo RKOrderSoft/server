@@ -2,6 +2,10 @@
 
 body {
 	font-family: Montserrat, sans-serif;
-	height: 100vh;
 	margin: 0;
+}
+
+.logo {
+	font-family: TitleFont, sans-serif;
+	color: #a84141;
 }
