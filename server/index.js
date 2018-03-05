@@ -1,36 +1,40 @@
 const express = require("express");
 const sqlite = require("sqlite");
+const shlog = require("./shlog");
 
-var webApp = new express();
+const component = "index";
+const webApp = new express();
+const sh = new shlog(true);
 
 // Open db with promise to handle errors
 var db;
 sqlite.open("data/db.sqlite")
 .then(opened => {
-	console.log("db opened");
+	sh.log("Database opened", component);
 	db = opened;
-	init(webApp, db);
+	main(db);
 })
 .catch(err => {
 	console.error("Error opening database: " + err);
 });
 
-function init(webApp, db) {
+function main(db) {
 	// Serve static content
 	webApp.use(express.static("public"));
 	webApp.set("view engine", "ejs");
 
 	// Call components
-	var auth = require("./auth.js")(webApp, db);
-	var api = require("./api.js")(webApp, db);
-	var realtime = require("./realtime.js")();
+	var auth = require("./auth.js")(webApp, db, sh);
+	var api = require("./api.js")(webApp, db, sh);
+	var realtime = require("./realtime.js")(sh);
 
 	// 404 page
 	webApp.get("*", (req, res) => {
+		sh.log("GET " + req.path + " from " + req.ip, component, true);
 		res.render("404", { page: req.path });
 	});
 
 	webApp.listen(8080, () => {
-		console.log("HTTP server started at port 8080");
+		sh.log("Listening on port 8080", component);
 	});
 }

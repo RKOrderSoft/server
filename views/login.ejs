@@ -9,19 +9,21 @@
 		<span class="logo" id="main_logo">OrderSoft</span>
 		<span id="restaurant_name">Restaurant Name</span>
 		<form action="", method="post" id="login_box">
-			<h1>Login</h1>
+			<span id="login_title">Log in with your details</span>
 
 			<% if (message) { %>
 			<div id="message"><%= message %></div>
 			<% } %>
 			
-			<label for="login_username">Username</label>
-			<input type="text" id="login_username" name="username" />
+			<input type="text" id="login_username" name="username" placeholder="Username" />
 			
-			<label for="login_password">Password</label>
-			<input type="password" id="login_password" name="password" />
+			<input type="password" id="login_password" name="password" placeholder="Password" />
 			
 			<button type="submit">Login</button>
 		</form>
+		<div id="bottom_spacer"></div>
+		<div id="footer">
+			<span id="footer_text">Copyright © 2018 Respected Knight Software LLC</span>
+		</div>
 	</body>
 </html>

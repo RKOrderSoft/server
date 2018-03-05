@@ -3,8 +3,9 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const uuid = require("uuid/v1");
 
-module.exports = function(app, db) {
-	console.log("auth started");
+const component = "auth";
+
+module.exports = function(app, db, sh) {
 	// Use url encoded text from form POST requests
 	app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -15,9 +16,11 @@ module.exports = function(app, db) {
 
 	app.route("/login")
 		.get(async (req, res) => {
+			sh.log("GET /login from " + req.ip, component, true);
 			return res.render("login", { message: "" });
 		})
 		.post(async (req, res) => {
+			sh.log("POST /login from " + req.ip, component, true);
 			// Check that the POST request is in the format we want, i.e. from /login
 			if (!(req.body.password && req.body.username)) {
 				return res.render("login", { message: "" });
@@ -47,9 +50,11 @@ module.exports = function(app, db) {
 	// TODO move /register to admin
 	app.route("/register")
 		.get(async (req, res) => {
+			sh.log("GET /register from " + req.ip, component, true);
 			return res.render("register", { message: "" });
 		})
 		.post(async (req, res) => {
+			sh.log("POST /register from " + req.ip, component, true);
 			// Check the POST request has the data we want
 			if (!(req.body.password && req.body.username && req.body.accessLevel)) {
 				return res.render("register", { message: "" });
@@ -84,4 +89,6 @@ module.exports = function(app, db) {
 				res.render("register", { message: err });
 			});
 		});
+
+	sh.log("Authentication module started", component);
 }

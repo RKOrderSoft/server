@@ -1,11 +1,11 @@
 @import url(fonts.css);
 
 body {
-	font-family: Montserrat, sans-serif;
+	font-family: 'Montserrat', sans-serif;
 	margin: 0;
 }
 
 .logo {
 	font-family: TitleFont, sans-serif;
-	color: #a84141;
+	color: #c84141;
 }
