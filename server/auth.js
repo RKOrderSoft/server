@@ -1,14 +1,10 @@
 const bcrypt = require("bcrypt");
-const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const uuid = require("uuid/v1");
 
 const component = "auth";
 
 module.exports = function(app, db, sh) {
-	// Use url encoded text from form POST requests
-	app.use(bodyParser.urlencoded({ extended: false }));
-
 	const IncorrectDetailsError = new Error("incorrect username or password");
 	const UserExistsError = new Error("user already exists");
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const sqlite = require("sqlite");
 const shlog = require("./shlog");
+const bodyParser = require("body-parser");
 
 const component = "index";
 const webApp = new express();
@@ -22,6 +23,9 @@ function main(db) {
 	// Serve static content
 	webApp.use(express.static("public"));
 	webApp.set("view engine", "ejs");
+
+	// Use url encoded text from form POST requests
+	webApp.use(bodyParser.urlencoded({ extended: false }));
 
 	// Call components
 	var auth = require("./auth.js")(webApp, db, sh);

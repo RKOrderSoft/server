@@ -4,5 +4,10 @@
 const component = "api";
 
 module.exports = function (app, db, sh) {
-
+	app.post("/api/test", (req, res) => {
+		if (req.body && req.body.name == "test") {
+			return res.json({ works: "yes" });
+		}
+		return res.json({ works: "nope ya fucked up" });
+	})
 }
