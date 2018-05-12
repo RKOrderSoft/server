@@ -2,6 +2,7 @@ const express = require("express");
 const sqlite = require("sqlite");
 const shlog = require("./shlog");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const component = "index";
 const webApp = new express();
@@ -26,6 +27,7 @@ function main(db) {
 
 	// Use url encoded text from form POST requests
 	webApp.use(bodyParser.urlencoded({ extended: false }));
+	webApp.use(cors());
 
 	// Call components
 	var auth = require("./auth.js")(webApp, db, sh);
