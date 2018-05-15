@@ -34,7 +34,6 @@ function main(db) {
 	auth.init(db);
 
 	// Call components
-	//var auth = require("./auth.js")(webApp, db, sh);
 	var api = require("./api.js")(webApp, db, auth, sh);
 	var realtime = require("./realtime.js")(sh);
 	var admin = require("./admin.js")(webApp, auth, sh);

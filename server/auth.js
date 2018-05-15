@@ -13,6 +13,7 @@ var loginDatabase;
 
 module.exports = {
 	init: function (db) { loginDatabase = db; },
+
 	authenticate: function (username, password, cb) {
 		loginDatabase.get("SELECT password FROM users WHERE username = ?", username)
 		.then(row => {
@@ -27,52 +28,26 @@ module.exports = {
 			cb(err);
 		});
 	},
-	register: function () {
 
-	}
-}
-
-
-function nut (app, db, sh) {
-	
-
-	
-
-	// TODO move /register to admin
-	app.route("/register")
-		.get(async (req, res) => {
-			sh.log("GET /register from " + req.ip, component, true);
-			return res.render("register", { message: "" });
+	register: function (username, password, accessLevel, callback) {
+		loginDatabase.get("SELECT id FROM users WHERE username = ?", username)
+		.then(row => {
+			if (row) { throw UserExistsError; }
+			return bcrypt.hash(password, saltRounds);
 		})
-		.post(async (req, res) => {
-			sh.log("POST /register from " + req.ip, component, true);
-			// Check the POST request has the data we want
-			if (!(req.body.password && req.body.username && req.body.accessLevel)) {
-				return res.render("register", { message: "" });
-			}
-
-			db.get("SELECT id FROM users WHERE username = ?", req.body.username)
-			.then(row => {
-				if (row) { throw UserExistsError; }
-				return bcrypt.hash(req.body.password, saltRounds);
-			})
-			.then(hashedPw => {
-				return db.run("INSERT INTO users VALUES (?, ?, ?, ?, datetime('now'))", [
-					uuid(),
-					req.body.username,
-					hashedPw,
-					req.body.accessLevel
-				]);
-			})
-			.then(_ => {
-				res.render("register", { 
-					message: "Successfully registered user '" + req.body.username + "'"
-				});
-			})
-			.catch(err => {
-				res.render("register", { message: err });
-			});
+		.then(hashedPw => {
+			return loginDatabase.run("INSERT INTO users VALUES (?, ?, ?, ?, datetime('now'))", [
+				uuid(),
+				username,
+				hashedPw,
+				accessLevel
+			]);
+		})
+		.then(_ => {
+			callback(null);
+		})
+		.catch(err => {
+			callback(err);
 		});
-
-	sh.log("Authentication module started", component);
+	}
 }
