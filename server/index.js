@@ -25,14 +25,18 @@ function main(db) {
 
 	// Use url encoded text from form POST requests
 	webApp.use(bodyParser.urlencoded({ extended: false }));
+	webApp.use(bodyParser.json());
 	webApp.use(cors());
 
-	// Get auth object
+	// Get auth & sessions objects
 	const auth = require("./auth.js");
 	auth.init(db);
 
+	const sessions = require("./sessions.js");
+	sessions.init(db);
+
 	// Call components
-	var api = require("./api.js")(webApp, db, auth, sh);
+	var api = require("./api.js")(webApp, db, auth, sessions, sh);
 	var realtime = require("./realtime.js")(sh);
 	var admin = require("./admin.js")(webApp, auth, sh);
 

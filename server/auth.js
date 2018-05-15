@@ -17,17 +17,18 @@ module.exports = {
 	authenticate: function (username, password, cb) {
 		if (!checkInitiated()) { return; }
 
-		loginDatabase.get("SELECT password FROM users WHERE username = ?", username)
+		loginDatabase.get("SELECT password, accessLevel FROM users WHERE username = ?", username)
 		.then(row => {
 			if (!row) { throw IncorrectDetailsError; }
+			accessLevel = row.accessLevel;
 			return bcrypt.compare(password, row.password);
 		})
 		.then(result => {
 			if (!result) { throw IncorrectDetailsError; }
-			cb(null);
+			cb(null, accessLevel);
 		})
 		.catch(err => {
-			cb(err);
+			cb(err, null);
 		});
 	},
 
@@ -48,17 +49,17 @@ module.exports = {
 			]);
 		})
 		.then(_ => {
-			callback(null);
+			callback(null, null);
 		})
 		.catch(err => {
-			callback(err);
+			callback(err, null);
 		});
 	}
 }
 
 function checkInitiated() {
 	if (!loginDatabase) { 
-		sh.logerr("No database found! Call sessions.init(db) first", component);
+		sh.logerr("No database found! Call auth.init(db) first", component);
 		return false;
 	}
 	return true;

@@ -13,12 +13,12 @@ module.exports = function (app, auth, sh) {
 		if (!(req.body.password && req.body.username)) {
 			return res.render("login", { message: "Please enter a username and password" });
 		}
-		auth.authenticate(req.body.username, req.body.password, err => {
+		auth.authenticate(req.body.username, req.body.password, (err, accessLevel) => {
 			if (err) {
 				return res.render("login", { message: err });
 			}
 			// TODO redir to management interface
-			return res.render("login", { message: "Success" });
+			return res.render("login", { message: "Access level: " + accessLevel });
 		});
 	});
 
@@ -34,7 +34,7 @@ module.exports = function (app, auth, sh) {
 			return res.render("register", { message: "" });
 		}
 
-		auth.register(req.body.username, req.body.password, req.body.accessLevel, err => {
+		auth.register(req.body.username, req.body.password, req.body.accessLevel, (err, _) => {
 			if (err) {
 				return res.render("register", { message: err });
 			}

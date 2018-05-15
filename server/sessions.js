@@ -13,9 +13,11 @@ module.exports = {
 		// TODO
 	},
 
-	issueSessionId: function (sessionId, ip) {
+	issueSessionId: function (ip, username) {
 		if (!checkInitiated()) { return; }
-		// TODO
+		// TODO store in database
+		var newSessionId = uuid();
+		return newSessionId;
 	}
 }
 
