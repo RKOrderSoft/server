@@ -15,6 +15,10 @@ module.exports = {
 	init: function (db) { loginDatabase = db; },
 
 	authenticate: function (username, password, cb) {
+		if (!loginDatabase) { 
+			return sh.log("No database found! Call auth.init(db) first", component); 
+		}
+
 		loginDatabase.get("SELECT password FROM users WHERE username = ?", username)
 		.then(row => {
 			if (!row) { throw IncorrectDetailsError; }
@@ -30,6 +34,10 @@ module.exports = {
 	},
 
 	register: function (username, password, accessLevel, callback) {
+		if (!loginDatabase) { 
+			return sh.log("No database found! Call auth.init(db) first", component); 
+		}
+
 		loginDatabase.get("SELECT id FROM users WHERE username = ?", username)
 		.then(row => {
 			if (row) { throw UserExistsError; }
