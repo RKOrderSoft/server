@@ -9,15 +9,13 @@ const webApp = new express();
 const sh = new shlog(true);
 
 // Open db with promise to handle errors
-var db;
 sqlite.open("data/db.sqlite")
 .then(opened => {
 	sh.log("Database opened", component);
-	db = opened;
-	main(db);
+	main(opened);
 })
 .catch(err => {
-	console.error("Error opening database: " + err);
+	sh.logerr("Error opening database: " + err, component);
 });
 
 function main(db) {

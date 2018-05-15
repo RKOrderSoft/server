@@ -58,7 +58,7 @@ module.exports = {
 
 function checkInitiated() {
 	if (!loginDatabase) { 
-		sh.log("No database found! Call sessions.init(db) first", component);
+		sh.logerr("No database found! Call sessions.init(db) first", component);
 		return false;
 	}
 	return true;
