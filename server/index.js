@@ -3,6 +3,8 @@ const sqlite = require("sqlite");
 const shlog = require("./shlog");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const auth = require("./auth.js");
+const sessions = require("./sessions.js");
 
 const component = "index";
 const webApp = new express();
@@ -28,11 +30,8 @@ function main(db) {
 	webApp.use(bodyParser.json());
 	webApp.use(cors());
 
-	// Get auth & sessions objects
-	const auth = require("./auth.js");
-	auth.init(db);
-
-	const sessions = require("./sessions.js");
+	// Initialise auth & sessions objects
+	auth.init(db);	
 	sessions.init(db);
 
 	// Call components
