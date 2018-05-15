@@ -29,10 +29,15 @@ function main(db) {
 	webApp.use(bodyParser.urlencoded({ extended: false }));
 	webApp.use(cors());
 
+	// Get auth object
+	const auth = require("./auth.js");
+	auth.init(db);
+
 	// Call components
-	var auth = require("./auth.js")(webApp, db, sh);
-	var api = require("./api.js")(webApp, db, sh);
+	//var auth = require("./auth.js")(webApp, db, sh);
+	var api = require("./api.js")(webApp, db, auth, sh);
 	var realtime = require("./realtime.js")(sh);
+	var admin = require("./admin.js")(webApp, auth, sh);
 
 	// 404 page
 	webApp.get("*", (req, res) => {

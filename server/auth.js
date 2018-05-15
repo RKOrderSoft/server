@@ -4,44 +4,39 @@ const uuid = require("uuid/v1");
 
 const component = "auth";
 
-module.exports = function(app, db, sh) {
-	const IncorrectDetailsError = new Error("incorrect username or password");
-	const UserExistsError = new Error("user already exists");
+const IncorrectDetailsError = new Error("incorrect username or password");
+const UserExistsError = new Error("user already exists");
 
-	const saltRounds = 10;
+const saltRounds = 10;
 
-	app.route("/login")
-		.get(async (req, res) => {
-			sh.log("GET /login from " + req.ip, component, true);
-			return res.render("login", { message: "" });
+var loginDatabase;
+
+module.exports = {
+	init: function (db) { loginDatabase = db; },
+	authenticate: function (username, password, cb) {
+		loginDatabase.get("SELECT password FROM users WHERE username = ?", username)
+		.then(row => {
+			if (!row) { throw IncorrectDetailsError; }
+			return bcrypt.compare(password, row.password);
 		})
-		.post(async (req, res) => {
-			sh.log("POST /login from " + req.ip, component, true);
-			// Check that the POST request is in the format we want, i.e. from /login
-			if (!(req.body.password && req.body.username)) {
-				return res.render("login", { message: "" });
-			}
-
-			// Check that the database has opened successfully
-			if (!db) {
-				return res.render("login", { 
-					message: "Error opening database file; try again later" 
-				});
-			}
-
-			db.get("SELECT password FROM users WHERE username = ?", req.body.username)
-			.then(row => {
-				if (!row) { throw IncorrectDetailsError; }
-				return bcrypt.compare(req.body.password, row.password);
-			})
-			.then(result => {
-				if (!result) { throw IncorrectDetailsError; }
-				res.render("login", { message: "Success" });
-			})
-			.catch(err => {
-				res.render("login", { message: err });
-			});
+		.then(result => {
+			if (!result) { throw IncorrectDetailsError; }
+			cb(null);
+		})
+		.catch(err => {
+			cb(err);
 		});
+	},
+	register: function () {
+
+	}
+}
+
+
+function nut (app, db, sh) {
+	
+
+	
 
 	// TODO move /register to admin
 	app.route("/register")
@@ -54,13 +49,6 @@ module.exports = function(app, db, sh) {
 			// Check the POST request has the data we want
 			if (!(req.body.password && req.body.username && req.body.accessLevel)) {
 				return res.render("register", { message: "" });
-			}
-
-			// Check that the database has opened successfully
-			if (!db) {
-				return res.render("login", { 
-					message: "Error opening database file; try again later" 
-				});
 			}
 
 			db.get("SELECT id FROM users WHERE username = ?", req.body.username)
