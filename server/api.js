@@ -1,8 +1,6 @@
 // Server for "REST" API requests xd
 // I don't even know what REST means tbh
 // i think it's one of those buzzwords
-const uuid = require("uuid/v1");
-
 const component = "api";
 const acceptedClients = ["dotnet", "js"]
 
@@ -19,7 +17,7 @@ module.exports = function (app, db, auth, sh) {
 			});
 		}
 		return res.json({ 
-			version: "OrderSoft server v1.0.0",
+			version: "OrderSoft server v1.0.0", // TODO replace with proper version
 			acceptedClient: false
 		});
 	});
@@ -28,6 +26,6 @@ module.exports = function (app, db, auth, sh) {
 	//   Used for authentication
 	//   Responds with a session id
 	app.post("/api/login", (req, res) => {
-
+		// TODO
 	});
 }

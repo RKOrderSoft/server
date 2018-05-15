@@ -15,9 +15,7 @@ module.exports = {
 	init: function (db) { loginDatabase = db; },
 
 	authenticate: function (username, password, cb) {
-		if (!loginDatabase) { 
-			return sh.log("No database found! Call auth.init(db) first", component); 
-		}
+		if (!checkInitiated()) { return; }
 
 		loginDatabase.get("SELECT password FROM users WHERE username = ?", username)
 		.then(row => {
@@ -34,9 +32,7 @@ module.exports = {
 	},
 
 	register: function (username, password, accessLevel, callback) {
-		if (!loginDatabase) { 
-			return sh.log("No database found! Call auth.init(db) first", component); 
-		}
+		if (!checkInitiated()) { return; }
 
 		loginDatabase.get("SELECT id FROM users WHERE username = ?", username)
 		.then(row => {
@@ -58,4 +54,12 @@ module.exports = {
 			callback(err);
 		});
 	}
+}
+
+function checkInitiated() {
+	if (!loginDatabase) { 
+		sh.log("No database found! Call sessions.init(db) first", component);
+		return false;
+	}
+	return true;
 }
