@@ -35,13 +35,13 @@ module.exports = {
 	register: function (username, password, accessLevel, callback) {
 		if (!checkInitiated()) { return; }
 
-		loginDatabase.get("SELECT id FROM users WHERE username = ?", username)
+		loginDatabase.get("SELECT username FROM users WHERE username = ?", username)
 		.then(row => {
 			if (row) { throw UserExistsError; }
 			return bcrypt.hash(password, saltRounds);
 		})
 		.then(hashedPw => {
-			return loginDatabase.run("INSERT INTO users VALUES (?, ?, ?, ?, datetime('now'))", [
+			return loginDatabase.run("INSERT INTO users VALUES (?, ?, ?, ?, datetime('now', 'localtime'))", [
 				uuid(),
 				username,
 				hashedPw,
