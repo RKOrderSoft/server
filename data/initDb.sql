@@ -10,7 +10,7 @@ CREATE TABLE users (
 -- Session store
 CREATE TABLE sessions (
     sessionId TEXT UNIQUE NOT NULL,
-    ip TEXT UNIQUE NOT NULL,
+    ip TEXT NOT NULL,
     userId TEXT NOT NULL,
     expiryDate DATETIME NOT NULL
 );

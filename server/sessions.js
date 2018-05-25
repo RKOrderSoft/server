@@ -13,11 +13,18 @@ module.exports = {
 		// TODO
 	},
 
-	issueSessionId: function (ip, username) {
+	issueSessionId: function (ip, row) {
 		if (!checkInitiated()) { return; }
-		// TODO store in database
+
 		var newSessionId = uuid();
-		return newSessionId;
+
+		return sessionDatabase.run("INSERT INTO sessions VALUES (?, ?, ?, datetime('now', 'localtime'))", [
+			newSessionId,
+			ip,
+			row.userId
+		]).then(_ => {
+			return newSessionId;
+		});
 	}
 }
 

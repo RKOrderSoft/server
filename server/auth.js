@@ -14,45 +14,40 @@ var loginDatabase;
 module.exports = {
 	init: function (db) { loginDatabase = db; },
 
-	authenticate: function (username, password, cb) {
+	authenticate: function (username, password) {
 		if (!checkInitiated()) { return; }
 
-		loginDatabase.get("SELECT password, accessLevel FROM users WHERE username = ?", username)
+		var userRow;
+		var queryText = "SELECT * FROM users WHERE username = ?";
+
+		return loginDatabase.get(queryText, username)
 		.then(row => {
 			if (!row) { throw IncorrectDetailsError; }
-			accessLevel = row.accessLevel;
+			userRow = row;
 			return bcrypt.compare(password, row.password);
-		})
-		.then(result => {
+		}).then(result => {
 			if (!result) { throw IncorrectDetailsError; }
-			cb(null, accessLevel);
+			return userRow;
 		})
-		.catch(err => {
-			cb(err, null);
-		});
 	},
 
-	register: function (username, password, accessLevel, callback) {
+	register: function (username, password, accessLevel) {
 		if (!checkInitiated()) { return; }
 
-		loginDatabase.get("SELECT username FROM users WHERE username = ?", username)
+		var queryText = "SELECT username FROM users WHERE username = ?";
+
+		return loginDatabase.get(queryText, username)
 		.then(row => {
 			if (row) { throw UserExistsError; }
 			return bcrypt.hash(password, saltRounds);
-		})
-		.then(hashedPw => {
-			return loginDatabase.run("INSERT INTO users VALUES (?, ?, ?, ?, datetime('now', 'localtime'))", [
+		}).then(hashedPw => {
+			queryText = "INSERT INTO users VALUES (?, ?, ?, ?, datetime('now', 'localtime'))";
+			return loginDatabase.run(queryText, [
 				uuid(),
 				username,
 				hashedPw,
 				accessLevel
 			]);
-		})
-		.then(_ => {
-			callback(null, null);
-		})
-		.catch(err => {
-			callback(err, null);
 		});
 	}
 }

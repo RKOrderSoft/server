@@ -5,7 +5,7 @@ const component = "api";
 const acceptedClients = ["dotnet", "js"];
 const status = {
 	OK: "OK",
-	COOKIE_EXPIRED: "COOKIE_EXPIRED",
+	SESSION_EXPIRED: "SESSION_EXPIRED",
 	INVALID: "INVALID",
 	UNAUTHORISED: "UNAUTHORISED"
 }
@@ -28,19 +28,23 @@ module.exports = function (app, db, auth, sessions, sh) {
 	//   Responds with a session id
 	app.post("/api/login", async (req, res) => {
 		sh.log("POST /api/login/ from " + req.ip, component, true);
-		if (!(req.body.password && req.body.username)) { 
+		if (!(req.body.password && req.body.username)) {
 			return res.json(buildResponse(status.INVALID));
 		};
-		auth.authenticate(req.body.username, req.body.password, (err, accessLevel) => {
-			if (err) {
-				return res.json(buildResponse(status.INVALID, { 
-					reason: err 
-				}));
-			}
-			var newSessionId = sessions.issueSessionId(req.ip, req.body.username);
+
+		var userRow;
+
+		auth.authenticate(req.body.username, req.body.password).then(row => {
+			userRow = row;
+			return sessions.issueSessionId(req.ip.toString(), row);
+		}).then(newSessionId => {
 			return res.json(buildResponse(status.OK, {
 				sessionId: newSessionId,
-				accessLevel: accessLevel
+				accessLevel: userRow.accessLevel
+			}));
+		}).catch(err => {
+			return res.json(buildResponse(status.INVALID, { 
+				reason: err
 			}));
 		});
 	});
