@@ -1,8 +1,14 @@
 
 # OrderSoft server
 
-## why node
-cus it's edgy
+## In development
+OrderSoft as a whole, including the server, is currently in active development. Some parts may not be implemented at all, and others may be extremely buggy or unusable.
+
+## why node.js?
+* I've had previous experience with node.js
+* Performance is not (too much of) an issue
+* JS is extremely (overly?) forgiving
+* As long as we are careful, we should not run into any issues with the type system ("1" + 4 == "14"?????)
 
 ## how to run
 ```sh
