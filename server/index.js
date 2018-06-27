@@ -42,7 +42,7 @@ function main(db) {
 	// 404 page
 	webApp.get("*", (req, res) => {
 		sh.log("GET " + req.path + " from " + req.ip, component, true);
-		res.render("404", { page: req.path });
+		res.status(404).render("404", { page: req.path });
 	});
 
 	webApp.listen(8080, () => {

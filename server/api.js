@@ -3,12 +3,6 @@
 // i think it's one of those buzzwords
 const component = "api";
 const acceptedClients = ["dotnet", "js"];
-const status = {
-	OK: "OK",
-	SESSION_EXPIRED: "SESSION_EXPIRED",
-	INVALID: "INVALID",
-	UNAUTHORISED: "UNAUTHORISED"
-}
 const version = "0.0.1"
 
 module.exports = function (app, db, auth, sessions, sh) {
@@ -17,10 +11,22 @@ module.exports = function (app, db, auth, sessions, sh) {
 	//   Used to identify OrderSoft server
 	app.post("/api/test", async (req, res) => {
 		sh.log("POST /api/test/ from " + req.ip, component, true);
-		if (req.body && req.body.client && acceptedClients.indexOf(req.body.client) > -1) {
-			return res.json(buildResponse(status.OK));
+
+		var resBody = {};
+		
+		// Check client name
+		if (!checkAcceptedClient(req, res)) {
+			return;
 		}
-		return res.json(buildResponse(status.INVALID, { reason: "Invalid format/client" }));
+
+		if (req.body.test === true) {
+			res.status(200);
+		} else {
+			res.status(400);
+			resBody.reason = "malformed request (was a 'test': true provided?)";
+		}
+
+		return res.json(buildResponse(resBody));
 	});
 
 	// /api/login
@@ -28,8 +34,15 @@ module.exports = function (app, db, auth, sessions, sh) {
 	//   Responds with a session id
 	app.post("/api/login", async (req, res) => {
 		sh.log("POST /api/login/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) {
+			return;
+		}
+
 		if (!(req.body.password && req.body.username)) {
-			return res.json(buildResponse(status.INVALID));
+			res.status(400);
+			return res.json(buildResponse({ reason: "Username or password field empty" }));
 		};
 
 		var userRow;
@@ -38,20 +51,34 @@ module.exports = function (app, db, auth, sessions, sh) {
 			userRow = row;
 			return sessions.issueSessionId(req.ip.toString(), row);
 		}).then(newSessionId => {
-			return res.json(buildResponse(status.OK, {
+			res.status(200);
+			return res.json(buildResponse({
 				sessionId: newSessionId,
 				accessLevel: userRow.accessLevel
 			}));
 		}).catch(err => {
-			return res.json(buildResponse(status.INVALID, { 
-				reason: err
+			res.status(401);
+			return res.json(buildResponse({ 
+				reason: err.toString()
 			}));
 		});
 	});
 }
 
-function buildResponse(resStatus, data={}) {
+function checkAcceptedClient(req, res) {
+	var client = req.get("client");
+	var isAcceptedClient = acceptedClients.indexOf(client) > -1; // Check if in acceptedClients
+
+	if (isAcceptedClient) {
+		return isAcceptedClient;
+	} else {
+		res.status(400);
+		res.json(buildResponse({ reason: "Invalid client name: " + client }));
+		return isAcceptedClient;
+	}
+}
+
+function buildResponse(data={}) {
 	data.ordersoft_version = version;
-	data.status = resStatus;
 	return JSON.stringify(data);
 }
