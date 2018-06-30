@@ -69,13 +69,12 @@ function checkAcceptedClient(req, res) {
 	var client = req.get("client");
 	var isAcceptedClient = acceptedClients.indexOf(client) > -1; // Check if in acceptedClients
 
-	if (isAcceptedClient) {
-		return isAcceptedClient;
-	} else {
+	if (!isAcceptedClient) {
 		res.status(400);
 		res.json(buildResponse({ reason: "Invalid client name: " + client }));
-		return isAcceptedClient;
 	}
+
+	return isAcceptedClient;
 }
 
 function buildResponse(data={}) {
