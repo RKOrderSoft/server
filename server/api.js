@@ -3,7 +3,7 @@
 // i think it's one of those buzzwords
 const component = "api";
 const acceptedClients = ["dotnet", "js"];
-const version = "0.0.1"
+const version = "0.0.1";
 
 module.exports = function (app, db, auth, sessions, sh) {
 	// /api/test
@@ -16,14 +16,14 @@ module.exports = function (app, db, auth, sessions, sh) {
 		
 		// Check client name
 		if (!checkAcceptedClient(req, res)) {
-			return;
-		}
-
-		if (req.body.test === true) {
-			res.status(200);
+			resBody.reason = "Client not accepted";
 		} else {
-			res.status(400);
-			resBody.reason = "malformed request (was a 'test': true provided?)";
+			if (req.body.test === true) {
+				res.status(200);
+			} else {
+				res.status(400);
+				resBody.reason = "malformed request (was a 'test': true provided?)";
+			}
 		}
 
 		return res.json(buildResponse(resBody));
@@ -35,33 +35,33 @@ module.exports = function (app, db, auth, sessions, sh) {
 	app.post("/api/login", async (req, res) => {
 		sh.log("POST /api/login/ from " + req.ip, component, true);
 
+		var resBody = {};
+
 		// Check client name
 		if (!checkAcceptedClient(req, res)) {
-			return;
+			resBody.reason = "Client not accepted";
+		} else {
+			if (!(req.body.password && req.body.username)) {
+				res.status(400);
+				resBody.reason = "Username or password field empty";
+			};
+
+			var userRow;
+
+			auth.authenticate(req.body.username, req.body.password).then(row => {
+				userRow = row;
+				return sessions.issueSessionId(req.ip.toString(), row);
+			}).then(newSessionId => {
+				res.status(200);
+				resBody.sessionId = newSessionId;
+				resBody.accessLevel = userRow.accessLevel;
+			}).catch(err => {
+				res.status(401);
+				reqBody.reason = err.toString();
+			});
 		}
 
-		if (!(req.body.password && req.body.username)) {
-			res.status(400);
-			return res.json(buildResponse({ reason: "Username or password field empty" }));
-		};
-
-		var userRow;
-
-		auth.authenticate(req.body.username, req.body.password).then(row => {
-			userRow = row;
-			return sessions.issueSessionId(req.ip.toString(), row);
-		}).then(newSessionId => {
-			res.status(200);
-			return res.json(buildResponse({
-				sessionId: newSessionId,
-				accessLevel: userRow.accessLevel
-			}));
-		}).catch(err => {
-			res.status(401);
-			return res.json(buildResponse({ 
-				reason: err.toString()
-			}));
-		});
+		return res.json(buildResponse(resBody));
 	});
 }
 
