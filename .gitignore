@@ -1,3 +1,4 @@
 node_modules
 *.sublime-workspace
 *.log
+public/fonts/Futura

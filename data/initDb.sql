@@ -35,6 +35,8 @@ CREATE TABLE orders (
     timePaid DATETIME,
     orderComplete BOOLEAN NOT NULL,
     serverId TEXT NOT NULL,
-    tableNumber INT,
-    amtPaid REAL
+    tableNumber INT NOT NULL,
+    amtPaid REAL,
+    multiOptions TEXT,
+    singleOptions TEXT
 );
