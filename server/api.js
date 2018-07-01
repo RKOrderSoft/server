@@ -11,19 +11,17 @@ module.exports = function (app, db, auth, sessions, sh) {
 	//   Used to identify OrderSoft server
 	app.post("/api/test", async (req, res) => {
 		sh.log("POST /api/test/ from " + req.ip, component, true);
+		
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
 
 		var resBody = {};
 		
-		// Check client name
-		if (!checkAcceptedClient(req, res)) {
-			resBody.reason = "Client not accepted";
+		if (req.body.test === true) {
+			res.status(200);
 		} else {
-			if (req.body.test === true) {
-				res.status(200);
-			} else {
-				res.status(400);
-				resBody.reason = "malformed request (was a 'test': true provided?)";
-			}
+			res.status(400);
+			resBody.reason = "malformed request (was a 'test': true provided?)";
 		}
 
 		return res.json(buildResponse(resBody));
@@ -35,31 +33,43 @@ module.exports = function (app, db, auth, sessions, sh) {
 	app.post("/api/login", async (req, res) => {
 		sh.log("POST /api/login/ from " + req.ip, component, true);
 
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
 		var resBody = {};
 
+		if (!(req.body.password && req.body.username)) {
+			res.status(400);
+			resBody.reason = "Username or password field empty";
+		};
+
+		var userRow;
+
+		auth.authenticate(req.body.username, req.body.password).then(row => {
+			userRow = row;
+			return sessions.issueSessionId(req.ip.toString(), row);
+		}).then(newSessionId => {
+			res.status(200);
+			resBody.sessionId = newSessionId;
+			resBody.accessLevel = userRow.accessLevel;
+		}).catch(err => {
+			res.status(401);
+			reqBody.reason = err.toString();
+		});
+
+		return res.json(buildResponse(resBody));
+	});
+
+	// /api/order
+	//   Used to retrieve and set order information
+	app.get("/api/order", async (req, res) => {
+		sh.log("GET /api/order/ from " + req.ip, component, true);
+
 		// Check client name
-		if (!checkAcceptedClient(req, res)) {
-			resBody.reason = "Client not accepted";
-		} else {
-			if (!(req.body.password && req.body.username)) {
-				res.status(400);
-				resBody.reason = "Username or password field empty";
-			};
+		if (!checkAcceptedClient(req, res)) return;
 
-			var userRow;
-
-			auth.authenticate(req.body.username, req.body.password).then(row => {
-				userRow = row;
-				return sessions.issueSessionId(req.ip.toString(), row);
-			}).then(newSessionId => {
-				res.status(200);
-				resBody.sessionId = newSessionId;
-				resBody.accessLevel = userRow.accessLevel;
-			}).catch(err => {
-				res.status(401);
-				reqBody.reason = err.toString();
-			});
-		}
+		var resBody = {};
+		// TODO
 
 		return res.json(buildResponse(resBody));
 	});

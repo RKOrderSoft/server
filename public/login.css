@@ -22,8 +22,10 @@
 	background: rgba();
 	margin: 5px;
 	padding: 5px;
-	border: 1px solid red;
-	border-radius: 5px;
+	font-weight: 500;
+	font-family: 'Futura';
+	color: #BB0000;
+	border-radius: 50px;
 }
 
 #main_logo {
