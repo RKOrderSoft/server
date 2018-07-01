@@ -1,5 +1,5 @@
 node_modules
 *.sublime-workspace
 *.log
-public/fonts/Futura
+public/fonts
 .DS_Store

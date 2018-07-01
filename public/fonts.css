@@ -1,26 +1,39 @@
-/* latin-ext */
 @font-face {
-  font-family: 'Montserrat';
-  /*font-style: normal;*/
-  src: url(fonts/MontRegular.woff2) format('woff2');
-  /*font-weight: 400;*/
+  font-family: 'Futura';
+  font-style: normal;
+  font-weight: 400;
+  src: url(fonts/Futura/Futura-Book.woff) format('woff');
 }
-/* latin-ext 
-@font-face {
-  font-family: 'Montserrat';
-  font-style: medium;
-  font-weight: 500;
-  src: url(fonts/MontMedium.woff2) format('woff2');
-}
-/* latin-ext 
-@font-face {
-  font-family: 'Montserrat';
-  font-style: bold;
-  font-weight: 600;
-  src: url(fonts/MontSemibold.woff2) format('woff2');
-}*/
 
 @font-face {
-  font-family: 'TitleFont';
-  src: url(fonts/notastolenfont.woff2) format('woff2');
+  font-family: 'Futura';
+  font-style: bold;
+  font-weight: 600;
+  src: url(fonts/Futura/Futura-Bold.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Futura Light';
+  font-style: normal;
+  font-weight: 300;
+  src: url(fonts/Futura/Futura-Light.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Futura';
+  font-style: medium;
+  font-weight: 500;
+  src: url(fonts/Futura/Futura-Medium.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Futura Light';
+  font-style: italic;
+  font-weight: 300;
+  src: url(fonts/Futura/Futura-Light-Italic.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Circular Book';
+  src: url(fonts/circular-book.woff) format('woff');
 }

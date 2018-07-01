@@ -1,12 +1,12 @@
 @import url(fonts.css);
 
 body {
-	font-family: 'Montserrat', sans-serif;
+	font-family: 'Futura', system-ui, sans-serif;
 	margin: 0;
 }
 
 .logo {
-	font-family: TitleFont, sans-serif;
+	font-family: 'Circular Book', system-ui, sans-serif;
 	font-weight: 300;
-	color: #c84141;
+	color: black;
 }
