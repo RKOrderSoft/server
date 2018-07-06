@@ -16,7 +16,7 @@ module.exports = function (app, db, auth, sessions, sh) {
 		if (!checkAcceptedClient(req, res)) return;
 
 		var resBody = {};
-		
+
 		if (req.body.test === true) {
 			res.status(200);
 		} else {
@@ -69,6 +69,7 @@ module.exports = function (app, db, auth, sessions, sh) {
 		if (!checkAcceptedClient(req, res)) return;
 
 		var resBody = {};
+		
 		// TODO
 
 		return res.json(buildResponse(resBody));
