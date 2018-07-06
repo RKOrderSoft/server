@@ -64,12 +64,19 @@ module.exports = function (app, db, auth, sessions, sh) {
 	//   Used to retrieve and set order information
 	app.get("/api/order", async (req, res) => {
 		sh.log("GET /api/order/ from " + req.ip, component, true);
+		const REQD_ACCESSLVL = 0;
 
 		// Check client name
 		if (!checkAcceptedClient(req, res)) return;
 
 		var resBody = {};
-		// TODO
+		
+		if () {
+			// TODO check sessionId & access level
+		} else if (req.body.orderId == undefined && req.body.tableNumber == undefined) {
+			res.status(400);
+			resBody.reason = "One of orderId";
+		}
 
 		return res.json(buildResponse(resBody));
 	});
