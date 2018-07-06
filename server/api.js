@@ -41,21 +41,21 @@ module.exports = function (app, db, auth, sessions, sh) {
 		if (!(req.body.password && req.body.username)) {
 			res.status(400);
 			resBody.reason = "Username or password field empty";
-		};
+		} else {
+			// fields are present
+			try {
+				var userRow = await auth.authenticate(req.body.username, req.body.password);
+				
+				var newSessionId = await sessions.issueSessionId(req.ip.toString(), userRow);
 
-		var userRow;
-
-		auth.authenticate(req.body.username, req.body.password).then(row => {
-			userRow = row;
-			return sessions.issueSessionId(req.ip.toString(), row);
-		}).then(newSessionId => {
-			res.status(200);
-			resBody.sessionId = newSessionId;
-			resBody.accessLevel = userRow.accessLevel;
-		}).catch(err => {
-			res.status(401);
-			reqBody.reason = err.toString();
-		});
+				res.status(200);
+				resBody.sessionId = newSessionId;
+				resBody.accessLevel = userRow.accessLevel;
+			} catch (err) {
+				res.status(401);
+				resBody.reason = err.toString();
+			}
+		}
 
 		return res.json(buildResponse(resBody));
 	});
@@ -71,14 +71,14 @@ module.exports = function (app, db, auth, sessions, sh) {
 
 		var resBody = {};
 		
-		if () {
+		/*if () {
 			// TODO check sessionId & access level
 		} else if (req.body.orderId == undefined && req.body.tableNumber == undefined) {
 			res.status(400);
-			resBody.reason = "One of orderId";
+			resBody.reason = "Either orderId or tableNumber must be provided.";
 		}
 
-		return res.json(buildResponse(resBody));
+		return res.json(buildResponse(resBody));*/
 	});
 }
 
