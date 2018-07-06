@@ -3,14 +3,23 @@ const uuid = require("uuid/v1");
 
 const component = "sessions";
 
+const SessionIdNonexistantError = new Error("Session ID does not exist in database");
+const SessionExpiredError = new Error("Session expired");
+
 var sessionDatabase;
 
 module.exports = {
 	init: function (db) { sessionDatabase = db; },
 
-	checkSessionId: function (sessionId) {
+	getAccessLevel: function (sessionId) {
 		if (!checkInitiated()) { return; }
-		// TODO
+		
+		const oneDay = new Date();
+		var queryText = "SELECT userId, expiryDate FROM sessions WHERE sessionId = ?"
+
+		sessionDatabase.get(queryText, sessionId).then((row) => {
+
+		});
 	},
 
 	issueSessionId: function (ip, row) {

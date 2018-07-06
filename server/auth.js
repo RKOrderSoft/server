@@ -6,6 +6,7 @@ const component = "auth";
 
 const IncorrectDetailsError = new Error("incorrect username or password");
 const UserExistsError = new Error("user already exists");
+const UserIdNonexistantError = new Error("User ID does not exist");
 
 const saltRounds = 10;
 
@@ -49,6 +50,10 @@ module.exports = {
 				accessLevel
 			]);
 		});
+	},
+
+	userDetails: function (userId) {
+		// TODO
 	}
 }
 
