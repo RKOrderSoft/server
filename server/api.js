@@ -5,6 +5,12 @@ const component = "api";
 const acceptedClients = ["dotnet", "js"];
 const version = "0.0.1";
 
+/*
+ * See documentation at
+ * https://github.com/RKOrderSoft/server/wiki/API-reference
+ * for full API use instructions
+ */
+
 module.exports = function (app, db, auth, sessions, sh) {
 	// /api/test
 	//   Test API, returns version info
@@ -70,15 +76,31 @@ module.exports = function (app, db, auth, sessions, sh) {
 		if (!checkAcceptedClient(req, res)) return;
 
 		var resBody = {};
+		var accessLevel;
 		
-		/*if () {
-			// TODO check sessionId & access level
-		} else if (req.body.orderId == undefined && req.body.tableNumber == undefined) {
-			res.status(400);
-			resBody.reason = "Either orderId or tableNumber must be provided.";
+		try {
+			accessLevel = await sessions.getAccessLevel(res.get("sessionId"));
+		} catch (err) {
+			// Error retrieving session data
+			res.status(401);
+			resBody.reason = err.toString();
 		}
 
-		return res.json(buildResponse(resBody));*/
+		if (accessLevel < REQD_ACCESSLVL) {
+			// access level too low
+			res.status(403);
+			resBody.reason = `Access level ${accessLevel} is too low; minimum ${REQD_ACCESSLVL}`
+		} else if (!(req.body.orderId) && !(req.body.tableNumber)) {
+			// malformed request
+			res.status(400);
+			resBody.reason = "Either orderId or tableNumber must be provided.";
+		} else {
+			// request is ok, proceed
+			// throw new NotImplementedException();
+			// whoops wrong language
+		}
+
+		return res.json(buildResponse(resBody));
 	});
 }
 

@@ -22,7 +22,9 @@ CREATE TABLE dishes (
     price REAL NOT NULL,
     sizes TEXT,
     category TEXT,
-    image TEXT DEFAULT "noimg.jpg"
+    image TEXT DEFAULT "noimg.jpg",
+    multiOptions TEXT,
+    singleOptions TEXT
 );
 
 -- Orders database
@@ -36,7 +38,5 @@ CREATE TABLE orders (
     orderComplete BOOLEAN NOT NULL,
     serverId TEXT NOT NULL,
     tableNumber INT NOT NULL,
-    amtPaid REAL,
-    multiOptions TEXT,
-    singleOptions TEXT
+    amtPaid REAL
 );

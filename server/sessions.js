@@ -14,11 +14,20 @@ module.exports = {
 	getAccessLevel: function (sessionId) {
 		if (!checkInitiated()) { return; }
 		
-		const oneDay = new Date();
 		var queryText = "SELECT userId, expiryDate FROM sessions WHERE sessionId = ?"
 
-		sessionDatabase.get(queryText, sessionId).then((row) => {
+		return sessionDatabase.get(queryText, sessionId).then((row) => {
+			if (!row) { throw SessionIdNonexistantError; }
 
+			if (new Date(row.expiryDate) < Date.now()) {
+				// sessionId expired
+				throw SessionExpiredError;
+			}
+
+			// session valid, continue
+			return auth.userDetails(row.userId);
+		}).then((userRow) => {
+			return userRow.accessLevel;
 		});
 	},
 
@@ -26,8 +35,9 @@ module.exports = {
 		if (!checkInitiated()) { return; }
 
 		var newSessionId = uuid();
+		var queryText = "INSERT INTO sessions VALUES (?, ?, ?, datetime('now', '+1 day', 'localtime'))";
 
-		return sessionDatabase.run("INSERT INTO sessions VALUES (?, ?, ?, datetime('now', 'localtime'))", [
+		return sessionDatabase.run(queryText, [
 			newSessionId,
 			ip,
 			row.userId
@@ -35,6 +45,11 @@ module.exports = {
 			return newSessionId;
 		});
 	}
+}
+
+function deleteSession(sessionId) {
+	var queryText = "DELETE FROM sessions WHERE sessionId = ?";
+	sessionDatabase.run(queryText, sessionId);
 }
 
 function checkInitiated() {
