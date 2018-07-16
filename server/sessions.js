@@ -7,9 +7,13 @@ const SessionIdNonexistantError = new Error("Session ID does not exist in databa
 const SessionExpiredError = new Error("Session expired");
 
 var sessionDatabase;
+var auth;
 
 module.exports = {
-	init: function (db) { sessionDatabase = db; },
+	init: function (db, authModule) { 
+		sessionDatabase = db;
+		auth = authModule;
+	},
 
 	getAccessLevel: function (sessionId) {
 		if (!checkInitiated()) { return; }

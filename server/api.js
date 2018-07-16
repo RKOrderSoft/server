@@ -78,6 +78,7 @@ module.exports = function (app, db, auth, sessions, sh) {
 		var resBody = {};
 		var accessLevel;
 		
+		// Get access level of authenticated user
 		try {
 			accessLevel = await sessions.getAccessLevel(res.get("sessionId"));
 		} catch (err) {

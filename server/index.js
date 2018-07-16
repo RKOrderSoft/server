@@ -32,7 +32,7 @@ function main(db) {
 
 	// Initialise auth & sessions objects
 	auth.init(db);	
-	sessions.init(db);
+	sessions.init(db, auth);
 
 	// Call components
 	var api = require("./api.js")(webApp, db, auth, sessions, sh);
