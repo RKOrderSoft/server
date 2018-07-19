@@ -76,7 +76,7 @@ module.exports = function (app, db, auth, sessions, sh) {
 		if (!checkAcceptedClient(req, res)) return;
 
 		var resBody = {};
-		var accessLevel;
+		var accessLevel = -1;
 		
 		// Get access level of authenticated user
 		try {
@@ -87,7 +87,11 @@ module.exports = function (app, db, auth, sessions, sh) {
 			resBody.reason = err.toString();
 		}
 
-		if (accessLevel < REQD_ACCESSLVL) {
+		// Check access conditions
+		if (accessLevel == -1) {
+			// error retrieving access level
+			// empty if statement to prevent further conditionals from being evaluated
+		} else if (accessLevel < REQD_ACCESSLVL) {
 			// access level too low
 			res.status(403);
 			resBody.reason = `Access level ${accessLevel} is too low; minimum ${REQD_ACCESSLVL}`
@@ -96,9 +100,34 @@ module.exports = function (app, db, auth, sessions, sh) {
 			res.status(400);
 			resBody.reason = "Either orderId or tableNumber must be provided.";
 		} else {
-			// request is ok, proceed
-			// throw new NotImplementedException();
-			// whoops wrong language
+			// Retrieve order details
+			var orderPromise;
+
+			if (req.body.orderId) {
+				// Use order ID
+				var orderId = req.body.orderId;
+
+				var queryString = "SELECT * FROM orders WHERE orderId = ?";
+				orderPromise = db.get(queryString, orderId);
+			} else {
+				// Use table number
+				var tableNum = req.body.tableNumber;
+
+				var queryString = "SELECT * FROM orders WHERE tableNumber = ? AND orderComplete = false";
+				orderPromise = db.get(queryString, tableNum);
+			}
+			var order = await orderPromise;
+
+			// Check that order exists
+			if (!order) {
+				res.status(404);
+				resBody.reason = `Order with ${ 
+					typeof orderId == 'string' ? ("order ID " + orderId) : ("table number " + tableNum) 
+				} not found.`;
+			} else {
+				res.status(200);
+				resBody.order = order;
+			}
 		}
 
 		return res.json(buildResponse(resBody));

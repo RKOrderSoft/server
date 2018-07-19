@@ -1,8 +1,9 @@
 const express = require("express");
 const sqlite = require("sqlite");
-const shlog = require("./shlog");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
+const shlog = require("./shlog");
 const auth = require("./auth.js");
 const sessions = require("./sessions.js");
 
@@ -16,9 +17,6 @@ sqlite.open("data/db.sqlite")
 	sh.log("Database opened", component);
 	main(opened);
 })
-.catch(err => {
-	sh.logerr("Error opening database: " + err, component);
-});
 
 function main(db) {
 	// Serve static content
