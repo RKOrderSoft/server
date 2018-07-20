@@ -66,10 +66,10 @@ module.exports = function (app, db, auth, sessions, sh) {
 		return res.json(buildResponse(resBody));
 	});
 
-	// /api/order
-	//   Used to retrieve and set order information
-	app.get("/api/order", async (req, res) => {
-		sh.log("GET /api/order/ from " + req.ip, component, true);
+	// /api/getorder
+	//   Used to retrieve order information
+	app.post("/api/getorder", async (req, res) => {
+		sh.log("POST /api/getorder/ from " + req.ip, component, true);
 		const REQD_ACCESSLVL = 0;
 
 		// Check client name
