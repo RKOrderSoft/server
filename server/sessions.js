@@ -18,7 +18,7 @@ module.exports = {
 	getAccessLevel: function (sessionId) {
 		if (!checkInitiated()) { return; }
 		
-		var queryText = "SELECT userId, expiryDate FROM sessions WHERE sessionId = ?"
+		var queryText = "SELECT userId, expiryDate FROM sessions WHERE sessionId = ?";
 
 		return sessionDatabase.get(queryText, sessionId).then((row) => {
 			if (!row) { throw SessionIdNonexistantError; }

@@ -1,6 +1,4 @@
-// Server for "REST" API requests xd
-// I don't even know what REST means tbh
-// i think it's one of those buzzwords
+// Server for "REST" API requests
 const component = "api";
 const acceptedClients = ["dotnet", "js"];
 const version = "0.0.1";
@@ -80,7 +78,7 @@ module.exports = function (app, db, auth, sessions, sh) {
 		
 		// Get access level of authenticated user
 		try {
-			accessLevel = await sessions.getAccessLevel(res.get("sessionId"));
+			accessLevel = await sessions.getAccessLevel(req.get("sessionId"));
 		} catch (err) {
 			// Error retrieving session data
 			res.status(401);
@@ -113,7 +111,8 @@ module.exports = function (app, db, auth, sessions, sh) {
 				// Use table number
 				var tableNum = req.body.tableNumber;
 
-				var queryString = "SELECT * FROM orders WHERE tableNumber = ? AND orderComplete = false";
+				// Only choose orders that are not yet completed
+				var queryString = "SELECT * FROM orders WHERE tableNumber = ? AND orderComplete = 0";
 				orderPromise = db.get(queryString, tableNum);
 			}
 			var order = await orderPromise;
