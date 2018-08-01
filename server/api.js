@@ -131,6 +131,24 @@ module.exports = function (app, db, auth, sessions, sh) {
 
 		return res.json(buildResponse(resBody));
 	});
+
+	// /api/openOrders
+	//   Returns order IDs of open orders
+	app.post("/api/openOrders", async (req, res) => {
+		sh.log("POST /api/openOrders/ from " + req.ip, component, true);
+		const REQD_ACCESSLVL = 0;
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		try {
+			var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0"
+			var rows = await db.all(queryText);
+		} catch (TheExceptionThatWasGeneratedByTheExecutedCodeInTheAboveTryBlock) {
+			sh.log("Error: " + TheExceptionThatWasGeneratedByTheExecutedCodeInTheAboveTryBlock.toString(), component);
+		}
+
+	});
 }
 
 function checkAcceptedClient(req, res) {
