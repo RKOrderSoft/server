@@ -132,6 +132,13 @@ module.exports = function (app, db, auth, sessions, sh) {
 		return res.json(buildResponse(resBody));
 	});
 
+	// /api/setorder
+	//   Used to modify or add orders to database
+	app.post("/api/setorder", async (req, res) => {
+		sh.log("POST /api/setorder from " + req.ip, component, true);
+		
+	});
+
 	// /api/openOrders
 	//   Returns order IDs of open orders
 	app.post("/api/openOrders", async (req, res) => {
