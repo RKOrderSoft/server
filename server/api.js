@@ -141,13 +141,21 @@ module.exports = function (app, db, auth, sessions, sh) {
 		// Check client name
 		if (!checkAcceptedClient(req, res)) return;
 
+		// TODO check access level
+
+		var rows;
+
 		try {
 			var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0"
-			var rows = await db.all(queryText);
-		} catch (TheExceptionThatWasGeneratedByTheExecutedCodeInTheAboveTryBlock) {
-			sh.log("Error: " + TheExceptionThatWasGeneratedByTheExecutedCodeInTheAboveTryBlock.toString(), component);
+			rows = await db.all(queryText);
+		} catch (ex) {
+			sh.log("Error: " + ex.toString(), component);
 		}
 
+		var resBody = { openOrders: rows };
+
+		res.status(200);
+		res.json(buildResponse(resBody));
 	});
 }
 
