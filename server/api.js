@@ -141,20 +141,37 @@ module.exports = function (app, db, auth, sessions, sh) {
 		// Check client name
 		if (!checkAcceptedClient(req, res)) return;
 
-		// TODO check access level
-
-		var rows;
-
+		var accessLevel = -1;
+		var resBody = {};
+		
+		// Get access level of authenticated user
 		try {
-			var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0"
-			rows = await db.all(queryText);
-		} catch (ex) {
-			sh.log("Error: " + ex.toString(), component);
+			accessLevel = await sessions.getAccessLevel(req.get("sessionId"));
+		} catch (err) {
+			// Error retrieving session data
+			res.status(401);
+			resBody.reason = err.toString();
 		}
 
-		var resBody = { openOrders: rows };
+		if (accessLevel >= REQD_ACCESSLVL) {
+			var rows;
 
-		res.status(200);
+			try {
+				var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0"
+				rows = await db.all(queryText);
+			} catch (ex) {
+				sh.log("Error: " + ex.toString(), component);
+			}
+
+			resBody.openOrders = rows;
+			res.status(200);
+		} else if (accessLevel == -1) {
+			// error getting access level, allow execution through
+		} else {
+			resBody.reason = `Access level ${accessLevel} is too low; minimum ${REQD_ACCESSLVL}`;
+			res.status(403);
+		}
+
 		res.json(buildResponse(resBody));
 	});
 }
