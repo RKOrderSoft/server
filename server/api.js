@@ -200,8 +200,20 @@ function checkAccessLevel(req, res, requiredLevel) {
 	// Get access level from database
 	var accessLevel;
 	try {
-
+		accessLevel = await sessions.getAccessLevel(sessionId);
+	} catch (ex) {
+		res.status(401);
+		res.json(buildResponse({ reason: `Error: ${ex.toString()}` }));
+		return false;
 	}
+
+	// Check access level
+	if (accessLevel < requiredLevel) {
+		res.status(403);
+		res.json(buildResponse({ reason: `Access level ${accessLevel} is too low; minimum ${REQD_ACCESSLVL}` }));
+		return false;
+	}
+	return true;
 }
 
 function checkAcceptedClient(req, res) {
