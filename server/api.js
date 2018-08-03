@@ -137,6 +137,8 @@ module.exports = function (app, db, auth, sessions, sh) {
 	app.post("/api/setorder", async (req, res) => {
 		sh.log("POST /api/setorder from " + req.ip, component, true);
 		
+		if (!checkAcceptedClient(req, res)) return;
+		if (!checkAccessLevel(req, res, 0)) return;
 	});
 
 	// /api/openOrders
@@ -170,7 +172,9 @@ module.exports = function (app, db, auth, sessions, sh) {
 				sh.log("Error: " + ex.toString(), component);
 			}
 
-			resBody.openOrders = rows;
+			var orderIds = rows.map(row => row.orderId);
+
+			resBody.openOrders = orderIds;
 			res.status(200);
 		} else if (accessLevel == -1) {
 			// error getting access level, allow execution through
@@ -181,6 +185,23 @@ module.exports = function (app, db, auth, sessions, sh) {
 
 		res.json(buildResponse(resBody));
 	});
+}
+
+function checkAccessLevel(req, res, requiredLevel) {
+	// Get session id from req
+	var sessionId = req.get("sessionId");
+	if (!sessionId) {
+		// No sessionId was sent. respond with 401 and return false
+		res.status(401);
+		res.json(buildResponse({ reason: "No sessionId was sent" }));
+		return false;
+	}
+
+	// Get access level from database
+	var accessLevel;
+	try {
+
+	}
 }
 
 function checkAcceptedClient(req, res) {
