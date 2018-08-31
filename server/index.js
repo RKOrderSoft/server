@@ -6,6 +6,7 @@ const cors = require("cors");
 const shlog = require("./shlog");
 const auth = require("./auth.js");
 const sessions = require("./sessions.js");
+const orders = require("./orders.js");
 
 const component = "index";
 const webApp = new express();
@@ -29,11 +30,12 @@ function main(db) {
 	webApp.use(cors());
 
 	// Initialise auth & sessions objects
-	auth.init(db);	
+	auth.init(db);
+	orders.init(db, sh);
 	sessions.init(db, auth);
 
 	// Call components
-	var api = require("./api.js")(webApp, db, auth, sessions, sh);
+	var api = require("./api.js")(webApp, db, auth, sessions, orders, sh);
 	var realtime = require("./realtime.js")(sh);
 	var admin = require("./admin.js")(webApp, auth, sh);
 

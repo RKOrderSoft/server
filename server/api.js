@@ -9,7 +9,7 @@ const version = "0.0.1";
  * for full API use instructions
  */
 
-module.exports = function (app, db, auth, sessions, sh) {
+module.exports = function (app, db, auth, sessions, orders, sh) {
 	// /api/test
 	//   Test API, returns version info
 	//   Used to identify OrderSoft server
@@ -126,6 +126,33 @@ module.exports = function (app, db, auth, sessions, sh) {
 
 		// Check access level
 		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+
+		var resBody = {};
+
+		if (req.body.order === undefined) {
+			res.status(400);
+			resBody.reason = "Request did not contain an order"
+		} else if (req.body.order.orderId === undefined) {
+			// No orderId - create new order
+			try {
+				await orders.newOrder(req.body.order);
+				res.status(200);
+			} catch (e) {
+				res.status(400);
+				resBody.reason = e.toString();
+			}
+		} else {
+			// orderId was provided - update order
+			try {
+				await orders.updateOrder(req.body.order);
+				res.status(200);
+			} catch (e) {
+				res.status(400);
+				resBody.reason = e.toString();
+			}
+		}
+
+		return res.json(buildResponse(resBody));
 	});
 
 	// /api/openOrders
@@ -141,7 +168,6 @@ module.exports = function (app, db, auth, sessions, sh) {
 		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
 
 		var resBody = {};
-
 		var rows;
 
 		try {
