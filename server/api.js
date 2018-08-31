@@ -135,7 +135,7 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 		} else if (req.body.order.orderId === undefined) {
 			// No orderId - create new order
 			try {
-				await orders.newOrder(req.body.order);
+				resBody.orderId = await orders.newOrder(req.body.order);
 				res.status(200);
 			} catch (e) {
 				res.status(400);
@@ -144,7 +144,7 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 		} else {
 			// orderId was provided - update order
 			try {
-				await orders.updateOrder(req.body.order);
+				resBody.orderId = await orders.updateOrder(req.body.order);
 				res.status(200);
 			} catch (e) {
 				res.status(400);

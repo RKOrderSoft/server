@@ -50,7 +50,7 @@ module.exports = {
 		var numVals = valsToSubmit.length;
 		var queryString = `INSERT INTO orders (${existingKeys.join()}) VALUES (${'?, '.repeat(numVals - 1) + '?'})`;
 
-		return db.run(queryString, valsToSubmit);
+		return db.run(queryString, valsToSubmit).then(_ => { return orderToSubmit.orderId });
 	},
 
 	updateOrder: function (toUpdate) {
@@ -60,7 +60,7 @@ module.exports = {
 		var orderId;
 		return db.get("SELECT orderId FROM orders WHERE orderId = ?", toUpdate.orderId).then((id) => {
 			if (!id) throw OrderNonexistantError;
-			orderId = id;
+			orderId = id.orderId;
 			delete toUpdate.orderId;
 			// Check for additional fields
 			Object.keys(toUpdate).forEach((key) => {
@@ -77,9 +77,9 @@ module.exports = {
 			queryText += "orderId = orderId "; // dirty fix to remove trailing comma
 
 			queryText += "WHERE orderId = ?";
-			updatedVals.push(id.orderId); // Dirty fix to check for id
+			updatedVals.push(orderId); // Dirty fix to check for id
 
-			return db.run(queryText, updatedVals);
+			return db.run(queryText, updatedVals).then(_ => { return orderId });
 		});
 
 	}
