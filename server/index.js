@@ -29,14 +29,13 @@ function main(db) {
 	webApp.use(bodyParser.json());
 	webApp.use(cors());
 
-	// Initialise auth & sessions objects
+	// Initialise auth, orders & sessions objects
 	auth.init(db);
 	orders.init(db, sh);
 	sessions.init(db, auth);
 
 	// Call components
 	var api = require("./api.js")(webApp, db, auth, sessions, orders, sh);
-	var realtime = require("./realtime.js")(sh);
 	var admin = require("./admin.js")(webApp, auth, sh);
 
 	// 404 page
