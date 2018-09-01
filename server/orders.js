@@ -93,7 +93,7 @@ module.exports = {
 	getUnpaidOrders: function () {
 		checkInitiated();
 
-		var queryText = "SELECT orderId FROM orders WHERE timeCompleted IS NULL AND timePaid IS NULL";
+		var queryText = "SELECT orderId FROM orders WHERE timeCompleted IS NOT NULL AND timePaid IS NULL";
 		return db.all(queryText);
 	}
 }
