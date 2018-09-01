@@ -64,10 +64,10 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 		return res.json(buildResponse(resBody));
 	});
 
-	// /api/getorder
+	// /api/getOrder
 	//   Used to retrieve order information
-	app.post("/api/getorder", async (req, res) => {
-		sh.log("POST /api/getorder/ from " + req.ip, component, true);
+	app.post("/api/getOrder", async (req, res) => {
+		sh.log("POST /api/getOrder/ from " + req.ip, component, true);
 
 		// Check client name
 		if (!checkAcceptedClient(req, res)) return;
@@ -116,10 +116,10 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 		return res.json(buildResponse(resBody));
 	});
 
-	// /api/setorder
+	// /api/setOrder
 	//   Used to modify or add orders to database
-	app.post("/api/setorder", async (req, res) => {
-		sh.log("POST /api/setorder from " + req.ip, component, true);
+	app.post("/api/setOrder", async (req, res) => {
+		sh.log("POST /api/setOrder from " + req.ip, component, true);
 		
 		// Check client
 		if (!checkAcceptedClient(req, res)) return;
@@ -155,9 +155,9 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 		return res.json(buildResponse(resBody));
 	});
 
-	// /api/openorders
+	// /api/openOrders
 	//   Returns order IDs of open orders
-	app.post("/api/openorders", async (req, res) => {
+	app.post("/api/openOrders", async (req, res) => {
 		sh.log("POST /api/openOrders/ from " + req.ip, component, true);
 
 		// Check client name
@@ -178,6 +178,34 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 		var orderIds = rows.map(row => row.orderId);
 
 		resBody.openOrders = orderIds;
+		res.status(200);
+
+		res.json(buildResponse(resBody));
+	});
+
+	// /api/unpaidOrders
+	//   Returns order IDs of unpaid orders
+	app.post("/api/unpaidOrders", async (req, res) => {
+		sh.log("POST /api/unpaidOrders/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+
+		var resBody = {};
+		var rows;
+
+		try {
+			rows = await orders.getUnpaidOrders();
+		} catch (ex) {
+			sh.log("Error: " + ex.toString(), component);
+		}
+
+		var orderIds = rows.map(row => row.orderId);
+
+		resBody.unpaidOrders = orderIds;
 		res.status(200);
 
 		res.json(buildResponse(resBody));

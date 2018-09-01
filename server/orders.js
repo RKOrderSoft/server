@@ -86,7 +86,14 @@ module.exports = {
 	getOpenOrders: function () {
 		checkInitiated();
 
-		var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0"
+		var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0";
+		return db.all(queryText);
+	},
+
+	getUnpaidOrders: function () {
+		checkInitiated();
+
+		var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0 AND timePaid IS NULL";
 		return db.all(queryText);
 	}
 }
