@@ -159,7 +159,6 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 	//   Returns order IDs of open orders
 	app.post("/api/openorders", async (req, res) => {
 		sh.log("POST /api/openOrders/ from " + req.ip, component, true);
-		const REQD_ACCESSLVL = 0;
 
 		// Check client name
 		if (!checkAcceptedClient(req, res)) return;
