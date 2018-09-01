@@ -9,7 +9,7 @@ const version = "0.0.1";
  * for full API use instructions
  */
 
-module.exports = function (app, db, auth, sessions, orders, sh) {
+module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 	// /api/test
 	//   Test API, returns version info
 	//   Used to identify OrderSoft server
@@ -209,6 +209,22 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 		res.status(200);
 
 		res.json(buildResponse(resBody));
+	});
+
+	// /api/getDishes
+	//   Returns dish information based on search parameters
+	app.post("/api/getDishes", async (req, res) => {
+		sh.log("POST /api/getDishes/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+
+		var searchResults = await dishes.search(req.body);
+
+		return res.json(buildResponse({ results: searchResults }));
 	});
 }
 

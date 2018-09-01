@@ -7,6 +7,7 @@ const shlog = require("./shlog");
 const auth = require("./auth.js");
 const sessions = require("./sessions.js");
 const orders = require("./orders.js");
+const dishes = require("./dishes.js");
 
 const component = "index";
 const webApp = new express();
@@ -29,13 +30,14 @@ function main (db) {
 	webApp.use(bodyParser.json());
 	webApp.use(cors());
 
-	// Initialise auth, orders & sessions objects
+	// Initialise auth, dishes, orders & sessions objects
 	auth.init(db);
 	orders.init(db, sh);
+	dishes.init(db, sh);
 	sessions.init(db, auth);
 
 	// Call components
-	var api = require("./api.js")(webApp, db, auth, sessions, orders, sh);
+	var api = require("./api.js")(webApp, db, auth, sessions, orders, dishes, sh);
 	var admin = require("./admin.js")(webApp, auth, sh);
 
 	// 404 page

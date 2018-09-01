@@ -25,8 +25,6 @@ CREATE TABLE dishes (
     category TEXT,
     image TEXT DEFAULT "noimg.jpg",
     description TEXT,
-    multiOptions TEXT,
-    singleOptions TEXT
 );
 
 -- Orders database
