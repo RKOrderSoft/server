@@ -19,7 +19,7 @@ sqlite.open("data/db.sqlite")
 	main(opened);
 })
 
-function main(db) {
+function main (db) {
 	// Serve static content
 	webApp.use(express.static("public"));
 	webApp.set("view engine", "ejs");
@@ -29,14 +29,13 @@ function main(db) {
 	webApp.use(bodyParser.json());
 	webApp.use(cors());
 
-	// Initialise auth & sessions objects
+	// Initialise auth, orders & sessions objects
 	auth.init(db);
 	orders.init(db, sh);
 	sessions.init(db, auth);
 
 	// Call components
 	var api = require("./api.js")(webApp, db, auth, sessions, orders, sh);
-	var realtime = require("./realtime.js")(sh);
 	var admin = require("./admin.js")(webApp, auth, sh);
 
 	// 404 page
@@ -45,7 +44,7 @@ function main(db) {
 		res.status(404).render("404", { page: req.path });
 	});
 
-	webApp.listen(8080, () => {
+	var server = webApp.listen(8080, () => {
 		sh.log("Listening on port 8080", component);
 	});
 }

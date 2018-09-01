@@ -17,12 +17,14 @@ CREATE TABLE sessions (
 
 -- Dishes database
 CREATE TABLE dishes (
-    dishId TEXT UNIQUE NOT NULL,
+    dishId INT UNIQUE NOT NULL,
     name TEXT NOT NULL,
-    price REAL NOT NULL,
+    basePrice REAL NOT NULL,
+    upgradePrice REAL,
     sizes TEXT,
     category TEXT,
     image TEXT DEFAULT "noimg.jpg",
+    description TEXT,
     multiOptions TEXT,
     singleOptions TEXT
 );
@@ -35,7 +37,6 @@ CREATE TABLE orders (
     timeSubmitted DATETIME NOT NULL,
     timeCompleted DATETIME,
     timePaid DATETIME,
-    orderComplete BOOLEAN NOT NULL,
     serverId TEXT NOT NULL,
     tableNumber INT NOT NULL,
     amtPaid REAL
