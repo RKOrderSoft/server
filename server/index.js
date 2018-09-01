@@ -19,7 +19,7 @@ sqlite.open("data/db.sqlite")
 	main(opened);
 })
 
-function main(db) {
+function main (db) {
 	// Serve static content
 	webApp.use(express.static("public"));
 	webApp.set("view engine", "ejs");
