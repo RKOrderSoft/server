@@ -81,7 +81,13 @@ module.exports = {
 
 			return db.run(queryText, updatedVals).then(_ => { return orderId });
 		});
+	},
 
+	getOpenOrders: function () {
+		checkInitiated();
+
+		var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0"
+		return db.all(queryText);
 	}
 }
 

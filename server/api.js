@@ -155,9 +155,9 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 		return res.json(buildResponse(resBody));
 	});
 
-	// /api/openOrders
+	// /api/openorders
 	//   Returns order IDs of open orders
-	app.post("/api/openOrders", async (req, res) => {
+	app.post("/api/openorders", async (req, res) => {
 		sh.log("POST /api/openOrders/ from " + req.ip, component, true);
 		const REQD_ACCESSLVL = 0;
 
@@ -171,8 +171,7 @@ module.exports = function (app, db, auth, sessions, orders, sh) {
 		var rows;
 
 		try {
-			var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0"
-			rows = await db.all(queryText);
+			rows = await orders.getOpenOrders();
 		} catch (ex) {
 			sh.log("Error: " + ex.toString(), component);
 		}
