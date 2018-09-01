@@ -8,8 +8,8 @@ const OrderNonexistantError = new Error("Given order ID does not exist in databa
 
 const component = "orders";
 
-const requiredKeys = ["dishes", "orderComplete", "serverId", "tableNumber", "timeSubmitted"];
-const allKeys = ["dishes", "orderComplete", "serverId", "timeSubmitted", "tableNumber", "notes", "timeCompleted", "timePaid", "amtPaid"];
+const requiredKeys = ["dishes", "serverId", "tableNumber", "timeSubmitted"];
+const allKeys = ["dishes", "serverId", "timeSubmitted", "tableNumber", "notes", "timeCompleted", "timePaid", "amtPaid"];
 
 var db, sh;
 
@@ -86,14 +86,14 @@ module.exports = {
 	getOpenOrders: function () {
 		checkInitiated();
 
-		var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0";
+		var queryText = "SELECT orderId FROM orders WHERE timeCompleted IS NULL";
 		return db.all(queryText);
 	},
 
 	getUnpaidOrders: function () {
 		checkInitiated();
 
-		var queryText = "SELECT orderId FROM orders WHERE orderComplete = 0 AND timePaid IS NULL";
+		var queryText = "SELECT orderId FROM orders WHERE timeCompleted IS NULL AND timePaid IS NULL";
 		return db.all(queryText);
 	}
 }
