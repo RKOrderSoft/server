@@ -55,6 +55,10 @@ html, body {
 	cursor: pointer;
 }
 
+#tab-list li:not(.selected):hover {
+	background: rgba(0,0,0,0.3);
+}
+
 #tab-list .selected {
 	background: rgba(0,0,0,0.5);
 }
