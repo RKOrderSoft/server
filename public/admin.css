@@ -73,10 +73,12 @@ html, body {
 .page {
 	font-family: "Helvetica Neue", "Helvetica", "Segoe UI", "Roboto", sans-serif;
 	width: 1000px;
-	background: white;
+	/*background: white;*/
 	min-height: 100%;
 	margin: auto;
-	padding: 40px;
+	padding: 50px;
+	display: flex;
+	flex-direction: column;
 }
 
 .page .header {
@@ -84,6 +86,10 @@ html, body {
 	font-weight: bold;
 	margin-left: 50px;
 	margin-bottom: 50px;
+}
+
+.page p {
+	margin-bottom: 1em;
 }
 
 #main-logo {
