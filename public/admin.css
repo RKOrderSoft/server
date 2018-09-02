@@ -1,0 +1,109 @@
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	height: 100%;
+}
+
+#background-image {
+	background-image: linear-gradient( rgba(0,0,0,0.7), rgba(0,0,0,0.7) ),
+	                  url("/images/splash/bowl-chicken-cuisine.jpg");
+	width: calc(100% + 80px);
+	height: calc(100% + 80px);
+	top: -40px;
+	left: -40px;
+	position: fixed;
+	background-position: center;
+	background-size: cover;
+	filter: blur(20px);
+	z-index: -247247247;
+}
+
+#header {
+	width: 100%;
+	height: 80px;
+	display: flex;
+	padding: 10px 20px 10px 20px;
+	align-items: center;
+	color: white;
+}
+
+#header * {
+	margin-right: 20px;
+}
+
+#tab-list-wrapper {
+	width: 275px;
+	float: left;
+	height: calc(100% - 80px);
+}
+
+#tab-list {
+	list-style: none;
+	padding: 0;
+}
+
+#tab-list li {
+	color: white;
+	padding: 35px;
+	font-size: 1.3em;
+	text-decoration: none;
+	background: rgba(0,0,0,0.2);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+#tab-list .selected {
+	background: rgba(0,0,0,0.5);
+}
+
+#main-content {
+	height: calc(100% - 80px);
+	width: calc(100% - 275px);
+	background-color: rgba(255,255,255,0.95);
+	float: right;
+	border-top-left-radius: 10px;
+	box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+	overflow-y: scroll;
+	padding: auto;
+}
+
+.page {
+	font-family: "Helvetica Neue", "Helvetica", "Segoe UI", "Roboto", sans-serif;
+	width: 1000px;
+	background: white;
+	min-height: 100%;
+	margin: auto;
+	padding: 40px;
+}
+
+.page .header {
+	font-size: 3em;
+	font-weight: bold;
+	margin-left: 50px;
+	margin-bottom: 50px;
+}
+
+#main-logo {
+	font-size: 2em;
+}
+
+#restaurant-name {
+	font-size: 1.4em;
+}
+
+#spacer {
+	margin: none;
+	flex-grow: 1;
+}
+
+#help {
+	cursor: pointer;
+}
+
+#logout {
+	margin-right: none;
+	cursor: pointer;
+}
