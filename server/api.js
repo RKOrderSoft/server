@@ -96,7 +96,7 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 				var tableNum = req.body.tableNumber;
 
 				// Only choose orders that are not yet completed
-				var queryString = "SELECT * FROM orders WHERE tableNumber = ? AND orderComplete = 0";
+				var queryString = "SELECT * FROM orders WHERE tableNumber = ? AND timeCompleted IS NULL";
 				orderPromise = db.get(queryString, tableNum);
 			}
 			var order = await orderPromise;
