@@ -237,6 +237,7 @@ function checkAccessLevel(sessions, req, res, requiredLevel) {
 			res.status(401);
 			res.json(buildResponse({ reason: "No sessionId was sent" }));
 			resolve(false);
+			return;
 		}
 
 		// Get access level from database
@@ -247,6 +248,7 @@ function checkAccessLevel(sessions, req, res, requiredLevel) {
 			res.status(401);
 			res.json(buildResponse({ reason: `Error: ${ex.toString()}` }));
 			resolve(false);
+			return;
 		}
 
 		// Check access level
@@ -254,6 +256,7 @@ function checkAccessLevel(sessions, req, res, requiredLevel) {
 			res.status(403);
 			res.json(buildResponse({ reason: `Access level ${accessLevel} is too low; minimum ${REQD_ACCESSLVL}` }));
 			resolve(false);
+			return;
 		}
 		resolve(true);
 	});
