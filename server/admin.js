@@ -1,7 +1,8 @@
 // Web routes for admin system.
 const component = "admin";
+const requiredAccessLvl = 20;
 
-module.exports = function (app, auth, sh) {
+module.exports = function (app, auth, sessions, sh) {
 	app.route("/login")
 	.get(async (req, res) => {
 		sh.log("GET /login from " + req.ip, component, true);
@@ -14,8 +15,18 @@ module.exports = function (app, auth, sh) {
 			return res.render("login", { message: "Please enter a username and password" });
 		}
 		auth.authenticate(req.body.username, req.body.password).then(row => {
-			// TODO redir to management interface
-			return res.render("login", { message: "Access level: " + row.accessLevel });
+			// Check access level
+			if (row.accessLevel < requiredAccessLvl) {
+				return res.render("login", { message: "Permission denied: access level too low" });
+			}
+
+			// Issue session ID
+			return sessions.issueSessionId(req.ip, row);
+		}).then((newSessionId) => {
+			res.set("Set-Cookie", "ordersoft-sessionId=" + encodeURI(newSessionId));
+
+			// Redirect to admin interface
+			res.redirect("/admin/home");
 		}).catch(err => {
 			return res.render("login", { message: err });
 		});
@@ -41,5 +52,29 @@ module.exports = function (app, auth, sh) {
 		}).catch(err => {
 			return res.render("register", { message: err });
 		});
+	});
+
+	app.route("/admin/home")
+	.get(async (req, res) => {
+		sh.log("GET /admin/home from " + req.ip, component, true);
+
+		// Check accessLevel
+		var sessionId = req.cookies["ordersoft-sessionId"];
+		if (sessionId === undefined) { return res.redirect("/login"); }
+
+		var accessLevel;
+
+		try {
+			accessLevel = await sessions.getAccessLevel(sessionId);
+		} catch (e) {
+			return res.redirect("/login");
+		}
+
+		if (accessLevel < requiredAccessLvl) {
+			return res.redirect("/login");
+		}
+
+		// Render page
+		return res.render("home");
 	});
 }

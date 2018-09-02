@@ -2,6 +2,7 @@ const express = require("express");
 const sqlite = require("sqlite");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const shlog = require("./shlog");
 const auth = require("./auth.js");
@@ -28,6 +29,7 @@ function main (db) {
 	// Use url encoded text from form POST requests
 	webApp.use(bodyParser.urlencoded({ extended: false }));
 	webApp.use(bodyParser.json());
+	webApp.use(cookieParser());
 	webApp.use(cors());
 
 	// Initialise auth, dishes, orders & sessions objects
@@ -38,7 +40,7 @@ function main (db) {
 
 	// Call components
 	var api = require("./api.js")(webApp, db, auth, sessions, orders, dishes, sh);
-	var admin = require("./admin.js")(webApp, auth, sh);
+	var admin = require("./admin.js")(webApp, auth, sessions, sh);
 
 	// 404 page
 	webApp.get("*", (req, res) => {

@@ -18,13 +18,14 @@
   },
   "homepage": "https://github.com/RespectKnightSoftwareLLC/server#readme",
   "dependencies": {
-    "bcrypt": "^1.0.3",
-    "body-parser": "^1.18.2",
-    "cors": "^2.8.4",
-    "ejs": "^2.5.7",
-    "express": "^4.16.2",
-    "sqlite": "^2.9.1",
-    "uuid": "^3.2.1",
-    "ws": "^4.0.0"
+    "bcrypt": "latest",
+    "body-parser": "latest",
+    "cookie-parser": "latest",
+    "cors": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "sqlite": "latest",
+    "uuid": "latest",
+    "ws": "latest"
   }
 }
