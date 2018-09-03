@@ -77,4 +77,32 @@ module.exports = function (app, auth, sessions, sh) {
 		// Render page
 		return res.render("admin");
 	});
+
+	app.get("/admin/orders", async (req, res) => {
+		sh.log("GET /admin/orders from " + req.ip, component, true);
+
+		res.set("Set-Cookie", "ordersoft-page=orders");
+		res.redirect("/admin/home");
+	});
+
+	app.get("/admin/dishes", async (req, res) => {
+		sh.log("GET /admin/dishes from " + req.ip, component, true);
+		
+		res.set("Set-Cookie", "ordersoft-page=dishes");
+		res.redirect("/admin/home");
+	});
+
+	app.get("/admin/users", async (req, res) => {
+		sh.log("GET /admin/users from " + req.ip, component, true);
+		
+		res.set("Set-Cookie", "ordersoft-page=users");
+		res.redirect("/admin/home");
+	});
+
+	app.get("/admin/settings", async (req, res) => {
+		sh.log("GET /admin/settings from " + req.ip, component, true);
+		
+		res.set("Set-Cookie", "ordersoft-page=settings");
+		res.redirect("/admin/home");
+	});
 }

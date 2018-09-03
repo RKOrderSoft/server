@@ -8,59 +8,55 @@ var client = new orderSoftClient();
 	// doesnt - "pretty much" is good enough for me
 	try {
 		await client.init(window.location.origin + "/");
-		client._sessionId = Cookies.get("ordersoft-sessionId");
+		client._sessionID = Cookies.get("ordersoft-sessionId");
 	} catch (e) {
 		showError(e.toString());
 	}
 })()
 
 window.onload = function () {
-	pages = {
-		home: {
-			page: document.getElementById("page-home"),
-			tab: document.getElementById("tab-home")
-		},
-		users: {
-			page: document.getElementById("page-users"),
-			tab: document.getElementById("tab-users")
-		},
-		dishes: {
-			page: document.getElementById("page-dishes"),
-			tab: document.getElementById("tab-dishes")
-		},
-		orders: {
-			page: document.getElementById("page-orders"),
-			tab: document.getElementById("tab-orders")
-		},
-		settings: {
-			page: document.getElementById("page-settings"),
-			tab: document.getElementById("tab-settings")
-		}
-	}
+	// Init pages
+	pages = [homePage, ordersPage, dishesPage, settingsPage, usersPage]
+	pages.forEach((page) => { page.init(); });
+
+	// Init modals
 	modal = document.getElementById("modal-content");
 	modalCover = document.getElementById("modal-cover");
 	state.modalOpen = false;
+
+	// Define help, logout
 	help = document.getElementById("help");
 
-	// Set current page to home
-	changePage(pages.home);
-	// TODO handle coming from other pages
+	// Check current page
+	setTimeout(() => {
+		if (Cookies.get("ordersoft-page")) {
+			var pageName = Cookies.get("ordersoft-page");
+			Cookies.remove("ordersoft-page", { path: "" });
+			pages.forEach((page) => {
+				if (pageName == page.relativeUrl) {
+					changePage(page);
+				}
+			});
+		} else {
+			changePage(homePage);
+		}
+	}, 200);
 
 	// Set onclick handlers
 	document.getElementById("tab-home").onclick = () => {
-		changePage(pages.home);
+		changePage(homePage);
 	}
 	document.getElementById("tab-users").onclick = () => {
-		changePage(pages.users);
+		changePage(usersPage);
 	}
 	document.getElementById("tab-dishes").onclick = () => {
-		changePage(pages.dishes);
+		changePage(dishesPage);
 	}
 	document.getElementById("tab-orders").onclick = () => {
-		changePage(pages.orders);
+		changePage(ordersPage);
 	}
 	document.getElementById("tab-settings").onclick = () => {
-		changePage(pages.settings);
+		changePage(settingsPage);
 	}
 
 	help.onclick = () => {
@@ -85,6 +81,12 @@ function changePage (pageTo) {
 	// Add selected classes
 	state.currentPage.page.classList.add("current-page");
 	state.currentPage.tab.classList.add("selected");
+
+	// Push state
+	history.pushState({}, state.currentPage.relativeUrl, state.currentPage.relativeUrl);
+
+	// Run init
+	if (!state.currentPage.loaded) state.currentPage.load();
 }
 
 function toggleModal (stateTo = undefined) {
