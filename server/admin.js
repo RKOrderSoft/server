@@ -75,6 +75,6 @@ module.exports = function (app, auth, sessions, sh) {
 		}
 
 		// Render page
-		return res.render("home");
+		return res.render("admin");
 	});
 }

@@ -56,11 +56,16 @@ html, body {
 }
 
 #tab-list li:not(.selected):hover {
-	background: rgba(0,0,0,0.3);
+	background: rgba(0,0,0,0.5);
+}
+
+.page:not(.current-page) {
+	display: none;
 }
 
 #tab-list .selected {
-	background: rgba(0,0,0,0.5);
+	background: rgba(255,255,255,0.95);
+	color: black;
 }
 
 #main-content {
