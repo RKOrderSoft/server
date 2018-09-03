@@ -1,5 +1,5 @@
-var tabState = {  };
-var pages;
+var state = {  };
+var pages, modal, modalCover, help;
 
 window.onload = function () {
 	pages = {
@@ -24,6 +24,10 @@ window.onload = function () {
 			tab: document.getElementById("tab-settings")
 		}
 	}
+	modal = document.getElementById("modal-content");
+	modalCover = document.getElementById("modal-cover");
+	state.modalOpen = false;
+	help = document.getElementById("help");
 
 	// Set current page to home
 	changePage(pages.home);
@@ -45,19 +49,46 @@ window.onload = function () {
 	document.getElementById("tab-settings").onclick = () => {
 		changePage(pages.settings);
 	}
+
+	help.onclick = () => {
+		toggleModal(true);
+	}
+	document.getElementById("modal-close").onclick = () => {
+		toggleModal(false);
+	}
 }
 
 function changePage (pageTo) {
-	if (tabState.currentPage !== undefined) {
+	if (state.currentPage !== undefined) {
 		// Remove classes
-		tabState.currentPage.page.classList.remove("current-page");
-		tabState.currentPage.tab.classList.remove("selected");
+		state.currentPage.page.classList.remove("current-page");
+		state.currentPage.tab.classList.remove("selected");
 	}
 
 	// Set currentPage
-	tabState.currentPage = pageTo;
+	state.currentPage = pageTo;
 
 	// Add selected classes
-	tabState.currentPage.page.classList.add("current-page");
-	tabState.currentPage.tab.classList.add("selected");
+	state.currentPage.page.classList.add("current-page");
+	state.currentPage.tab.classList.add("selected");
+}
+
+function toggleModal (stateTo = undefined) {
+	if (typeof(stateTo) === "boolean") {
+		if (stateTo) {
+			if (state.modalOpen) return;
+			
+			modal.classList.add("shown");
+			modalCover.classList.add("shown");
+			state.modalOpen = true;
+		} else {
+			if (!state.modalOpen) return;
+
+			modal.classList.remove("shown");
+			modalCover.classList.remove("shown");
+			state.modalOpen = false;
+		}
+	} else {
+		toggleModal(!state.modalOpen);
+	}
 }
