@@ -1,6 +1,19 @@
 var state = {  };
 var pages, modal, modalCover, help;
 
+// Client init in an async wrapper function
+var client = new orderSoftClient();
+(async () => {
+	// this doesnt really work but there is pretty much no universe in which it
+	// doesnt - "pretty much" is good enough for me
+	try {
+		await client.init(window.location.origin + "/");
+		client._sessionId = Cookies.get("ordersoft-sessionId");
+	} catch (e) {
+		showError(e.toString());
+	}
+})()
+
 window.onload = function () {
 	pages = {
 		home: {
@@ -56,6 +69,7 @@ window.onload = function () {
 	document.getElementById("modal-close").onclick = () => {
 		toggleModal(false);
 	}
+	document.getElementById("logout").onclick = logout;
 }
 
 function changePage (pageTo) {
@@ -91,4 +105,15 @@ function toggleModal (stateTo = undefined) {
 	} else {
 		toggleModal(!state.modalOpen);
 	}
+}
+
+function showError(message) {
+	// must not call while in a modal
+	// TODO
+	toggleModal(true);
+}
+
+function logout() {
+	Cookies.remove("ordersoft-sessionId");
+	window.location.replace(window.location.origin + "/login");
 }
