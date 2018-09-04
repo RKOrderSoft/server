@@ -242,4 +242,7 @@ html { background-color: #2e0500; }
 	margin-bottom: 50px;
 	padding: 20px;
 	border-radius: 5px;
+	display: grid;
+	grid-template-columns: 50% 50%;
+	grid-template-rows: 100%;
 }

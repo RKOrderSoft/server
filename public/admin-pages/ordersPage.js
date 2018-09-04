@@ -10,7 +10,6 @@ var ordersPage = {
 
 	load: async function () {
 		// perform loading operations
-		console.log(this);
 		var openOrderIds = (await client.requestFromServer("unpaidOrders", {}, "POST")).unpaidOrders;
 
 		// get order obj for each open order
