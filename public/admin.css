@@ -44,6 +44,7 @@ html { background-color: #2e0500; }
 	margin-top: 10px;
 	margin-bottom: 10px;
 	cursor: pointer;
+	z-index: 10;
 }
 
 #tab-list li:not(.selected):hover {
