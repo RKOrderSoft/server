@@ -68,25 +68,28 @@ window.onload = function () {
 	document.getElementById("logout").onclick = logout;
 }
 
+// Helper functions
+
 function changePage (pageTo) {
 	if (state.currentPage !== undefined) {
+		var pageFrom = state.currentPage;
 		// Remove classes
-		state.currentPage.page.classList.remove("current-page");
-		state.currentPage.tab.classList.remove("selected");
+		pageFrom.page.classList.remove("current-page");
+		pageFrom.tab.classList.remove("selected");
 	}
 
 	// Set currentPage
 	state.currentPage = pageTo;
 
 	// Add selected classes
-	state.currentPage.page.classList.add("current-page");
-	state.currentPage.tab.classList.add("selected");
+	pageTo.page.classList.add("current-page");
+	pageTo.tab.classList.add("selected");
 
 	// Push state
-	history.pushState({}, state.currentPage.relativeUrl, state.currentPage.relativeUrl);
+	history.pushState({}, pageTo.relativeUrl, pageTo.relativeUrl);
 
 	// Run init
-	if (!state.currentPage.loaded) state.currentPage.load();
+	if (!state.currentPage.loaded) pageTo.load();
 }
 
 function toggleModal (stateTo = undefined) {

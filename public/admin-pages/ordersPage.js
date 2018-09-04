@@ -3,13 +3,14 @@ var ordersPage = {
 		// set page, tab
 		this.page = document.getElementById("page-orders");
 		this.tab = document.getElementById("tab-orders");
-		this.table = document.getElementById("orders-table");
+		this.table = document.getElementById("orders-table-body");
 		this.relativeUrl = "orders";
 		this.loaded = false;
 	},
 
 	load: async function () {
 		// perform loading operations
+		console.log(this);
 		var openOrderIds = (await client.requestFromServer("unpaidOrders", {}, "POST")).unpaidOrders;
 
 		// get order obj for each open order
