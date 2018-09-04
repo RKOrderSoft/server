@@ -3,7 +3,7 @@ var ordersPage = {
 		// set page, tab
 		this.page = document.getElementById("page-orders");
 		this.tab = document.getElementById("tab-orders");
-		this.table = document.getElementById("orders-table");
+		this.table = document.getElementById("orders-table-body");
 		this.relativeUrl = "orders";
 		this.loaded = false;
 	},

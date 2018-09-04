@@ -196,15 +196,54 @@ html { background-color: #2e0500; }
 	border-spacing: 0;
 	width: 100%;
 	text-align: center;
-	border: solid 1px gray;
 }
 
-thead {
+.data-table thead td {
 	font-weight: bold;
+	border-bottom: 1px solid gray;
 }
 
-td {
-	border: solid 1px gray;
+.data-table td {
 	margin: 0;
+	padding: 10px;
+}
+
+.data-table tbody tr:hover {
+	background-color: rgba(0,0,0,0.1);
+	cursor: pointer;
+}
+
+.dish-image {
+	height: 50px;
+}
+
+/* Form elements */
+
+@keyframes borderfade {
+	to { border-bottom: 1px solid skyblue; }
+}
+
+.textbox {
+	background-color: rgba(0,0,0,0);
+	height: 2em;
+	outline: none;
+	border-radius: 0;
+	border: none;
+	border-bottom: 1px solid #b0b3b7;
 	padding: 5px;
+	font-size: 1em;
+}
+
+.textbox:focus {
+	animation: 0.5s borderfade ease forwards;
+}
+
+.filters-box {
+	background-color: lightgray;
+	margin-bottom: 50px;
+	padding: 20px;
+	border-radius: 5px;
+	display: grid;
+	grid-template-columns: 50% 50%;
+	grid-template-rows: 100%;
 }
