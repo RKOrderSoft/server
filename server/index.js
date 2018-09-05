@@ -48,7 +48,7 @@ function main (db) {
 		res.status(404).render("404", { page: req.path });
 	});
 
-	var server = webApp.listen(8080, () => {
-		sh.log("Listening on port 8080", component);
+	var server = webApp.listen(80, () => {
+		sh.log("Listening on port 80", component);
 	});
 }

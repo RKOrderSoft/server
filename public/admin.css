@@ -276,3 +276,23 @@ html { background-color: #2e0500; }
 .orders-filter-title {
 	font-weight: bold;
 }
+
+/* Home IP box */
+
+#ip-box {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+#ip-box span {
+	font-size: 1.3em;
+	margin-bottom: 20px;
+}
+
+#ip {
+	font-size: 3em !important;
+	font-weight: bold;
+}

@@ -54,6 +54,11 @@ module.exports = function (app, auth, sessions, sh) {
 		});
 	});
 
+	app.get("/admin", async (req, res) => {
+		sh.log("GET /admin from " + req.ip, component, true);
+		res.redirect("/admin/home");
+	});
+
 	app.route("/admin/home")
 	.get(async (req, res) => {
 		sh.log("GET /admin/home from " + req.ip, component, true);
