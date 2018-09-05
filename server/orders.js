@@ -141,13 +141,11 @@ module.exports = {
 				queryText += " AND timePaid IS NOT NULL";
 
 				if (params.paidAfter) {
-					queryText += " AND timePaid > datetime(?)";
-					vals.push(params.paidAfter);
+					queryText += " AND timePaid > datetime('" + params.paidAfter + "')";
 				}
 
 				if (params.paidBefore) {
-					queryText += " AND timePaid < datetime(?)";
-					vals.push(params.paidBefore);
+					queryText += " AND timePaid < datetime('" + params.paidBefore + "')";
 				}
 			} else {
 				queryText += " AND timePaid IS NULL";

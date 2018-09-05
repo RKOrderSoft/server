@@ -93,7 +93,7 @@ html { background-color: #2e0500; }
 }
 
 .page {
-	font-family: "Helvetica Neue", "Helvetica", "Segoe UI", "Roboto", sans-serif;
+	font-family: "Helvetica Neue", "Helvetica", "Segoe UI", "Franklin Gothic", "Roboto", sans-serif;
 	width: 1000px;
 	/*background: white;*/
 	min-height: 100%;
@@ -273,6 +273,6 @@ html { background-color: #2e0500; }
 	align-items: center;
 }
 
-#orders-filter-title {
+.orders-filter-title {
 	font-weight: bold;
 }
