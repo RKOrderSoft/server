@@ -5,6 +5,7 @@ var dishesPage = {
 		this.tab = document.getElementById("tab-dishes");
 		this.tbody = document.getElementById("dishes-table-body");
 		this.searchbox = document.getElementById("dishes-search");
+		this.tableHeads = document.getElementById("dishes-table").childNodes[0].childNodes;
 		this.relativeUrl = "dishes";
 	},
 
@@ -43,10 +44,17 @@ var dishesPage = {
 	boxOnChange: function () {
 		var val = this.searchbox.value;
 		if (val === "") { this.resetTable(); return; }
-		this.search(val);
+		this.searchTable(val);
 	},
 
-	search: function (term) {
+	sortTable: function (propertyName) {
+		// TEMPORARY - FOR TESTING ONLY
+		var sorted = this.showing.sort((a, b) => { return a[propertyName] > b[propertyName]; });
+		this.clearTable();
+		this.populateTable(sorted);
+	},
+
+	searchTable: function (term) {
 		var items = this.fuse.search(term);
 		this.clearTable();
 		this.populateTable(items);
@@ -64,6 +72,7 @@ var dishesPage = {
 	},
 
 	populateTable: function (dishes) {
+		this.showing = JSON.parse(JSON.stringify(dishes));
 		for (var i = 0; i < dishes.length; i++) {
 			var newRow = document.createElement("tr");
 

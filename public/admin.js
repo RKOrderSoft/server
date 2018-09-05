@@ -12,7 +12,7 @@ var client = new orderSoftClient();
 	} catch (e) {
 		showError(e.toString());
 	}
-})()
+})();
 
 window.onload = function () {
 	// Init pages

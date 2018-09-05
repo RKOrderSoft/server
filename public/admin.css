@@ -203,6 +203,10 @@ html { background-color: #2e0500; }
 	border-bottom: 1px solid gray;
 }
 
+.data-table thead td:hover {
+	background-color: rgba(0,0,0,0.2);
+}
+
 .data-table td {
 	margin: 0;
 	padding: 10px;
