@@ -92,10 +92,10 @@
 
 				<table class="data-table" id="dishes-table">
 					<thead>
-						<td>Dish ID</td>
-						<td>Dish name</td>
-						<td>Base price</td>
-						<td>Category</td>
+						<td id="dishes-th-id">Dish ID</td>
+						<td id="dishes-th-name">Dish name</td>
+						<td id="dishes-th-price">Base price</td>
+						<td id="dishes-th-cat">Category</td>
 					</thead>
 					<tbody id="dishes-table-body">
 					</tbody>
@@ -107,14 +107,19 @@
 				</div>
 
 				<span class="header">Orders</span>
+
+				<div id="orders-filters" class="filters-box">
+					<input id="chk-completed" type="checkbox" />
+					<label for="chk-completed">Completed orders</label>
+				</div>
 				
 				<table class="data-table" id="orders-table">
 					<thead>
-						<td>Table number</td>
-						<td>Time submitted</td>
-						<td>Time completed</td>
-						<td>Time paid</td>
-						<td>Amount paid</td>
+						<td id="orders-th-tableNum">Table number</td>
+						<td id="orders-th-timeSub">Time submitted</td>
+						<td id="orders-th-timeCom">Time completed</td>
+						<td id="orders-th-timePaid">Time paid</td>
+						<td id="orders-th-amtPaid">Amount paid</td>
 					</thead>
 					<tbody id="orders-table-body">
 					</tbody>

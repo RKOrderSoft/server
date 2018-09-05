@@ -5,7 +5,14 @@ var dishesPage = {
 		this.tab = document.getElementById("tab-dishes");
 		this.tbody = document.getElementById("dishes-table-body");
 		this.searchbox = document.getElementById("dishes-search");
-		this.tableHeads = document.getElementById("dishes-table").childNodes[0].childNodes;
+		
+		// Table headers
+		this.theads = {};
+		this.theads.id = document.getElementById("dishes-th-id");
+		this.theads.name = document.getElementById("dishes-th-name");
+		this.theads.price = document.getElementById("dishes-th-price");
+		this.theads.category = document.getElementById("dishes-th-cat");
+
 		this.relativeUrl = "dishes";
 	},
 
@@ -36,6 +43,10 @@ var dishesPage = {
 
 		// add event handlers
 		this.searchbox.oninput = this.boxOnChange.bind(this);
+		this.theads.id.onclick = (() => {this.sortTable("dishId");}).bind(this);
+		this.theads.name.onclick = (() => {this.sortTable("name");}).bind(this);
+		this.theads.price.onclick = (() => {this.sortTable("basePrice");}).bind(this);
+		this.theads.category.onclick = (() => {this.sortTable("category");}).bind(this);
 
 		document.getElementById("page-dishes-cover").style.display = "none";
 		this.loaded = true;
@@ -48,7 +59,6 @@ var dishesPage = {
 	},
 
 	sortTable: function (propertyName) {
-		// TEMPORARY - FOR TESTING ONLY
 		var sorted = this.showing.sort((a, b) => { return a[propertyName] > b[propertyName]; });
 		this.clearTable();
 		this.populateTable(sorted);

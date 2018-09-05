@@ -82,24 +82,8 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 			res.status(400);
 			resBody.reason = "Either orderId or tableNumber must be provided.";
 		} else {
-			// Retrieve order details
-			var orderPromise;
-
-			if (req.body.orderId) {
-				// Use order ID
-				var orderId = req.body.orderId;
-
-				var queryString = "SELECT * FROM orders WHERE orderId = ?";
-				orderPromise = db.get(queryString, orderId);
-			} else {
-				// Use table number
-				var tableNum = req.body.tableNumber;
-
-				// Only choose orders that are not yet completed
-				var queryString = "SELECT * FROM orders WHERE tableNumber = ? AND timeCompleted IS NULL";
-				orderPromise = db.get(queryString, tableNum);
-			}
-			var order = await orderPromise;
+			// Retrieve order details			
+			var order = await orders.getOrder(req.body);
 
 			// Check that order exists
 			if (!order) {
@@ -115,6 +99,9 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 
 		return res.json(buildResponse(resBody));
 	});
+
+	// /api/getOrderIds
+	//   Used to search for orderIds matching parameters
 
 	// /api/setOrder
 	//   Used to modify or add orders to database
@@ -175,7 +162,7 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 			sh.log("Error: " + ex.toString(), component);
 		}
 
-		var orderIds = rows.map(row => row.orderId);
+		var orderIds = rows;
 
 		resBody.openOrders = orderIds;
 		res.status(200);
@@ -203,7 +190,7 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 			sh.log("Error: " + ex.toString(), component);
 		}
 
-		var orderIds = rows.map(row => row.orderId);
+		var orderIds = rows;
 
 		resBody.unpaidOrders = orderIds;
 		res.status(200);

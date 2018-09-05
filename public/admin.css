@@ -204,6 +204,7 @@ html { background-color: #2e0500; }
 }
 
 .data-table thead td:hover {
+	cursor: pointer;
 	background-color: rgba(0,0,0,0.2);
 }
 
@@ -215,6 +216,10 @@ html { background-color: #2e0500; }
 .data-table tbody tr:hover {
 	background-color: rgba(0,0,0,0.1);
 	cursor: pointer;
+}
+
+.sorting-by {
+	background-color: rgba(0,0,0,0.2);
 }
 
 .dish-image {
@@ -247,7 +252,5 @@ html { background-color: #2e0500; }
 	margin-bottom: 50px;
 	padding: 20px;
 	border-radius: 5px;
-	display: grid;
-	grid-template-columns: 50% 50%;
-	grid-template-rows: 100%;
+	display: flex;
 }

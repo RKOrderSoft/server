@@ -6,6 +6,7 @@ const MissingFieldsError = new Error("Not all required fields were supplied in o
 const ExtraFieldsError = new Error("Unrecognised fields were supplied in order");
 const OrderNonexistantError = new Error("Given order ID does not exist in database");
 
+
 const component = "orders";
 
 const requiredKeys = ["dishes", "serverId", "tableNumber", "timeSubmitted"];
@@ -17,6 +18,31 @@ module.exports = {
 	init: function (database, shlog) {
 		db = database;
 		sh = shlog;
+	},
+
+	getOrder: function (params) {
+		if (!params.orderId && !params.tableNumber) {
+			return;
+		}
+
+		var orderPromise;
+
+		if (params.orderId) {
+			// Use order ID
+			var orderId = params.orderId;
+
+			var queryString = "SELECT * FROM orders WHERE orderId = ?";
+			orderPromise = db.get(queryString, orderId);
+		} else {
+			// Use table number
+			var tableNum = params.tableNumber;
+
+			// Only choose orders that are not yet completed
+			var queryString = "SELECT * FROM orders WHERE tableNumber = ? AND timeCompleted IS NULL";
+			orderPromise = db.get(queryString, tableNum);
+		}
+
+		return orderPromise;
 	},
 
 	newOrder: function (orderToSubmit) {
@@ -86,15 +112,54 @@ module.exports = {
 	getOpenOrders: function () {
 		checkInitiated();
 
-		var queryText = "SELECT orderId FROM orders WHERE timeCompleted IS NULL";
-		return db.all(queryText);
+		/*var queryText = "SELECT orderId FROM orders WHERE timeCompleted IS NULL";
+		return db.all(queryText);*/
+
+		return this.searchIds({ isComplete: false });
 	},
 
 	getUnpaidOrders: function () {
 		checkInitiated();
 
-		var queryText = "SELECT orderId FROM orders WHERE timeCompleted IS NOT NULL AND timePaid IS NULL";
-		return db.all(queryText);
+		/*var queryText = "SELECT orderId FROM orders WHERE timeCompleted IS NOT NULL AND timePaid IS NULL";
+		return db.all(queryText);*/
+
+		return this.searchIds({ isComplete: true, isPaid: false });
+	},
+
+	searchIds: function (params) {
+		checkInitiated();
+
+		var queryText = "SELECT orderId FROM orders"
+		var vals = [];
+
+		if (Object.keys(params) != []) {
+			// Parameters are present
+			queryText += " WHERE 1 = 1"
+
+			if (params.isPaid) {
+				queryText += " AND timePaid IS NOT NULL";
+
+				if (params.paidAfter) {
+					queryText += " AND timePaid > ?";
+					vals.push(params.paidAfter);
+				}
+
+				if (params.paidBefore) {
+					queryText += " AND timePaid < ?";
+					vals.push(params.paidBefore);
+				}
+			} else {
+				queryText += " AND timePaid IS NULL";
+				if (!params.isComplete) {
+					queryText += " AND timeCompleted IS NULL";
+				} else {
+					queryText += " AND timeCompleted IS NOT NULL";
+				}
+			}
+		}
+
+		return db.all(queryText).then(results => results.map(val => val.orderId));
 	}
 }
 

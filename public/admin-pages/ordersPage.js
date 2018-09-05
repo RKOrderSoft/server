@@ -4,6 +4,15 @@ var ordersPage = {
 		this.page = document.getElementById("page-orders");
 		this.tab = document.getElementById("tab-orders");
 		this.table = document.getElementById("orders-table-body");
+
+		// table headers
+		this.theads = {};
+		this.theads.tableNumber = document.getElementById("orders-th-tableNum");
+		this.theads.timeSubmitted = document.getElementById("orders-th-timeSub");
+		this.theads.timeCom = document.getElementById("orders-th-timeCompleted");
+		this.theads.timePaid = document.getElementById("orders-th-timePaid");
+		this.theads.amtPaid = document.getElementById("orders-th-amtPaid");
+
 		this.relativeUrl = "orders";
 		this.loaded = false;
 	},
@@ -22,8 +31,17 @@ var ordersPage = {
 		// populate table
 		this.populateTable(toShow);
 
+		// set onclick handlers
+
 		document.getElementById("page-orders-cover").style.display = "none";
 		this.loaded = true;
+	},
+
+	resetTable: function () {
+		// Clear table
+		while (this.table.hasChildNodes()) {
+			this.table.removeChild(this.table.firstChild);
+		}
 	},
 
 	populateTable: function (objects) {
