@@ -241,6 +241,7 @@ html { background-color: #2e0500; }
 	border-bottom: 1px solid #b0b3b7;
 	padding: 5px;
 	font-size: 1em;
+	min-width: 400px;
 }
 
 .textbox:focus {
@@ -253,4 +254,25 @@ html { background-color: #2e0500; }
 	padding: 20px;
 	border-radius: 5px;
 	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#orders-completion {
+	margin-bottom: 20px;
+}
+
+.filters-box div * {
+	margin-right: 10px;
+}
+
+.filters-box div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#orders-filter-title {
+	font-weight: bold;
 }

@@ -226,6 +226,46 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 
 		return res.json(buildResponse({ results: searchResults }));
 	});
+
+	// /api/userDetails
+	//   Returns user details givern a userId
+	app.post("/api/userDetails", async (req, res) => {
+		sh.log("POST /api/userDetails/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+
+		var resBody = {};
+
+		if (!req.body.userId) {
+			res.status(400);
+			resBody.reason = "No userId was provided";
+		} else {
+			var details = await auth.userDetails(req.body.userId);
+			resBody.user = details;
+		}
+
+		res.json(buildResponse(resBody));
+	});
+
+	// /api/allUsers
+	//   Returns an array of all registered users (sans password)
+	app.post("/api/allUsers", async (req, res) => {
+		sh.log("POST /api/allUsers/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+
+		var users = await auth.getAllUsers();
+
+		res.json(buildResponse({ allUsers: users }));
+	});
 }
 
 function checkAccessLevel(sessions, req, res, requiredLevel) {

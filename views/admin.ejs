@@ -17,7 +17,7 @@
 		<script type="text/javascript" src="/admin-pages/settingsPage.js"></script>
 		<!-- main script -->
 		<script type="text/javascript" src="/admin.js"></script>
-		<title>OrderSoft Admin - Home</title>
+		<title>OrderSoft Admin</title>
 	</head>
 	<body>
 		<div id="modal-cover">
@@ -109,8 +109,19 @@
 				<span class="header">Orders</span>
 
 				<div id="orders-filters" class="filters-box">
-					<input id="chk-completed" type="checkbox" />
-					<label for="chk-completed">Completed orders</label>
+					<div id="orders-completion">
+						<span id="orders-filter-title">Show: </span>
+						<input id="chk-completed" type="checkbox" class="chk" />
+						<label for="chk-completed">Completed orders</label>
+						<input id="chk-paid" type="checkbox" class="chk" />
+						<label for="chk-paid">Paid orders</label>
+					</div>
+					<div id="orders-dates">
+						<label for="paidAfter">Paid between:</label>
+						<input id="paidAfter" type="date" class="dateIn" />
+						<label for="paidBefore">and</label>
+						<input id="paidBefore" type="date" class="dateIn" />
+					</div>
 				</div>
 				
 				<table class="data-table" id="orders-table">

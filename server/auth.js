@@ -55,6 +55,11 @@ module.exports = {
 	userDetails: function (userId) {
 		var queryText = "SELECT userId, username, accessLevel, dateAdded FROM users WHERE userId = ?";
 		return loginDatabase.get(queryText, userId);
+	},
+
+	getAllUsers: function () {
+		var queryText = "SELECT userId, username, accessLevel, dateAdded FROM users";
+		return loginDatabase.all(queryText);
 	}
 }
 
