@@ -102,6 +102,19 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 
 	// /api/getOrderIds
 	//   Used to search for orderIds matching parameters
+	app.post("/api/getOrderIds", async (req, res) => {
+		sh.log("POST /api/getOrderIds/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+
+		var searchResults = await orders.searchIds(req.body);
+
+		return res.json(buildResponse({ results: searchResults }));
+	});
 
 	// /api/setOrder
 	//   Used to modify or add orders to database

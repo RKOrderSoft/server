@@ -133,7 +133,7 @@ module.exports = {
 		var queryText = "SELECT orderId FROM orders"
 		var vals = [];
 
-		if (Object.keys(params) != []) {
+		if (Object.keys(params).length > 0) {
 			// Parameters are present
 			queryText += " WHERE 1 = 1"
 
