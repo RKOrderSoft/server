@@ -37,3 +37,20 @@
   font-family: 'Circular Book';
   src: url(fonts/circular-book.woff) format('woff');
 }
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url(fonts/HelveticaNeue/helveticaneue.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-weight: bold;
+  src: url(fonts/HelveticaNeue/helveticaneuebold.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-weight: 300;
+  src: url(fonts/HelveticaNeue/helveticaneuelight.woff) format('woff');
+}

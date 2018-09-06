@@ -48,7 +48,7 @@ var usersPage = {
 	},
 
 	sort: function (by) {
-		this.showing.sort((a, b) => { return a[by] > b[by]; });
+		this.showing.sort((a, b) => { return a[by] > b[by]? 1 : -1; });
 		this.clearTable();
 		this.populateTable(this.showing);
 	},

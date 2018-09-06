@@ -46,7 +46,7 @@ var ordersPage = {
 	},
 
 	sortTable: function (propName) {
-		this.tableShowing.sort((a, b) => { return a[propName] > b[propName]; });
+		this.tableShowing.sort((a, b) => { return a[propName] > b[propName]? 1 : -1; });
 		this.clearTable();
 		this.populateTable(this.tableShowing);
 	},

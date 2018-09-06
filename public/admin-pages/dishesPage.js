@@ -59,7 +59,7 @@ var dishesPage = {
 	},
 
 	sortTable: function (propertyName) {
-		var sorted = this.showing.sort((a, b) => { return a[propertyName] > b[propertyName]; });
+		var sorted = this.showing.sort((a, b) => { return a[propertyName] > b[propertyName]? 1 : -1; });
 		this.clearTable();
 		this.populateTable(sorted);
 	},

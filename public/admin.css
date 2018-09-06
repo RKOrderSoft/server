@@ -241,7 +241,7 @@ html { background-color: #2e0500; }
 	border-bottom: 1px solid #b0b3b7;
 	padding: 5px;
 	font-size: 1em;
-	min-width: 400px;
+	min-width: 60%;
 }
 
 .textbox:focus {
@@ -295,4 +295,34 @@ html { background-color: #2e0500; }
 #ip {
 	font-size: 3em !important;
 	font-weight: bold;
+}
+
+/* @media queries */
+
+@media (max-width: 1300px) {
+	#main-content {
+		width: 100%;
+		border-top-right-radius: 10px;
+	}
+
+	#modal-content {
+		max-width: 90%;
+	}
+
+	.page {
+		width: 100%;
+		padding: 30px;
+	}
+
+	.page .header {
+		margin-bottom: 30px;
+	}
+
+	.filters-box {
+		margin-bottom: 30px;
+	}
+
+	#tab-list-wrapper {
+		display: none;
+	}
 }
