@@ -260,7 +260,7 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 		if (!checkAcceptedClient(req, res)) return;
 
 		// Check access level
-		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
 
 		var users = await auth.getAllUsers();
 
