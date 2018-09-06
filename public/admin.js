@@ -122,3 +122,23 @@ function logout() {
 	Cookies.remove("ordersoft-sessionId");
 	window.location.replace(window.location.origin + "/login");
 }
+
+function dateToString (date) {
+	var year = date.getFullYear().toString();
+	var month = (date.getMonth() + 1);
+	var day = date.getDate();
+
+	var hours = date.getHours() - 10;
+	var minutes = date.getMinutes();
+	var seconds = date.getSeconds();
+
+	return year + "-" + pad(month) + "-" + pad(day) + " " + pad(hours) + ":" +
+		pad(minutes) + ":" + pad(seconds);
+}
+
+function pad (num) {
+	if (num < 10) {
+    	return "0" + num.toString();
+	}
+	return num.toString();
+}

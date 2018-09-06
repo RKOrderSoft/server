@@ -107,6 +107,7 @@ var dishesPage = {
 			newCell.appendChild(document.createTextNode(dishes[i].category));
 			newRow.appendChild(newCell);
 
+			newRow.title = "Click to edit";
 			this.tbody.appendChild(newRow);
 		}
 	},

@@ -9,7 +9,7 @@ var ordersPage = {
 		this.theads = {};
 		this.theads.tableNumber = document.getElementById("orders-th-tableNum");
 		this.theads.timeSubmitted = document.getElementById("orders-th-timeSub");
-		this.theads.timeCom = document.getElementById("orders-th-timeCompleted");
+		this.theads.timeCom = document.getElementById("orders-th-timeCom");
 		this.theads.timePaid = document.getElementById("orders-th-timePaid");
 		this.theads.amtPaid = document.getElementById("orders-th-amtPaid");
 
@@ -35,8 +35,20 @@ var ordersPage = {
 		this.filters.paidAfter.oninput = this.refreshOrders.bind(this);
 		this.filters.paidBefore.oninput = this.refreshOrders.bind(this);
 
+		this.theads.tableNumber.onclick = (() => { this.sortTable("tableNumber"); }).bind(this);
+		this.theads.timeSubmitted.onclick = (() => { this.sortTable("timeSubmitted"); }).bind(this);
+		this.theads.timeCom.onclick = (() => { this.sortTable("timeCompleted"); }).bind(this);
+		this.theads.timePaid.onclick = (() => { this.sortTable("timePaid"); }).bind(this);
+		this.theads.amtPaid.onclick = (() => { this.sortTable("amtPaid"); }).bind(this);
+
 		document.getElementById("page-orders-cover").style.display = "none";
 		this.loaded = true;
+	},
+
+	sortTable: function (propName) {
+		this.tableShowing.sort((a, b) => { return a[propName] > b[propName]; });
+		this.clearTable();
+		this.populateTable(this.tableShowing);
 	},
 
 	clearTable: function () {
@@ -140,27 +152,8 @@ var ordersPage = {
 			}
 			newRow.appendChild(newCell);
 
+			newRow.title = "Click to edit";
 			this.table.appendChild(newRow);
 		}
 	}
-}
-
-function dateToString (date) {
-	var year = date.getFullYear().toString();
-	var month = (date.getMonth() + 1);
-	var day = date.getDate();
-
-	var hours = date.getHours() - 10;
-	var minutes = date.getMinutes();
-	var seconds = date.getSeconds();
-
-	return year + "-" + pad(month) + "-" + pad(day) + " " + pad(hours) + ":" +
-		pad(minutes) + ":" + pad(seconds);
-}
-
-function pad (num) {
-	if (num < 10) {
-    	return "0" + num.toString();
-	}
-	return num.toString();
 }

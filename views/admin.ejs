@@ -56,22 +56,23 @@
 				<div class="page-cover" id="page-users-cover">
 					<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 				</div>
+
 				<span class="header">Users</span>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tortor sem, sollicitudin ut varius sit amet, porta vitae odio. Aenean eu nulla semper, mattis turpis non, egestas ante. Donec congue eleifend orci, in convallis nunc sollicitudin a. Ut ornare vulputate mi sit amet dapibus. Nam aliquam, felis ac aliquet porttitor, purus nisl efficitur dui, eu condimentum nisl nulla in eros. Integer auctor sit amet velit ac finibus. Nullam efficitur ante eu purus consequat, at euismod tortor faucibus. Ut non fringilla nunc, porta pellentesque eros. Sed et maximus velit.</p>
 
-				<p>Phasellus elementum ullamcorper leo, non convallis nibh fermentum vel. Curabitur ac volutpat nunc, eget laoreet eros. In nisi turpis, interdum at interdum nec, consectetur in metus. Sed malesuada auctor enim vitae tincidunt. Sed varius dictum est, non aliquam arcu efficitur ut. Nullam pharetra orci accumsan augue dictum congue. Phasellus scelerisque cursus finibus. Donec auctor odio at aliquam tempor. Nullam ut sapien tincidunt, sagittis arcu at, ultrices sapien. Nam fermentum, sem quis congue viverra, elit elit accumsan leo, sit amet ultrices arcu nisl id risus. Cras elementum ipsum fermentum dui pharetra molestie. Maecenas sagittis congue dolor. Nam cursus aliquam accumsan.</p>
+				<div id="users-filters" class="filters-box">
+					<input class="textbox" id="users-search" placeholder="Search users..." />
+				</div>
 
-				<p>Praesent ullamcorper orci pulvinar varius iaculis. Praesent tristique neque nulla, nec dignissim metus sodales in. Nunc scelerisque commodo dolor, bibendum dictum nisi lobortis nec. Proin sit amet porta sapien. Donec nec dolor dignissim, mollis turpis eu, eleifend tortor. Aenean sed finibus turpis. Nulla quis turpis arcu. Duis eget facilisis nibh, vel rhoncus turpis. Cras condimentum eros ut arcu accumsan congue. Maecenas vitae orci pellentesque, luctus nisi vitae, sagittis diam. Ut libero leo, cursus vitae tellus non, iaculis volutpat est. Suspendisse rutrum ligula in lectus feugiat rutrum. Praesent molestie, turpis sit amet ultricies aliquam, tellus massa gravida tortor, accumsan finibus orci arcu ut leo.</p>
+				<table class="data-table" id="users-table">
+					<thead>
+						<td title="Sort by username" id="users-th-name">Username</td>
+						<td title="Sort by access level" id="users-th-access">Access level</td>
+						<td title="Sort by date added" id="users-th-added">Date added</td>
+					</thead>
+					<tbody id="users-table-body">
+					</tbody>
+				</table>
 
-				<p>Sed efficitur ultrices risus in pulvinar. Phasellus rhoncus euismod elementum. Nam et pellentesque odio, eu accumsan tortor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam porta lobortis faucibus. Aenean auctor dui eu neque mollis maximus. Sed sit amet neque turpis. Mauris id iaculis nulla. In feugiat tincidunt fermentum.</p>
-
-				<p>In varius sollicitudin arcu, nec dignissim massa porta id. Mauris vel risus laoreet mauris pulvinar egestas. Ut ultricies iaculis tempus. Nullam porta viverra convallis. Vestibulum non laoreet nisl, vel pulvinar massa. Phasellus blandit nisi id molestie condimentum. Nam finibus maximus blandit. Nunc fermentum orci at augue imperdiet pretium. Ut semper vehicula bibendum. Morbi consectetur ut felis in pretium.</p>
-
-				<p>Vivamus hendrerit sodales ullamcorper. Cras iaculis dui in urna condimentum imperdiet. Nam magna urna, sodales in lorem non, maximus convallis leo. Donec bibendum, ligula eu molestie dapibus, felis ante ultrices libero, nec fringilla justo lorem in mauris. Morbi non dolor vehicula, porta ante a, imperdiet velit. Vestibulum in scelerisque metus, eget fermentum purus. Proin sit amet metus dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam blandit tortor vitae rutrum laoreet. Pellentesque ex sem, aliquet eu lorem ac, luctus egestas risus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin at ligula maximus odio rutrum porta. Proin in tempus augue. Cras at nunc eu sapien cursus molestie ut sed dolor. Praesent non aliquet nisl. Curabitur pharetra, magna accumsan sagittis vestibulum, sapien nisl aliquet tortor, ut congue lacus dolor sed metus.</p>
-
-				<p>Quisque ut egestas nunc, vehicula tincidunt nulla. Mauris vel rutrum arcu, id pellentesque nunc. Morbi quis mi pulvinar, consequat ante sit amet, porta arcu. Sed ultricies facilisis lorem, et mattis enim interdum eu. Nulla ac porta purus, sit amet lacinia dui. Fusce at interdum lectus. Nam interdum tincidunt dui, quis consequat ipsum. Aenean a nunc nec lorem scelerisque maximus at a mauris. Integer eu euismod leo. Suspendisse ante est, lacinia sagittis ante eget, volutpat facilisis tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla facilisi. Sed scelerisque sem et pharetra rhoncus. Donec rhoncus orci sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vehicula non arcu in interdum.</p>
-
-				<p>Curabitur luctus augue at consequat tincidunt. Vestibulum ac venenatis erat. Nulla ultrices varius sem, vitae blandit eros finibus eu. In nec neque augue. In accumsan aliquet ligula, sit amet mattis neque. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras mi nunc, tincidunt at orci ut, euismod pharetra sem. Etiam accumsan accumsan felis eget euismod. Ut ornare, nulla iaculis feugiat condimentum, ipsum sapien efficitur augue, vel ultrices erat risus ac est. Nulla facilisi. Aliquam erat volutpat. Praesent a sodales tellus. Sed efficitur vel est ut porta.</p>
 			</div>
 
 			<div id="page-dishes" class="page">
@@ -81,20 +82,21 @@
 				<span class="header">Dishes</span>
 
 				<div id="dishes-filters" class="filters-box">
-					<input class="textbox" id="dishes-search" placeholder="Search" />
+					<input class="textbox" id="dishes-search" placeholder="Search dishes..." />
 				</div>
 
 				<table class="data-table" id="dishes-table">
 					<thead>
-						<td id="dishes-th-id">Dish ID</td>
-						<td id="dishes-th-name">Dish name</td>
-						<td id="dishes-th-price">Base price</td>
-						<td id="dishes-th-cat">Category</td>
+						<td title="Sort by ID" id="dishes-th-id">Dish ID</td>
+						<td title="Sort by name" id="dishes-th-name">Dish name</td>
+						<td title="Sort by price" id="dishes-th-price">Base price</td>
+						<td title="Sort by category" id="dishes-th-cat">Category</td>
 					</thead>
 					<tbody id="dishes-table-body">
 					</tbody>
 				</table>
 			</div>
+
 			<div id="page-orders" class="page">
 				<div class="page-cover" id="page-orders-cover">
 					<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -120,11 +122,11 @@
 				
 				<table class="data-table" id="orders-table">
 					<thead>
-						<td id="orders-th-tableNum">Table number</td>
-						<td id="orders-th-timeSub">Time submitted</td>
-						<td id="orders-th-timeCom">Time completed</td>
-						<td id="orders-th-timePaid">Time paid</td>
-						<td id="orders-th-amtPaid">Amount paid</td>
+						<td title="Sort by table number" id="orders-th-tableNum">Table number</td>
+						<td title="Sort by time submitted" id="orders-th-timeSub">Time submitted</td>
+						<td title="Sort by time completed" id="orders-th-timeCom">Time completed</td>
+						<td title="Sort by time paid" id="orders-th-timePaid">Time paid</td>
+						<td title="Sort by amount paid" id="orders-th-amtPaid">Amount paid</td>
 					</thead>
 					<tbody id="orders-table-body">
 					</tbody>
