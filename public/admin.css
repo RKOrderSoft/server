@@ -325,4 +325,8 @@ html { background-color: #2e0500; }
 	#tab-list-wrapper {
 		display: none;
 	}
+
+	#restaurant-name {
+		display: none;
+	}
 }
