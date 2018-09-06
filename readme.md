@@ -9,6 +9,7 @@ OrderSoft as a whole, including the server, is currently in active development. 
 * Performance is not (too much of) an issue
 * JS is extremely (overly?) forgiving
 * As long as we are careful, we should not run into any issues with the type system ("1" + 4 == "14"?????)
+message from the future: node was a bad idea
 
 ## how to run
 ```sh
