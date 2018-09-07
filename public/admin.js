@@ -3,7 +3,7 @@ var pages, modal, modalCover, help;
 
 // Client init in an async wrapper function
 var client = new orderSoftClient();
-(async () => {
+async function initClient () {
 	// this doesnt really work but there is pretty much no universe in which it
 	// doesnt - "pretty much" is good enough for me
 	try {
@@ -12,9 +12,12 @@ var client = new orderSoftClient();
 	} catch (e) {
 		showError(e.toString());
 	}
-})();
+};
 
-window.onload = function () {
+window.onload = async function () {
+	// Init client
+	await initClient();
+
 	// Init pages
 	pages = [homePage, ordersPage, dishesPage, settingsPage, usersPage]
 	pages.forEach((page) => { page.init(); });
@@ -28,20 +31,18 @@ window.onload = function () {
 	help = document.getElementById("help");
 
 	// Check current page
-	setTimeout(() => {
-		if (Cookies.get("ordersoft-page")) {
-			var pageName = Cookies.get("ordersoft-page");
-			Cookies.remove("ordersoft-page", { path: "" });
-			pages.forEach((page) => {
-				if (pageName == page.relativeUrl) {
-					changePage(page);
-				}
-			});
-		} else {
-			changePage(homePage);
-		}
-	}, 200);
-
+	if (Cookies.get("ordersoft-page")) {
+		var pageName = Cookies.get("ordersoft-page");
+		Cookies.remove("ordersoft-page", { path: "" });
+		pages.forEach((page) => {
+			if (pageName == page.relativeUrl) {
+				changePage(page);
+			}
+		});
+	} else {
+		changePage(homePage);
+	}
+		
 	// Set onclick handlers
 	document.getElementById("tab-home").onclick = () => {
 		changePage(homePage);
