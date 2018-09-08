@@ -210,7 +210,7 @@ html { background-color: #2e0500; }
 	visibility: visible !important;
 }
 
-#modal-content.shown {
+#modal.shown {
 	animation: modalIn 0.3s ease forwards;
 }
 
@@ -227,7 +227,7 @@ html { background-color: #2e0500; }
 	visibility: hidden;
 }
 
-#modal-content {
+#modal {
 	width: 500px;
 	max-height: 80%;
 	min-height: 300px;
@@ -240,6 +240,7 @@ html { background-color: #2e0500; }
 	margin: 5% auto auto auto;
 	box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
 	font-family: "Helvetica Neue", "Helvetica", "Segoe UI", "Roboto", sans-serif;
+	overflow-y: auto;
 }
 
 #modal-close {
@@ -254,10 +255,19 @@ html { background-color: #2e0500; }
 #modal-header {
 	display: flex;
 	align-items: center;
+	margin-bottom: 20px;
+}
+
+#modal-close {
+	font-size: 1.5em;
 }
 
 #modal-header * {
 	margin-right: 20px;
+}
+
+#modal-content {
+	padding: 10px;
 }
 
 /* Data tables */
@@ -311,7 +321,6 @@ html { background-color: #2e0500; }
 	border-bottom: 1px solid #b0b3b7;
 	padding: 5px;
 	font-size: 1em;
-	min-width: 60%;
 	font-family: inherit;
 }
 
@@ -330,6 +339,14 @@ html { background-color: #2e0500; }
 	align-items: center;
 }
 
+.searchbox {
+	min-width: 60%;
+}
+
+.dateIn {
+	text-align: center;
+}
+
 #orders-completion, #orders-dates {
 	margin-bottom: 20px;
 }
@@ -346,6 +363,49 @@ html { background-color: #2e0500; }
 
 .orders-filter-title {
 	font-weight: bold;
+}
+
+.edit-form {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+.edit-form * {
+	margin-bottom: 10px;
+}
+
+.edit-form div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-bottom: 0;
+}
+
+.edit-form div * {
+	flex-grow: 1;
+}
+
+.edit-form div *:not(:last-child) {
+	margin-right: 10px;
+}
+
+.edit-form label {
+	margin-bottom: 0;
+	font-size: 0.9em;
+	margin-left: 5px;
+}
+
+#user-edit-access {
+	max-width: 150px;
+}
+
+#user-edit-time {
+	max-width: 150px;
+}
+
+template {
+	display: none;
 }
 
 /* Home IP box */
@@ -376,7 +436,7 @@ html { background-color: #2e0500; }
 		border-top-right-radius: 10px;
 	}
 
-	#modal-content {
+	#modal {
 		max-width: 90%;
 	}
 

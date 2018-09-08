@@ -3,13 +3,13 @@
 	<head>
 		<meta name="viewport" content="width=device-width" />
 		<meta charset="utf-8" />
-		<link rel="stylesheet" href="/common.css" />
-		<link rel="stylesheet" href="/admin.css" />
-		<link rel="stylesheet" href="/fontawesome/css/all.min.css" />
+		<link rel="stylesheet" href="/style/common.css" />
+		<link rel="stylesheet" href="/style/admin.css" />
+		<link rel="stylesheet" href="/lib/fontawesome/css/all.min.css" />
 		<!-- libraries -->
-		<script type="text/javascript" src="/js.cookie.js"></script>
-		<script type="text/javascript" src="/fuse.js"></script>
-		<script type="text/javascript" src="/ordersoft-client-js/orderSoft.js"></script>
+		<script type="text/javascript" src="/lib/js.cookie.js"></script>
+		<script type="text/javascript" src="/lib/fuse.js"></script>
+		<script type="text/javascript" src="/lib/ordersoft-client-js/orderSoft.js"></script>
 		<!-- admin pages -->
 		<script type="text/javascript" src="/admin-pages/homePage.js"></script>
 		<script type="text/javascript" src="/admin-pages/ordersPage.js"></script>
@@ -22,10 +22,13 @@
 	</head>
 	<body>
 		<div id="modal-cover">
-			<div id="modal-content">
+			<div id="modal">
 				<div id="modal-header">
 					<i id="modal-close" class="fas fa-chevron-left"></i>
 					<span id="modal-title">Modal title</span>
+				</div>
+				<div id="modal-content">
+					
 				</div>
 			</div>
 		</div>
@@ -63,7 +66,7 @@
 				<span class="header">Users</span>
 
 				<div id="users-filters" class="filters-box">
-					<input class="textbox" id="users-search" placeholder="Search users..." />
+					<input class="textbox searchbox" id="users-search" placeholder="Search users..." />
 				</div>
 
 				<table class="data-table" id="users-table">
@@ -85,7 +88,7 @@
 				<span class="header">Dishes</span>
 
 				<div id="dishes-filters" class="filters-box">
-					<input class="textbox" id="dishes-search" placeholder="Search dishes..." />
+					<input class="textbox searchbox" id="dishes-search" placeholder="Search dishes..." />
 				</div>
 
 				<table class="data-table" id="dishes-table">
@@ -117,9 +120,9 @@
 					</div>
 					<div id="orders-dates">
 						<label for="paidAfter" class="orders-filter-title">Paid between:</label>
-						<input id="paidAfter" type="date" class="dateIn" />
+						<input id="paidAfter" type="date" class="textbox dateIn" />
 						<label for="paidBefore">and</label>
-						<input id="paidBefore" type="date" class="dateIn" />
+						<input id="paidBefore" type="date" class="textbox dateIn" />
 					</div>
 					<div id="orders-refresh">
 						<button id="orders-refresh-button">Refresh</button>
@@ -185,6 +188,27 @@
 					Settings
 				</li>
 			</ul>
+		</div>
+
+		<!-- Modal templates -->
+		<template id="template-edit-user">
+			<div id="user-form" class="edit-form">
+				<input class="textbox" placeholder="User ID" id="user-edit-id" disabled="true"></input>
+				<div>
+					<input class="textbox" placeholder="Name" id="user-edit-name"></input>
+					<input class="textbox" type="number" placeholder="Access level" id="user-edit-access"></input>
+				</div>
+				<div>
+					<input class="textbox" placeholder="Old password" id="user-edit-pass-old"></input>
+					<input class="textbox" placeholder="New password" id="user-edit-pass-new"></input>
+				</div>
+				<label for="user-edit-date">Date added</label>
+				<div>
+					<input type="date" class="textbox" id="user-edit-date" disabled="true"></input>
+					<input type="time" class="textbox" id="user-edit-time" disabled="true"></input>
+				</div>
+			</div>
+			<button id="user-edit-sub">Edit</button>
 		</div>
 	</body>
 </html>

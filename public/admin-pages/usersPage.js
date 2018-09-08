@@ -103,5 +103,23 @@ var usersPage = {
 			newRow.title = "Click to edit";
 			this.tbody.appendChild(newRow);
 		}
+	},
+
+	editUser: function (userToEdit) {
+		// Get template
+		var editTemplate = document.getElementById("template-edit-user").content.cloneNode(true);
+
+		// Edit data in template
+		editTemplate.querySelector("#user-edit-id").value = userToEdit.userId;
+		editTemplate.querySelector("#user-edit-name").value = userToEdit.username;
+		editTemplate.querySelector("#user-edit-access").value = userToEdit.accessLevel;
+		var dateTimeAdded = userToEdit.dateAdded.split(" ");
+		editTemplate.querySelector("#user-edit-date").value = dateTimeAdded[0];
+		editTemplate.querySelector("#user-edit-time").value = dateTimeAdded[1];
+
+		// Edit modal
+		populateModal([editTemplate]);
+		changeModalTitle("Edit user");
+		toggleModal(true);
 	}
 }

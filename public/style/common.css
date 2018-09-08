@@ -1,4 +1,4 @@
-@import url(fonts.css);
+@import url(/style/fonts.css);
 
 * { 
 	margin: 0;
@@ -14,6 +14,27 @@ body {
 	font-weight: 300;
 	color: white;
 	text-align: center;
+}
+
+button {
+  background: linear-gradient(#909090, #808080);
+  /*border: 2px solid gray;*/
+  border: none;
+  box-shadow: 0px 3px 5px rgba(0,0,0,0.3);
+  padding: 7px 14px;
+  border-radius: calc(1em + 10px);
+  cursor: pointer;
+  color: #F5F5F5;
+  font-family: inherit;
+}
+
+button:hover {
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+  background: linear-gradient(#878787, #777777);
+}
+
+button:active {
+  background: linear-gradient(#808080, #707070);
 }
 
 /* loading spinner */

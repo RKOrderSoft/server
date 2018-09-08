@@ -2,55 +2,55 @@
   font-family: 'Futura';
   font-style: normal;
   font-weight: 400;
-  src: url(fonts/Futura/Futura-Book.woff) format('woff');
+  src: url(/fonts/Futura/Futura-Book.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Futura';
   font-style: bold;
   font-weight: 600;
-  src: url(fonts/Futura/Futura-Bold.woff) format('woff');
+  src: url(/fonts/Futura/Futura-Bold.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Futura Light';
   font-style: normal;
   font-weight: 300;
-  src: url(fonts/Futura/Futura-Light.woff) format('woff');
+  src: url(/fonts/Futura/Futura-Light.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Futura';
   font-style: medium;
   font-weight: 500;
-  src: url(fonts/Futura/Futura-Medium.woff) format('woff');
+  src: url(/fonts/Futura/Futura-Medium.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Futura Light';
   font-style: italic;
   font-weight: 300;
-  src: url(fonts/Futura/Futura-Light-Italic.woff) format('woff');
+  src: url(/fonts/Futura/Futura-Light-Italic.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Circular Book';
-  src: url(fonts/circular-book.woff) format('woff');
+  src: url(/fonts/circular-book.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url(fonts/HelveticaNeue/HelveticaNeue.woff) format('woff');
+  src: url(/fonts/HelveticaNeue/HelveticaNeue.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Helvetica Neue';
   font-weight: bold;
-  src: url(fonts/HelveticaNeue/HelvNeueLT75Bold.woff) format('woff');
+  src: url(/fonts/HelveticaNeue/HelvNeueLT75Bold.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Helvetica Neue';
   font-weight: 300;
-  src: url(fonts/HelveticaNeue/HelveticaNeue-Light.woff) format('woff');
+  src: url(/fonts/HelveticaNeue/HelveticaNeue-Light.woff) format('woff');
 }

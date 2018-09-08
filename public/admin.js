@@ -22,9 +22,10 @@ window.onload = async function () {
 	pages = [homePage, ordersPage, dishesPage, settingsPage, usersPage]
 	pages.forEach((page) => { page.init(); });
 
-	// Init modals
-	modal = document.getElementById("modal-content");
+	// Init modal
+	modal = document.getElementById("modal");
 	modalCover = document.getElementById("modal-cover");
+	modalContent = document.getElementById("modal-content");
 	state.modalOpen = false;
 
 	// Define help, logout
@@ -111,6 +112,23 @@ function toggleModal (stateTo = undefined) {
 	} else {
 		toggleModal(!state.modalOpen);
 	}
+}
+
+function clearModal () {
+	while (modalContent.hasChildNodes()) {
+		modalContent.removeChild(modalContent.firstChild);
+	}
+}
+
+function populateModal (elements) {
+	clearModal();
+	elements.forEach((element) => {
+		modalContent.appendChild(element);
+	});
+}
+
+function changeModalTitle (newTitle) {
+	document.getElementById("modal-title").childNodes[0].data = newTitle;
 }
 
 function showError(message) {
