@@ -207,7 +207,7 @@ html { background-color: #2e0500; }
 }
 
 .shown {
-	visibility: visible !important;
+	display: block !important;
 }
 
 #modal.shown {
@@ -224,7 +224,7 @@ html { background-color: #2e0500; }
 	height: 100%;
 	z-index: 1000;
 	align: center;
-	visibility: hidden;
+	display: none;
 }
 
 #modal {
