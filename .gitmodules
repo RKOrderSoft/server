@@ -1,3 +1,6 @@
 [submodule "public/lib/ordersoft-client-js"]
 	path = public/lib/ordersoft-client-js
 	url = git@github.com:rkordersoft/ordersoft-client-js
+[submodule "public/fonts"]
+	path = public/fonts
+	url = git@github.com:eddieqiii/ordersoft-admin-fonts
