@@ -47,16 +47,40 @@ html { background-color: #2e0500; }
 	z-index: 10;
 }
 
+#tab-list i {
+	margin-right: 20px;
+}
+
 #tab-list li:not(.selected):hover {
 	background: rgba(0,0,0,0.3);
 }
 
 #tab-list .selected {
-	background: rgba(255,255,255,0.95);
-	color: black;
+	/*background: rgba(255,255,255,0.95);
+	color: black;*/
+	background: rgba(0,0,0,0.7);
 }
 
 /* Main content and page styles */
+
+@keyframes pageIn {
+	from {
+		transform: translate(-30px);
+		opacity: 0;
+	} 40% {
+		transform: translate(-5px);
+	} to {
+		opacity: 1;
+	}
+}
+
+@keyframes pageOut {
+	from {
+		opacity: 1;
+	} to {
+		opacity: 0;
+	}
+}
 
 .page-cover {
 	margin: -50px;
@@ -90,6 +114,11 @@ html { background-color: #2e0500; }
 
 .page:not(.current-page) {
 	display: none;
+	animation: pageOut backwards 0.3s ease;
+}
+
+.current-page {
+	animation: pageIn 0.3s ease forwards;
 }
 
 .page {
@@ -147,26 +176,55 @@ html { background-color: #2e0500; }
 }
 
 #logout {
-	margin-right: none;
+	margin-right: 0 !important;
 	cursor: pointer;
 }
 
 /* Modal elements */
 
+@keyframes modalBg {
+	from {
+		background-color: none;
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+		display: none;
+	} to {
+		background-color: rgba(0,0,0,0.5);
+		backdrop-filter: blur(20px) saturate(20%);
+		-webkit-backdrop-filter: blur(20px) saturate(20%);
+	}
+}
+
+@keyframes modalIn {
+	from {
+		transform: translateY(-30px);
+		opacity: 0;
+	} 50% {
+		transform: translateY(-5px);
+	} to {
+		opacity: 1;
+	}
+}
+
 .shown {
-	display: block !important;
+	visibility: visible !important;
+}
+
+#modal-content.shown {
+	animation: modalIn 0.3s ease forwards;
+}
+
+#modal-cover.shown {
+	animation: modalBg 0.3s ease forwards;
 }
 
 #modal-cover {
 	position: fixed;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.5);
-	backdrop-filter: blur(20px) saturate(20%);
-	-webkit-backdrop-filter: blur(20px) saturate(20%);
 	z-index: 1000;
-	display: none;
 	align: center;
+	visibility: hidden;
 }
 
 #modal-content {
@@ -176,18 +234,30 @@ html { background-color: #2e0500; }
 	border-radius: 5px;
 	background-color: white;
 	position: fixed;
-	padding: 10px;
+	padding: 20px;
 	left: 0;
 	right: 0;
 	margin: 5% auto auto auto;
 	box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+	font-family: "Helvetica Neue", "Helvetica", "Segoe UI", "Roboto", sans-serif;
 }
 
 #modal-close {
-	right: 10px;
-	top: 10px;
-	position: absolute;
 	cursor: pointer;
+}
+
+#modal-title {
+	font-weight: bold;
+	font-size: 2em;
+}
+
+#modal-header {
+	display: flex;
+	align-items: center;
+}
+
+#modal-header * {
+	margin-right: 20px;
 }
 
 /* Data tables */
@@ -242,6 +312,7 @@ html { background-color: #2e0500; }
 	padding: 5px;
 	font-size: 1em;
 	min-width: 60%;
+	font-family: inherit;
 }
 
 .textbox:focus {
@@ -259,7 +330,7 @@ html { background-color: #2e0500; }
 	align-items: center;
 }
 
-#orders-completion {
+#orders-completion, #orders-dates {
 	margin-bottom: 20px;
 }
 
@@ -328,5 +399,9 @@ html { background-color: #2e0500; }
 
 	#restaurant-name {
 		display: none;
+	}
+
+	#main-logo {
+		font-size: 1.5em;
 	}
 }

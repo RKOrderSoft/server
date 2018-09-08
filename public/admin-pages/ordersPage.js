@@ -19,6 +19,7 @@ var ordersPage = {
 		this.filters.paid = document.getElementById("chk-paid");
 		this.filters.paidAfter = document.getElementById("paidAfter");
 		this.filters.paidBefore = document.getElementById("paidBefore");
+		this.filters.btnRefresh = document.getElementById("orders-refresh-button");
 
 		this.relativeUrl = "orders";
 		this.loaded = false;
@@ -30,10 +31,12 @@ var ordersPage = {
 		await this.refreshOrders();
 
 		// add event handlers
-		this.filters.completed.oninput = this.refreshOrders.bind(this);
-		this.filters.paid.oninput = this.refreshOrders.bind(this);
-		this.filters.paidAfter.oninput = this.refreshOrders.bind(this);
-		this.filters.paidBefore.oninput = this.refreshOrders.bind(this);
+		this.filters.completed.onchange = this.refreshOrders.bind(this);
+		this.filters.paid.onchange = this.refreshOrders.bind(this);
+		this.filters.paidAfter.onchange = this.refreshOrders.bind(this);
+		this.filters.paidBefore.onchange = this.refreshOrders.bind(this);
+
+		this.filters.btnRefresh.onclick = this.refreshOrders.bind(this);
 
 		this.theads.tableNumber.onclick = (() => { this.sortTable("tableNumber"); }).bind(this);
 		this.theads.timeSubmitted.onclick = (() => { this.sortTable("timeSubmitted"); }).bind(this);

@@ -40,17 +40,17 @@
 
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url(fonts/HelveticaNeue/helveticaneue.woff) format('woff');
+  src: url(fonts/HelveticaNeue/HelveticaNeue.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Helvetica Neue';
   font-weight: bold;
-  src: url(fonts/HelveticaNeue/helveticaneuebold.woff) format('woff');
+  src: url(fonts/HelveticaNeue/HelvNeueLT75Bold.woff) format('woff');
 }
 
 @font-face {
   font-family: 'Helvetica Neue';
   font-weight: 300;
-  src: url(fonts/HelveticaNeue/helveticaneuelight.woff) format('woff');
+  src: url(fonts/HelveticaNeue/HelveticaNeue-Light.woff) format('woff');
 }

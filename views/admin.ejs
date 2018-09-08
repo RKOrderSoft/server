@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="/common.css" />
 		<link rel="stylesheet" href="/admin.css" />
+		<link rel="stylesheet" href="/fontawesome/css/all.min.css" />
 		<!-- libraries -->
 		<script type="text/javascript" src="/js.cookie.js"></script>
 		<script type="text/javascript" src="/fuse.js"></script>
@@ -22,8 +23,10 @@
 	<body>
 		<div id="modal-cover">
 			<div id="modal-content">
-				<p>wassup this a modal innit</p>
-				<span id="modal-close">[X]</span>
+				<div id="modal-header">
+					<i id="modal-close" class="fas fa-chevron-left"></i>
+					<span id="modal-title">Modal title</span>
+				</div>
 			</div>
 		</div>
 
@@ -118,6 +121,9 @@
 						<label for="paidBefore">and</label>
 						<input id="paidBefore" type="date" class="dateIn" />
 					</div>
+					<div id="orders-refresh">
+						<button id="orders-refresh-button">Refresh</button>
+					</div>
 				</div>
 				
 				<table class="data-table" id="orders-table">
@@ -158,11 +164,26 @@
 
 		<div id="tab-list-wrapper">
 			<ul id="tab-list">
-				<li id="tab-home">Home</li>
-				<li id="tab-users">Users</li>
-				<li id="tab-dishes">Dishes</li>
-				<li id="tab-orders">Orders</li>
-				<li id="tab-settings">Settings</li>
+				<li id="tab-home">
+					<i class="fas fa-home fa-fw"></i>
+					Home
+				</li>
+				<li id="tab-users">
+					<i class="fas fa-users fa-fw"></i>
+					Users
+				</li>
+				<li id="tab-dishes">
+					<i class="fas fa-utensils fa-fw"></i>
+					Dishes
+				</li>
+				<li id="tab-orders">
+					<i class="fas fa-clipboard fa-fw"></i>
+					Orders
+				</li>
+				<li id="tab-settings">
+					<i class="fas fa-cog fa-fw"></i>
+					Settings
+				</li>
 			</ul>
 		</div>
 	</body>
