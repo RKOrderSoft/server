@@ -7,6 +7,7 @@ const component = "auth";
 const IncorrectDetailsError = new Error("incorrect username or password");
 const UserExistsError = new Error("user already exists");
 const UserIdNonexistantError = new Error("User ID does not exist");
+const OldPasswordIncorrectError = new Error("The existing password provided was incorrect");
 
 const saltRounds = 10;
 
@@ -66,6 +67,33 @@ module.exports = {
 		// Anything other than accessLevel, username & password will be ignored
 		// THIS DOES NOT CHECK PASSWORDS. check em before u reck em
 		if (!checkInitiated()) { return; }
+
+		var queryText = "SELECT * FROM users WHERE userId = ?";
+		return loginDatabase.get(queryText, newDetails.userId).then(async (existingUser) => {
+			if (!existingUser) throw UserIdNonexistantError;
+
+			// Edit fields
+			if (newDetails.username !== undefined) {
+				existingUser.username = newDetails.username;
+			}
+			if (newDetails.accessLevel !== undefined) {
+				existingUser.accessLevel = newDetails.accessLevel;
+			}
+			if (newDetails.oldPassword !== undefined && newDetails.newPassword !== undefined) {
+				// Password change logic
+				var result = await bcrypt.compare(newDetails.oldPassword, existingUser.password);
+				if (!result) {
+					throw OldPasswordIncorrectError;
+				} else {
+					existingUser.password = bcrypt.hash(newDetails.newPassword, saltRounds);
+				}
+			}
+
+			// Set user
+			var queryText = "UPDATE users SET username = ?, accessLevel = ?, password = ? WHERE userId = ?";
+			var queryVals = [existingUser.username, existingUser.accessLevel, existingUser.password, existingUser.userId];
+			return db.run(queryText, queryVals);
+		});
 	}
 }
 
