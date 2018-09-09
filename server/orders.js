@@ -98,7 +98,7 @@ module.exports = {
 			var updatedVals = updatedKeys.map(key => toUpdate[key]);
 			var queryText = "UPDATE orders SET "
 			updatedKeys.forEach((key) => {
-				queryText += key + " = ?, "
+				queryText += key + " = ?, ";
 			});
 			queryText += "orderId = orderId "; // dirty fix to remove trailing comma
 
