@@ -60,6 +60,12 @@ module.exports = {
 	getAllUsers: function () {
 		var queryText = "SELECT userId, username, accessLevel, dateAdded FROM users";
 		return loginDatabase.all(queryText);
+	},
+
+	updateUser: function (newDetails) {
+		// Anything other than accessLevel, username & password will be ignored
+		// THIS DOES NOT CHECK PASSWORDS. check em before u reck em
+		if (!checkInitiated()) { return; }
 	}
 }
 
