@@ -266,6 +266,35 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 
 		res.json(buildResponse({ allUsers: users }));
 	});
+
+	// /api/editUser
+	//   Edits a user's record with the given information
+	app.post("/api/editUser", async (req, res) => {
+		sh.log("POST /api/editUser/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		var resBody = {};
+
+		if (req.body.user !== undefined) {
+			try {
+				await auth.updateUser(req.body.user);
+			} catch (e) {
+				res.status(404);
+				resBody.reason = e.toString();
+			}
+		} else {
+			// user was not defined
+			res.status(400);
+			resBody.reason = "user was not defined in request body";
+		}
+
+		res.json(buildResponse(resBody));
+	});
 }
 
 function checkAccessLevel(sessions, req, res, requiredLevel) {

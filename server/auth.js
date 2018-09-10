@@ -85,14 +85,14 @@ module.exports = {
 				if (!result) {
 					throw OldPasswordIncorrectError;
 				} else {
-					existingUser.password = bcrypt.hash(newDetails.newPassword, saltRounds);
+					existingUser.password = await bcrypt.hash(newDetails.newPassword, saltRounds);
 				}
 			}
 
 			// Set user
 			var queryText = "UPDATE users SET username = ?, accessLevel = ?, password = ? WHERE userId = ?";
 			var queryVals = [existingUser.username, existingUser.accessLevel, existingUser.password, existingUser.userId];
-			return db.run(queryText, queryVals);
+			return loginDatabase.run(queryText, queryVals);
 		});
 	}
 }
