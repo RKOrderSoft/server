@@ -295,6 +295,34 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 
 		res.json(buildResponse(resBody));
 	});
+
+	// /api/removeUser
+	//   Remove a user record by userId
+	app.post("/api/removeUser", async (req, res) => {
+		sh.log("POST /api/removeUser/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		var resBody = {};
+
+		if (req.body.userId !== undefined) {
+			try {
+				await auth.removeUser(req.body.userId);
+			} catch (e) {
+				res.status(404);
+				resBody.reason = e.toString();
+			}
+		} else {
+			res.status(400);
+			resBody.reason = "No userId was provided.";
+		}
+
+		res.json(buildResponse(resBody));
+	});
 }
 
 function checkAccessLevel(sessions, req, res, requiredLevel) {

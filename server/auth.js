@@ -94,6 +94,11 @@ module.exports = {
 			var queryVals = [existingUser.username, existingUser.accessLevel, existingUser.password, existingUser.userId];
 			return loginDatabase.run(queryText, queryVals);
 		});
+	},
+
+	removeUser: function (idToRemove) {
+		var queryText = "DELETE FROM users WHERE userId = ?";
+		return loginDatabase.run(queryText, idToRemove);
 	}
 }
 
