@@ -67,8 +67,6 @@ html { background-color: #2e0500; }
 	from {
 		transform: translate(-30px);
 		opacity: 0;
-	} 40% {
-		transform: translate(-5px);
 	} to {
 		opacity: 1;
 	}
