@@ -227,6 +227,24 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 		return res.json(buildResponse({ results: searchResults }));
 	});
 
+	// /api/getCategories
+	//   Return array of all categories in db
+	app.post("/api/getCategories", async (req, res) => {
+		sh.log("POST /api/userDetails/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+
+		var resBody = {};
+
+		resBody.categories = await dishes.getCategories();
+
+		res.json(buildResponse(resBody));
+	});
+
 	// /api/userDetails
 	//   Returns user details givern a userId
 	app.post("/api/userDetails", async (req, res) => {

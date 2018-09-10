@@ -46,6 +46,12 @@ module.exports = {
 
 		// Execute query on database
 		return db.all(queryText, values);
+	},
+
+	getCategories: function () {
+		return db.all("SELECT DISTINCT category FROM dishes").then((rows) => {
+			return rows.map(row => row.category);
+		});
 	}
 }
 
