@@ -52,6 +52,11 @@ module.exports = {
 		return db.all("SELECT DISTINCT category FROM dishes").then((rows) => {
 			return rows.map(row => row.category);
 		});
+	},
+
+	removeDish: function (idToRemove) {
+		var queryText = "DELETE FROM dishes WHERE dishId = ?";
+		return db.run(queryText, idToRemove);
 	}
 }
 
