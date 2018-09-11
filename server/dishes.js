@@ -49,14 +49,32 @@ module.exports = {
 	},
 
 	getCategories: function () {
+		if (!checkInitiated()) return;
+
 		return db.all("SELECT DISTINCT category FROM dishes").then((rows) => {
 			return rows.map(row => row.category);
 		});
 	},
 
 	removeDish: function (idToRemove) {
+		if (!checkInitiated()) return;
+
 		var queryText = "DELETE FROM dishes WHERE dishId = ?";
 		return db.run(queryText, idToRemove);
+	},
+
+	createDish: function (dishObj) {
+		if (!checkInitiated()) return;
+
+		var queryText = "INSERT INTO dishes (dishId, name, basePrice, upgradePrice, sizes, category, image, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+		return db.run(queryText, [dishObj.dishId, dishObj.name, dishObj.basePrice, dishObj.upgradePrice, dishObj.sizes, dishObj.category, dishObj.image, dishObj.description]);
+	},
+
+	updateDish: function (dishObj) {
+		if (!checkInitiated()) return;
+
+		
 	}
 }
 
