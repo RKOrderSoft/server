@@ -230,7 +230,7 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 	// /api/getCategories
 	//   Return array of all categories in db
 	app.post("/api/getCategories", async (req, res) => {
-		sh.log("POST /api/userDetails/ from " + req.ip, component, true);
+		sh.log("POST /api/getCategories/ from " + req.ip, component, true);
 
 		// Check client name
 		if (!checkAcceptedClient(req, res)) return;
@@ -243,6 +243,22 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 		resBody.categories = await dishes.getCategories();
 
 		res.json(buildResponse(resBody));
+	});
+
+	// /api/removeDish
+	//   Removes a dish by given dishId
+	app.post("/api/removeDish", async (req, res) => {
+		sh.log("POST /api/removeDish/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		await dishes.removeDish(req.body.dishId);
+
+		res.json(buildResponse({}));
 	});
 
 	// /api/userDetails
