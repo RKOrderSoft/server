@@ -261,6 +261,43 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 		res.json(buildResponse({}));
 	});
 
+	// /api/setDish
+	//   Adds or updates a dish
+	app.post("/api/setDish", async (req, res) => {
+		sh.log("POST /api/removeDish/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		var resBody = {};
+
+		if (req.body.dish === undefined) {
+			res.status(400);
+			resBody.reason = "No dish obj was provided";
+		} else if (req.body.dish.dishId === undefined) {
+			// create order
+			try {
+				await dishes.createDish(req.body.dish);
+			} catch (e) {
+				res.status(404);
+				resBody.reason = e.toString();
+			}
+		} else {
+			// edit order
+			try {
+				await dishes.updateDish(req.body.dish);
+			} catch (e) {
+				res.status(404);
+				resBody.reason = e.toString();
+			}
+		}
+
+		res.json(buildResponse(resBody));
+	});
+
 	// /api/userDetails
 	//   Returns user details givern a userId
 	app.post("/api/userDetails", async (req, res) => {
