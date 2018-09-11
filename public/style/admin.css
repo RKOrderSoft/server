@@ -453,6 +453,8 @@ template {
 
 	#tab-list-wrapper {
 		display: none;
+		z-index: 1000;
+		position: fixed;
 	}
 
 	#restaurant-name {
@@ -461,5 +463,13 @@ template {
 
 	#main-logo {
 		font-size: 1.5em;
+	}
+
+	#header:hover ~ #tab-list-wrapper {
+		display: flex;
+	}
+
+	#tab-list-wrapper:hover {
+		display: flex;
 	}
 }
