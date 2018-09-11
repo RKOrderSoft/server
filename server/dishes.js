@@ -1,6 +1,10 @@
 // Component for handling dishes
 const component = "dishes";
 
+const allowedKeys = ["name", "basePrice", "upgradePrice", "sizes", "category", "image", "description"];
+
+const ExtraKeysError = new Error("Additional keys were present");
+
 var db, sh;
 
 module.exports = {
@@ -66,15 +70,57 @@ module.exports = {
 	createDish: function (dishObj) {
 		if (!checkInitiated()) return;
 
-		var queryText = "INSERT INTO dishes (dishId, name, basePrice, upgradePrice, sizes, category, image, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		var queryText = "SELECT MAX(dishId) FROM dishes";
 
-		return db.run(queryText, [dishObj.dishId, dishObj.name, dishObj.basePrice, dishObj.upgradePrice, dishObj.sizes, dishObj.category, dishObj.image, dishObj.description]);
+		return db.get(queryText).then((row) => {
+			// row.dishId contains the largest dishId
+			var highestId = row["MAX(dishId)"];
+			dishObj.dishId = parseInt(highestId) + 1;
+
+			var queryText = "INSERT INTO dishes (dishId, name, basePrice, upgradePrice, sizes, category, image, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			return db.run(queryText, [
+				dishObj.dishId, 
+				dishObj.name, 
+				dishObj.basePrice, 
+				dishObj.upgradePrice, 
+				dishObj.sizes, 
+				dishObj.category,
+				dishObj.image, 
+				dishObj.description]);
+		})
+		
 	},
 
 	updateDish: function (dishObj) {
 		if (!checkInitiated()) return;
 
-		
+		if (dishObj.dishId === undefined) {
+			throw new Error("no dishId provided");
+		}
+
+		var keys = Object.keys(dishObj);
+		var keysToSet = [];
+		var valsToSet = [];
+
+		for (var i = 0; i < keys.length; i++) {
+			if (keys[i] === "dishId") { continue; }
+
+			if (keys.indexOf(keys[i]) < 0) {
+				throw ExtraKeysError;
+			} else {
+				keysToSet.push(keys[i]);
+				valsToSet.push(dishObj[keys[i]]);
+			}
+		}
+
+		// add " = ?" to vals
+		keysToSet = keysToSet.map(key => key + " = ?");
+
+		// construct query string
+		var queryText = `UPDATE dishes SET ${keysToSet.join(", ")} WHERE dishId = ?`
+		valsToSet.push(dishObj.dishId);
+
+		return db.run(queryText, valsToSet);
 	}
 }
 
