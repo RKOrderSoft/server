@@ -69,6 +69,8 @@
 					<input class="textbox searchbox" id="users-search" placeholder="Search users..." />
 				</div>
 
+				<button class="btn-add" id="btn-new-user">Register new user</button>
+
 				<table class="data-table" id="users-table">
 					<thead>
 						<td title="Sort by username" id="users-th-name">Username</td>
@@ -193,22 +195,25 @@
 		<!-- Modal templates -->
 		<template id="template-edit-user">
 			<div id="user-form" class="edit-form">
-				<input class="textbox" placeholder="User ID" id="user-edit-id" disabled="true"></input>
+				<input class="textbox" placeholder="User ID (auto-generated)" id="user-edit-id" disabled="true"></input>
 				<div>
 					<input class="textbox" placeholder="Name" id="user-edit-name"></input>
 					<input class="textbox" type="number" placeholder="Access level" id="user-edit-access"></input>
 				</div>
 				<div>
-					<input class="textbox" placeholder="Old password" id="user-edit-pass-old"></input>
-					<input class="textbox" placeholder="New password" id="user-edit-pass-new"></input>
+					<input class="textbox" type="password" placeholder="Old password" id="user-edit-pass-old"></input>
+					<input class="textbox" type="password" placeholder="New password" id="user-edit-pass-new"></input>
 				</div>
 				<label for="user-edit-date">Date added</label>
 				<div>
 					<input type="date" class="textbox" id="user-edit-date" disabled="true"></input>
 					<input type="time" class="textbox" id="user-edit-time" disabled="true"></input>
 				</div>
+
+				<span class="form-error"></span>
 			</div>
-			<button id="user-edit-sub">Edit</button>
+			<button id="btn-user-edit">Edit/add</button>
+			<button id="btn-user-remove">Remove user</button>
 		</template>
 	</body>
 </html>

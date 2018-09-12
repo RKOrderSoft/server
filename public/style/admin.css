@@ -402,8 +402,18 @@ html { background-color: #2e0500; }
 	max-width: 150px;
 }
 
-template {
-	display: none;
+#modal-content button {
+	margin-right: 10px;
+}
+
+.form-error {
+	font-weight: bold;
+	color: darkred;
+}
+
+.btn-add {
+	margin-bottom: 50px;
+	max-width: 150px;
 }
 
 /* Home IP box */

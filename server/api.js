@@ -298,6 +298,37 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 		res.json(buildResponse(resBody));
 	});
 
+	// /api/registerUser
+	//   Registers a new user given details
+	app.post("/api/registerUser", async (req, res) => {
+		sh.log("POST /api/registerUser/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		var resBody = {};
+
+		if (req.body.user === undefined) {
+			res.status(400);
+			resBody.reason = "No user was provided";
+		} else {
+			var newUser = req.body.user;
+			if (newUser.username === undefined ||
+				newUser.password === undefined ||
+				newUser.accessLevel === undefined) {
+				res.status(400);
+				resBody.reason = "Not all fields in user provided";
+			} else {
+				await auth.register(newUser.username, newUser.password, newUser.accessLevel);
+			}
+		}
+
+		res.json(buildResponse(resBody));
+	});
+
 	// /api/userDetails
 	//   Returns user details givern a userId
 	app.post("/api/userDetails", async (req, res) => {
