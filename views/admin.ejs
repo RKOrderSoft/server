@@ -67,7 +67,7 @@
 				<span class="header">Users</span>
 
 				<div id="users-filters" class="filters-box">
-					<div id="users-search">
+					<div>
 						<input class="textbox searchbox" id="users-search" placeholder="Search users..." />
 					</div>
 					<div>
@@ -259,6 +259,46 @@
 			</div>
 			<button id="btn-dish-edit">Edit/add</button>
 			<button id="btn-dish-remove">Remove dish</button>
+		</template>
+		<template id="template-edit-order">
+			<div id="order-form" class="edit-form">
+				<div data-balloon="Order ID - auto-generated; do not set" data-balloon-pos="up">
+					<input class="textbox" placeholder="Order ID" id="order-edit-id" disabled="true"></input>
+				</div>
+				<div data-balloon="Dishes - comma-separated, sizes delimited by slashes" data-balloon-pos="up">
+					<input class="textbox" placeholder="Dishes" id="order-edit-dishes"></input>
+				</div>
+				<div data-balloon="Notes on order" data-balloon-pos="up">
+					<input class="textbox" placeholder="Notes" id="order-edit-notes"></input>
+				</div>
+				<label for="order-edit-sub-date">Time submitted</label>
+				<div data-balloon="Time submitted - auto-generated; do not set" data-balloon-pos="up">
+					<input class="textbox" type="date" id="order-edit-sub-date" disabled="true" />
+					<input class="textbox" type="time" id="order-edit-sub-time" disabled="true" />
+				</div>
+				<label for="order-edit-made-date">Time completed</label>
+				<div data-balloon="Time that the order was completed (made)" data-balloon-pos="up">
+					<input class="textbox" type="date" id="order-edit-made-date" />
+					<input class="textbox" type="time" id="order-edit-made-time" step="1" />
+					<button id="order-clear-made">Clear</button>
+				</div>
+				<label for="order-edit-paid-date">Time paid</label>
+				<div data-balloon="Time that the order was paid" data-balloon-pos="up">
+					<input class="textbox" type="date" id="order-edit-paid-date" />
+					<input class="textbox" type="time" id="order-edit-paid-time" step="1" />
+					<button id="order-clear-paid">Clear</button>
+				</div>
+				<div data-balloon="Table number and amount paid (incl. tax + tips)" data-balloon-pos="up">
+					<input class="textbox" type="number" placeholder="Table number" id="order-edit-tableNum"></input>
+					<input class="textbox" type="number" placeholder="Amount paid" id="order-edit-amtPaid" step="0.01"></input>
+				</div>
+				<div data-balloon="ID of server who submitted order (auto-generated)" data-balloon-pos="up">
+					<input class="textbox" placeholder="Server ID" id="order-edit-server" disabled="true"></input>
+				</div>
+
+				<span class="form-error"></span>
+			</div>
+			<button id="btn-dish-edit">Edit order</button>
 		</template>
 	</body>
 </html>

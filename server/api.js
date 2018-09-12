@@ -88,9 +88,7 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 			// Check that order exists
 			if (!order) {
 				res.status(404);
-				resBody.reason = `Order with ${ 
-					typeof orderId == 'string' ? ("order ID " + orderId) : ("table number " + tableNum) 
-				} not found.`;
+				resBody.reason = `Order with given parameters not found.`;
 			} else {
 				res.status(200);
 				resBody.order = order;

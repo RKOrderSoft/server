@@ -25,7 +25,7 @@ var usersPage = {
 		await this.refreshTable();
 
 		// event handlers
-		this.search.oninput = this.onBoxInput.bind(this);
+		this.search.oninput = (() => {this.onBoxInput()}).bind(this);
 		this.theads.name.onclick = (() => { this.sort("username"); }).bind(this);
 		this.theads.access.onclick = (() => { this.sort("accessLevel"); }).bind(this);
 		this.theads.added.onclick = (() => { this.sort("dateAdded"); }).bind(this);
