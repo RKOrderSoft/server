@@ -14,6 +14,7 @@ var usersPage = {
 		this.theads.added = document.getElementById("users-th-added");
 
 		this.addBtn = document.getElementById("btn-new-user");
+		this.refreshBtn = document.getElementById("users-refresh-button");
 
 		this.relativeUrl = "users";
 		this.loaded = false;
@@ -21,10 +22,26 @@ var usersPage = {
 
 	load: async function () {
 		// perform loading operations
+		await this.refreshTable();
+
+		// event handlers
+		this.search.oninput = this.onBoxInput.bind(this);
+		this.theads.name.onclick = (() => { this.sort("username"); }).bind(this);
+		this.theads.access.onclick = (() => { this.sort("accessLevel"); }).bind(this);
+		this.theads.added.onclick = (() => { this.sort("dateAdded"); }).bind(this);
+		this.addBtn.onclick = (() => { this.openEditUser() }).bind(this);
+		this.refreshBtn.onclick = (() => { this.refreshTable() }).bind(this);
+
+		document.getElementById("page-users-cover").style.display = "none";
+		this.loaded = true;
+	},
+
+	refreshTable: async function () {
+		// Get users from db
 		this.allUsers = (await client.requestFromServer("allUsers", {}, "POST")).allUsers;
 		this.populateTable(this.allUsers);
 
-		// fusejs init
+		// fusejs (re)init
 		var options = {
 			shouldSort: true,
 			threshold: 0.3,
@@ -38,16 +55,6 @@ var usersPage = {
 			]
 		};
 		this.fuse = new Fuse(this.allUsers, options);
-
-		// event handlers
-		this.search.oninput = this.onBoxInput.bind(this);
-		this.theads.name.onclick = (() => { this.sort("username"); }).bind(this);
-		this.theads.access.onclick = (() => { this.sort("accessLevel"); }).bind(this);
-		this.theads.added.onclick = (() => { this.sort("dateAdded"); }).bind(this);
-		this.addBtn.onclick = (() => { this.openEditUser() }).bind(this);
-
-		document.getElementById("page-users-cover").style.display = "none";
-		this.loaded = true;
 	},
 
 	sort: function (by) {
@@ -66,13 +73,11 @@ var usersPage = {
 	},
 
 	resetTable: function () {
-		this.clearTable();
 		this.populateTable(this.allUsers);
 	},
 
 	searchTable: function (query) {
 		var items = this.fuse.search(query);
-		this.clearTable();
 		this.populateTable(items);
 	},
 
@@ -83,6 +88,7 @@ var usersPage = {
 	},
 
 	populateTable: function (users) {
+		this.clearTable();
 		this.showing = users;
 
 		for (var i = 0; i < users.length; i++) {
@@ -106,9 +112,9 @@ var usersPage = {
 			newRow.title = "Click to edit";
 
 			// Add onclick handlers
-			newRow.dataset.dishIndex = i;
+			newRow.dataset.userIndex = i;
 			newRow.onclick = (function (event) {
-				var index = this.dataset.dishIndex;
+				var index = this.dataset.userIndex;
 				usersPage.openEditUser(index);
 			});
 
@@ -171,6 +177,7 @@ var usersPage = {
 
 	sendEditUser: async function () {
 		var form = document.getElementById("user-form");
+		form.querySelector(".form-error").innerHTML = "";
 
 		// Lock fields
 		this.lockFields(true);
@@ -198,7 +205,11 @@ var usersPage = {
 			}
 		}
 
+		// Unlock fields
 		this.lockFields(false);
+
+		// Refresh table
+		this.refreshTable();
 	},
 
 	removeUser: async function () {
@@ -207,6 +218,7 @@ var usersPage = {
 
 		var form = document.getElementById("user-form");
 		var user = this.readEditParams();
+		form.querySelector(".form-error").innerHTML = "";
 
 		// delete user
 		try {
@@ -215,6 +227,9 @@ var usersPage = {
 		} catch (e) {
 			form.querySelector(".form-error").innerHTML = "Error deleting: " + e.toString();
 		}
+
+		// Refresh table
+		this.refreshTable();
 	},
 
 	lockFields: function (locked) {

@@ -345,7 +345,7 @@ html { background-color: #2e0500; }
 	text-align: center;
 }
 
-#orders-completion, #orders-dates {
+.filters-box div:not(:last-child) {
 	margin-bottom: 20px;
 }
 
@@ -357,6 +357,7 @@ html { background-color: #2e0500; }
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	width: 100%;
 }
 
 .orders-filter-title {
