@@ -147,7 +147,7 @@ function dateToString (date) {
 	var month = (date.getMonth() + 1);
 	var day = date.getDate();
 
-	var hours = date.getHours() - 10;
+	var hours = date.getHours();
 	var minutes = date.getMinutes();
 	var seconds = date.getSeconds();
 

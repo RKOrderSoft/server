@@ -88,9 +88,7 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 			// Check that order exists
 			if (!order) {
 				res.status(404);
-				resBody.reason = `Order with ${ 
-					typeof orderId == 'string' ? ("order ID " + orderId) : ("table number " + tableNum) 
-				} not found.`;
+				resBody.reason = `Order with given parameters not found.`;
 			} else {
 				res.status(200);
 				resBody.order = order;
@@ -227,6 +225,108 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 		return res.json(buildResponse({ results: searchResults }));
 	});
 
+	// /api/getCategories
+	//   Return array of all categories in db
+	app.post("/api/getCategories", async (req, res) => {
+		sh.log("POST /api/getCategories/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+
+		var resBody = {};
+
+		resBody.categories = await dishes.getCategories();
+
+		res.json(buildResponse(resBody));
+	});
+
+	// /api/removeDish
+	//   Removes a dish by given dishId
+	app.post("/api/removeDish", async (req, res) => {
+		sh.log("POST /api/removeDish/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		await dishes.removeDish(req.body.dishId);
+
+		res.json(buildResponse({}));
+	});
+
+	// /api/setDish
+	//   Adds or updates a dish
+	app.post("/api/setDish", async (req, res) => {
+		sh.log("POST /api/removeDish/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		var resBody = {};
+
+		if (req.body.dish === undefined) {
+			res.status(400);
+			resBody.reason = "No dish obj was provided";
+		} else if (req.body.dish.dishId === undefined) {
+			// create order
+			try {
+				await dishes.createDish(req.body.dish);
+			} catch (e) {
+				res.status(404);
+				resBody.reason = e.toString();
+			}
+		} else {
+			// edit order
+			try {
+				await dishes.updateDish(req.body.dish);
+			} catch (e) {
+				res.status(404);
+				resBody.reason = e.toString();
+			}
+		}
+
+		res.json(buildResponse(resBody));
+	});
+
+	// /api/registerUser
+	//   Registers a new user given details
+	app.post("/api/registerUser", async (req, res) => {
+		sh.log("POST /api/registerUser/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		var resBody = {};
+
+		if (req.body.user === undefined) {
+			res.status(400);
+			resBody.reason = "No user was provided";
+		} else {
+			var newUser = req.body.user;
+			if (newUser.username === undefined ||
+				newUser.password === undefined ||
+				newUser.accessLevel === undefined) {
+				res.status(400);
+				resBody.reason = "Not all fields in user provided";
+			} else {
+				await auth.register(newUser.username, newUser.password, newUser.accessLevel);
+			}
+		}
+
+		res.json(buildResponse(resBody));
+	});
+
 	// /api/userDetails
 	//   Returns user details givern a userId
 	app.post("/api/userDetails", async (req, res) => {
@@ -245,7 +345,12 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 			resBody.reason = "No userId was provided";
 		} else {
 			var details = await auth.userDetails(req.body.userId);
-			resBody.user = details;
+			if (details === undefined) {
+				res.status(404);
+				resBody.reason = "userId not found";
+			} else {
+				resBody.user = details;
+			}
 		}
 
 		res.json(buildResponse(resBody));
@@ -265,6 +370,63 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 		var users = await auth.getAllUsers();
 
 		res.json(buildResponse({ allUsers: users }));
+	});
+
+	// /api/editUser
+	//   Edits a user's record with the given information
+	app.post("/api/editUser", async (req, res) => {
+		sh.log("POST /api/editUser/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		var resBody = {};
+
+		if (req.body.user !== undefined) {
+			try {
+				await auth.updateUser(req.body.user);
+			} catch (e) {
+				res.status(404);
+				resBody.reason = e.toString();
+			}
+		} else {
+			// user was not defined
+			res.status(400);
+			resBody.reason = "user was not defined in request body";
+		}
+
+		res.json(buildResponse(resBody));
+	});
+
+	// /api/removeUser
+	//   Remove a user record by userId
+	app.post("/api/removeUser", async (req, res) => {
+		sh.log("POST /api/removeUser/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 20))) return;
+
+		var resBody = {};
+
+		if (req.body.userId !== undefined) {
+			try {
+				await auth.removeUser(req.body.userId);
+			} catch (e) {
+				res.status(404);
+				resBody.reason = e.toString();
+			}
+		} else {
+			res.status(400);
+			resBody.reason = "No userId was provided.";
+		}
+
+		res.json(buildResponse(resBody));
 	});
 }
 

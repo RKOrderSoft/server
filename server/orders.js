@@ -38,7 +38,7 @@ module.exports = {
 			var tableNum = params.tableNumber;
 
 			// Only choose orders that are not yet completed
-			var queryString = "SELECT * FROM orders WHERE tableNumber = ? AND timeCompleted IS NULL";
+			var queryString = "SELECT * FROM orders WHERE tableNumber = ? AND timePaid IS NULL AND timeCompleted IS NOT NULL";
 			orderPromise = db.get(queryString, tableNum);
 		}
 

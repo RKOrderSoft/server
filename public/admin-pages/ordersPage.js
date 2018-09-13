@@ -155,8 +155,169 @@ var ordersPage = {
 			}
 			newRow.appendChild(newCell);
 
+			// Add edit handler
+			newRow.dataset.orderIndex = i;
+			newRow.onclick = function (event) { 
+				var idx = this.dataset.orderIndex;
+				ordersPage.openEditOrder(idx);
+			}
+
 			newRow.title = "Click to edit";
 			this.table.appendChild(newRow);
 		}
+	},
+
+	clearDateTime: function (dateEl, timeEl) {
+		dateEl.value = "";
+		timeEl.value = "";
+	},
+
+	openEditOrder: function (showingIndex) {
+		var template = document.getElementById("template-edit-order").content.cloneNode(true);
+
+		// orders is different - showingIndex must be defined
+		var thisOrder = this.tableShowing[showingIndex];
+
+		template.querySelector("#order-edit-id").value = thisOrder.orderId;
+		template.querySelector("#order-edit-dishes").value = thisOrder.dishes;
+		template.querySelector("#order-edit-notes").value = thisOrder.notes;
+
+		// Time submitted
+		var timeSubSplit = thisOrder.timeSubmitted.split(" ");
+		var dateSub = timeSubSplit[0];
+		var timeSub = timeSubSplit[1];
+		template.querySelector("#order-edit-sub-date").value = dateSub;
+		template.querySelector("#order-edit-sub-time").value = timeSub;
+
+		// Time completed
+		if (thisOrder.timeCompleted != undefined) {
+			var timeComSplit = thisOrder.timeCompleted.split(" ");
+			var dateCom = timeComSplit[0];
+			var timeCom = timeComSplit[1];
+			template.querySelector("#order-edit-made-date").value = dateCom;
+			template.querySelector("#order-edit-made-time").value = timeCom;
+		}
+
+		// Time paid
+		if (thisOrder.timePaid != undefined) {
+			var timePaidSplit = thisOrder.timePaid.split(" ");
+			var datePaid = timePaidSplit[0];
+			var timePaid = timePaidSplit[1];
+			template.querySelector("#order-edit-paid-date").value = datePaid;
+			template.querySelector("#order-edit-paid-time").value = timePaid;
+		}
+
+		template.querySelector("#order-edit-tableNum").value = thisOrder.tableNumber;
+		template.querySelector("#order-edit-amtPaid").value = thisOrder.amtPaid;
+		template.querySelector("#order-edit-server").value = thisOrder.serverId;
+
+		// Attach event handlers
+		var madeDate = template.querySelector("#order-edit-made-date");
+		var madeTime = template.querySelector("#order-edit-made-time");
+		var paidDate = template.querySelector("#order-edit-paid-date");
+		var paidTime = template.querySelector("#order-edit-paid-time");
+
+		template.querySelector("#order-clear-made").onclick = (() => { 
+			this.clearDateTime(madeDate, madeTime);
+		}).bind(this);
+
+		template.querySelector("#order-clear-paid").onclick = (() => { 
+			this.clearDateTime(paidDate, paidTime);
+		}).bind(this);
+
+		template.querySelector("#btn-dish-edit").onclick = (() => {
+			this.sendSetOrder();
+		}).bind(this);
+
+		// Edit modal
+		populateModal([template]);
+		changeModalTitle("Edit order");
+		toggleModal(true);
+	},
+
+	readEditParams: function () {
+		var changed = {}
+		var form = document.getElementById("order-form");
+
+		// get fields
+		changed.orderId = form.querySelector("#order-edit-id").value;
+		changed.dishes = form.querySelector("#order-edit-dishes").value;
+		changed.notes = form.querySelector("#order-edit-notes").value;
+		changed.serverId = form.querySelector("#order-edit-server").value;
+		changed.tableNumber = form.querySelector("#order-edit-tableNum").value;
+		
+		// timeSubmitted
+		var subDate = form.querySelector("#order-edit-sub-date").value;
+		var subTime = form.querySelector("#order-edit-sub-time").value;
+		changed.timeSubmitted = subDate + " " + subTime;
+
+		// timeCompleted
+		var madeDate = form.querySelector("#order-edit-made-date").value;
+		var madeTime = form.querySelector("#order-edit-made-time").value;
+		if (madeDate && madeTime) {
+			changed.timeCompleted = madeDate + " " + madeTime;
+		} else {
+			changed.timeCompleted = null;
+		}
+
+		// timePaid
+		var paidDate = form.querySelector("#order-edit-paid-date").value;
+		var paidTime = form.querySelector("#order-edit-paid-time").value;
+		if (paidDate && paidTime) {
+			changed.timePaid = paidDate + " " + paidTime;
+			changed.amtPaid = form.querySelector("#order-edit-amtPaid").value;
+		} else {
+			changed.timePaid = null;
+			changed.amtPaid = null;
+		}
+
+		return changed;
+	},
+
+	lockFields: function (locked) {
+		var form = document.getElementById("order-form");
+
+		if (locked) {
+			form.querySelector("#order-edit-dishes").disabled = true;
+			form.querySelector("#order-edit-notes").disabled = true;
+			form.querySelector("#order-edit-made-date").disabled = true;
+			form.querySelector("#order-edit-made-time").disabled = true;
+			form.querySelector("#order-edit-paid-date").disabled = true;
+			form.querySelector("#order-edit-paid-time").disabled = true;
+			form.querySelector("#order-edit-tableNum").disabled = true;
+			form.querySelector("#order-edit-amtPaid").disabled = true;
+		} else {
+			form.querySelector("#order-edit-dishes").disabled = false;
+			form.querySelector("#order-edit-notes").disabled = false;
+			form.querySelector("#order-edit-made-date").disabled = false;
+			form.querySelector("#order-edit-made-time").disabled = false;
+			form.querySelector("#order-edit-paid-date").disabled = false;
+			form.querySelector("#order-edit-paid-time").disabled = false;
+			form.querySelector("#order-edit-tableNum").disabled = false;
+			form.querySelector("#order-edit-amtPaid").disabled = false;
+		}
+	},
+
+	sendSetOrder: async function () {
+		var form = document.getElementById("order-form");
+		var errorSpan = form.querySelector(".form-error");
+
+		// lock
+		this.lockFields(true);
+
+		var orderDeets = this.readEditParams();
+
+		try {
+			await client.requestFromServer("setOrder", {order: orderDeets}, "POST");
+			errorSpan.innerHTML = "Update successful";
+		} catch (e) {
+			errorSpan.innerHTML = "Error updating: " + e.toString();
+		}
+
+		// unlock
+		this.lockFields(false);
+
+		// refresh
+		this.refreshOrders();
 	}
 }

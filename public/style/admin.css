@@ -67,8 +67,6 @@ html { background-color: #2e0500; }
 	from {
 		transform: translate(-30px);
 		opacity: 0;
-	} 40% {
-		transform: translate(-5px);
 	} to {
 		opacity: 1;
 	}
@@ -347,7 +345,7 @@ html { background-color: #2e0500; }
 	text-align: center;
 }
 
-#orders-completion, #orders-dates {
+.filters-box div:not(:last-child) {
 	margin-bottom: 20px;
 }
 
@@ -359,6 +357,7 @@ html { background-color: #2e0500; }
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	width: 100%;
 }
 
 .orders-filter-title {
@@ -404,8 +403,18 @@ html { background-color: #2e0500; }
 	max-width: 150px;
 }
 
-template {
-	display: none;
+#modal-content button {
+	margin-right: 10px;
+}
+
+.form-error {
+	font-weight: bold;
+	color: darkred;
+}
+
+.btn-add {
+	margin-bottom: 50px;
+	max-width: 150px;
 }
 
 /* Home IP box */
@@ -455,6 +464,8 @@ template {
 
 	#tab-list-wrapper {
 		display: none;
+		z-index: 1000;
+		position: fixed;
 	}
 
 	#restaurant-name {
@@ -463,5 +474,13 @@ template {
 
 	#main-logo {
 		font-size: 1.5em;
+	}
+
+	#header:hover ~ #tab-list-wrapper {
+		display: flex;
+	}
+
+	#tab-list-wrapper:hover {
+		display: flex;
 	}
 }

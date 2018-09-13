@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="/style/common.css" />
 		<link rel="stylesheet" href="/style/admin.css" />
 		<link rel="stylesheet" href="/lib/fontawesome/css/all.min.css" />
+		<link rel="stylesheet" href="/lib/balloon.min.css" />
 		<!-- libraries -->
 		<script type="text/javascript" src="/lib/js.cookie.js"></script>
 		<script type="text/javascript" src="/lib/fuse.js"></script>
@@ -66,8 +67,15 @@
 				<span class="header">Users</span>
 
 				<div id="users-filters" class="filters-box">
-					<input class="textbox searchbox" id="users-search" placeholder="Search users..." />
+					<div>
+						<input class="textbox searchbox" id="users-search" placeholder="Search users..." />
+					</div>
+					<div>
+						<button id="users-refresh-button">Refresh</button>
+					</div>
 				</div>
+
+				<button class="btn-add" id="btn-new-user">Register new user</button>
 
 				<table class="data-table" id="users-table">
 					<thead>
@@ -88,8 +96,15 @@
 				<span class="header">Dishes</span>
 
 				<div id="dishes-filters" class="filters-box">
-					<input class="textbox searchbox" id="dishes-search" placeholder="Search dishes..." />
+					<div>
+						<input class="textbox searchbox" id="dishes-search" placeholder="Search dishes..." />
+					</div>
+					<div>
+						<button id="btn-dishes-refresh">Refresh</button>
+					</div>
 				</div>
+
+				<button class="btn-add" id="btn-new-dish">Add new dish</button>
 
 				<table class="data-table" id="dishes-table">
 					<thead>
@@ -193,22 +208,97 @@
 		<!-- Modal templates -->
 		<template id="template-edit-user">
 			<div id="user-form" class="edit-form">
-				<input class="textbox" placeholder="User ID" id="user-edit-id" disabled="true"></input>
-				<div>
+				<div data-balloon="User ID - auto-generated; do not set" data-balloon-pos="up">
+					<input class="textbox" placeholder="User ID" id="user-edit-id" disabled="true"></input>
+				</div>
+				<div data-balloon="Access levels: 0 for waiter, 10 for cook, 15 for cashier, 20 for head chef, 30 for owner" data-balloon-pos="up">
 					<input class="textbox" placeholder="Name" id="user-edit-name"></input>
 					<input class="textbox" type="number" placeholder="Access level" id="user-edit-access"></input>
 				</div>
-				<div>
-					<input class="textbox" placeholder="Old password" id="user-edit-pass-old"></input>
-					<input class="textbox" placeholder="New password" id="user-edit-pass-new"></input>
+				<div data-balloon="Set new password by typing new password & old password (if changing)" data-balloon-pos="up">
+					<input class="textbox" type="password" placeholder="Old password" id="user-edit-pass-old"></input>
+					<input class="textbox" type="password" placeholder="New password" id="user-edit-pass-new"></input>
 				</div>
 				<label for="user-edit-date">Date added</label>
-				<div>
+				<div data-balloon="Auto-generated; do not set" data-balloon-pos="up">
 					<input type="date" class="textbox" id="user-edit-date" disabled="true"></input>
 					<input type="time" class="textbox" id="user-edit-time" disabled="true"></input>
 				</div>
+
+				<span class="form-error"></span>
 			</div>
-			<button id="user-edit-sub">Edit</button>
+			<button id="btn-user-edit">Edit/add</button>
+			<button id="btn-user-remove">Remove user</button>
+		</template>
+		<template id="template-edit-dish">
+			<div id="dish-form" class="edit-form">
+				<div data-balloon="Dish ID - auto-generated; do not set" data-balloon-pos="up">
+					<input class="textbox" placeholder="Dish ID" id="dish-edit-id" disabled="true"></input>
+				</div>
+				<div data-balloon="Set name of dish" data-balloon-pos="up">
+					<input class="textbox" placeholder="Dish name" id="dish-edit-name"></input>
+				</div>
+				<div data-balloon="Set base price (left) and upgrade price (right). Upgrade price is the price added for each size upgrade." data-balloon-pos="up" data-balloon-length="fit">
+					<span class="edit-sym">$</span>
+					<input class="textbox" type="number" placeholder="Base price" id="dish-edit-basePrice" step="0.01"></input>
+					<span class="edit-sym">$</span>
+					<input class="textbox" type="number" placeholder="Upgrade price" id="dish-edit-upgPrice" step="0.01"></input>
+				</div>
+				<div data-balloon="Change category and sizes of dish. Sizes should be comma-separated" data-balloon-pos="up">
+					<input class="textbox" id="dish-edit-cat" placeholder="Category"></input>
+					<input class="textbox" id="dish-edit-sizes" placeholder="Sizes"></input>
+				</div>
+				<div data-balloon="Description of dish" data-balloon-pos="up">
+					<input class="textbox" id="dish-edit-desc" placeholder="Dish description" />
+				</div>
+				<div data-balloon="Name of dish image. To upload place image with correct name in public/images." data-balloon-pos="up">
+					<input class="textbox" id="dish-edit-img" placeholder="Image name" />
+				</div>
+
+				<span class="form-error"></span>
+			</div>
+			<button id="btn-dish-edit">Edit/add</button>
+			<button id="btn-dish-remove">Remove dish</button>
+		</template>
+		<template id="template-edit-order">
+			<div id="order-form" class="edit-form">
+				<div data-balloon="Order ID - auto-generated; do not set" data-balloon-pos="up">
+					<input class="textbox" placeholder="Order ID" id="order-edit-id" disabled="true"></input>
+				</div>
+				<div data-balloon="Dishes - comma-separated, sizes delimited by slashes" data-balloon-pos="up">
+					<input class="textbox" placeholder="Dishes" id="order-edit-dishes"></input>
+				</div>
+				<div data-balloon="Notes on order" data-balloon-pos="up">
+					<input class="textbox" placeholder="Notes" id="order-edit-notes"></input>
+				</div>
+				<label for="order-edit-sub-date">Time submitted</label>
+				<div data-balloon="Time submitted - auto-generated; do not set" data-balloon-pos="up">
+					<input class="textbox" type="date" id="order-edit-sub-date" disabled="true" />
+					<input class="textbox" type="time" id="order-edit-sub-time" disabled="true" />
+				</div>
+				<label for="order-edit-made-date">Time completed</label>
+				<div data-balloon="Time that the order was completed (made)" data-balloon-pos="up">
+					<input class="textbox" type="date" id="order-edit-made-date" />
+					<input class="textbox" type="time" id="order-edit-made-time" step="1" />
+					<button id="order-clear-made">Clear</button>
+				</div>
+				<label for="order-edit-paid-date">Time paid</label>
+				<div data-balloon="Time that the order was paid" data-balloon-pos="up">
+					<input class="textbox" type="date" id="order-edit-paid-date" />
+					<input class="textbox" type="time" id="order-edit-paid-time" step="1" />
+					<button id="order-clear-paid">Clear</button>
+				</div>
+				<div data-balloon="Table number and amount paid (incl. tax + tips)" data-balloon-pos="up">
+					<input class="textbox" type="number" placeholder="Table number" id="order-edit-tableNum"></input>
+					$<input class="textbox" type="number" placeholder="Amount paid" id="order-edit-amtPaid" step="0.01"></input>
+				</div>
+				<div data-balloon="ID of server who submitted order (auto-generated)" data-balloon-pos="up">
+					<input class="textbox" placeholder="Server ID" id="order-edit-server" disabled="true"></input>
+				</div>
+
+				<span class="form-error"></span>
+			</div>
+			<button id="btn-dish-edit">Edit order</button>
 		</template>
 	</body>
 </html>

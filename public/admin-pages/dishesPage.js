@@ -13,14 +13,32 @@ var dishesPage = {
 		this.theads.price = document.getElementById("dishes-th-price");
 		this.theads.category = document.getElementById("dishes-th-cat");
 
+		this.btnRefresh = document.getElementById("btn-dishes-refresh");
+		this.btnNew = document.getElementById("btn-new-dish");
+
 		this.relativeUrl = "dishes";
 	},
 
 	load: async function () {
 		// perform loading operations
+		await this.refreshTable();
+
+		// add event handlers
+		this.searchbox.oninput = this.boxOnChange.bind(this);
+		this.theads.id.onclick = (() => {this.sortTable("dishId");}).bind(this);
+		this.theads.name.onclick = (() => {this.sortTable("name");}).bind(this);
+		this.theads.price.onclick = (() => {this.sortTable("basePrice");}).bind(this);
+		this.theads.category.onclick = (() => {this.sortTable("category");}).bind(this);
+		this.btnRefresh.onclick = (() => { this.refreshTable() }).bind(this);
+		this.btnNew.onclick = (() => { this.openEditDish() }).bind(this);
+
+		document.getElementById("page-dishes-cover").style.display = "none";
+		this.loaded = true;
+	},
+
+	refreshTable: async function () {
 		// get list of dishes
-		var params = this.readSettings();
-		var response = await client.getDishes(params);
+		var response = await client.getDishes({});
 		this.dishes = response.results;
 
 		// show on table
@@ -40,16 +58,6 @@ var dishesPage = {
 			]
 		};
 		this.fuse = new Fuse(this.dishes, options);
-
-		// add event handlers
-		this.searchbox.oninput = this.boxOnChange.bind(this);
-		this.theads.id.onclick = (() => {this.sortTable("dishId");}).bind(this);
-		this.theads.name.onclick = (() => {this.sortTable("name");}).bind(this);
-		this.theads.price.onclick = (() => {this.sortTable("basePrice");}).bind(this);
-		this.theads.category.onclick = (() => {this.sortTable("category");}).bind(this);
-
-		document.getElementById("page-dishes-cover").style.display = "none";
-		this.loaded = true;
 	},
 
 	boxOnChange: function () {
@@ -107,13 +115,138 @@ var dishesPage = {
 			newCell.appendChild(document.createTextNode(dishes[i].category));
 			newRow.appendChild(newCell);
 
+			// Add onclick handler
+			newRow.dataset.dishIndex = i;
+			newRow.onclick = function (event) {
+				var index = this.dataset.dishIndex;
+				dishesPage.openEditDish(index);
+			}
+
 			newRow.title = "Click to edit";
 			this.tbody.appendChild(newRow);
 		}
 	},
 
-	readSettings: function () {
-		// TODO make form and read from
-		return {};
+	openEditDish: function (showingIndex) {
+		var template = document.getElementById("template-edit-dish").content.cloneNode(true);
+
+		if (showingIndex !== undefined) {
+			// Editing dish
+			var editing = this.showing[showingIndex];
+
+			// Edit data in template
+			template.querySelector("#dish-edit-id").value = editing.dishId;
+			template.querySelector("#dish-edit-name").value = editing.name;
+			template.querySelector("#dish-edit-basePrice").value = editing.basePrice;
+			template.querySelector("#dish-edit-upgPrice").value = editing.upgradePrice;
+			template.querySelector("#dish-edit-cat").value = editing.category;
+			template.querySelector("#dish-edit-sizes").value = editing.sizes;
+			template.querySelector("#dish-edit-desc").value = editing.description;
+			template.querySelector("#dish-edit-img").value = editing.image;
+		}
+
+		// Attach event handlers
+		template.querySelector("#btn-dish-edit").onclick = (() => { this.sendSetDish() }).bind(this);
+		template.querySelector("#btn-dish-remove").onclick = (() => { this.removeDish() }).bind(this);
+
+		// Edit modal
+		populateModal([template]);
+		changeModalTitle("Edit dish");
+		toggleModal(true);
+	},
+
+	readEditParams: function () {
+		var newDish = {};
+		var form = document.getElementById("dish-form");
+
+		// populate newDish
+		newDish.dishId = form.querySelector("#dish-edit-id").value;
+		newDish.name = form.querySelector("#dish-edit-name").value;
+		newDish.basePrice = form.querySelector("#dish-edit-basePrice").value;
+		newDish.upgradePrice = form.querySelector("#dish-edit-upgPrice").value;
+		newDish.category = form.querySelector("#dish-edit-cat").value;
+		newDish.sizes = form.querySelector("#dish-edit-sizes").value;
+		newDish.description = form.querySelector("#dish-edit-desc").value;
+		newDish.image = form.querySelector("#dish-edit-img").value;
+
+		// Remove null fields
+		var keys = Object.keys(newDish);
+		keys.forEach((key) => {
+			if (newDish[key] == "") {
+				// the above is intentionally non-strict
+				delete newDish[key]
+			}
+		});
+
+		return newDish;
+	},
+
+	lockFields: function (locked) {
+		var form = document.getElementById("dish-form");
+
+		if (locked) {
+			form.querySelector("#dish-edit-name").disabled = true;
+			form.querySelector("#dish-edit-basePrice").disabled = true;
+			form.querySelector("#dish-edit-upgPrice").disabled = true;
+			form.querySelector("#dish-edit-cat").disabled = true;
+			form.querySelector("#dish-edit-sizes").disabled = true;
+			form.querySelector("#dish-edit-desc").disabled = true;
+			form.querySelector("#dish-edit-img").disabled = true;
+		} else {
+			form.querySelector("#dish-edit-name").disabled = false;
+			form.querySelector("#dish-edit-basePrice").disabled = false;
+			form.querySelector("#dish-edit-upgPrice").disabled = false;
+			form.querySelector("#dish-edit-cat").disabled = false;
+			form.querySelector("#dish-edit-sizes").disabled = false;
+			form.querySelector("#dish-edit-desc").disabled = false;
+			form.querySelector("#dish-edit-img").disabled = false;
+		}
+	},
+
+	sendSetDish: async function () {
+		var form = document.getElementById("dish-form");
+		var errorSpan = form.querySelector(".form-error");
+		errorSpan.innerHTML = "";
+
+		// Lock form while sending
+		this.lockFields(true);
+
+		// Get obj
+		var newDish = this.readEditParams();
+
+		// Send to server
+		try {
+			await client.requestFromServer("setDish", {dish: newDish}, "POST");
+			errorSpan.innerHTML = "Edit success";
+		} catch (e) {
+			errorSpan.innerHTML = "Error: " + e.toString();
+		}
+
+		// Refresh dishes
+		this.refreshTable();
+
+		// Unlock form
+		this.lockFields(false);
+	},
+
+	removeDish: async function () {
+		var form = document.getElementById("dish-form");
+		var errorSpan = form.querySelector(".form-error");
+		errorSpan.innerHTML = "";
+		// Lock fields
+		this.lockFields(true);
+
+		var dish = this.readEditParams();
+		var idToDelete = dish.dishId;
+
+		// Send req to server
+		try {
+			await client.requestFromServer("removeDish", {dishId: idToDelete}, "POST");
+			errorSpan.innerHTML = "Delete success";
+		} catch (e) {
+			errorSpan.innerHTML = "Error deleting: " + e.toString();
+		}
+
+		this.refreshTable();
 	}
 }
