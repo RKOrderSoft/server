@@ -345,7 +345,12 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 			resBody.reason = "No userId was provided";
 		} else {
 			var details = await auth.userDetails(req.body.userId);
-			resBody.user = details;
+			if (details === undefined) {
+				res.status(404);
+				resBody.reason = "userId not found";
+			} else {
+				resBody.user = details;
+			}
 		}
 
 		res.json(buildResponse(resBody));
