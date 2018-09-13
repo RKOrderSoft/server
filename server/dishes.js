@@ -4,6 +4,7 @@ const component = "dishes";
 const allowedKeys = ["name", "basePrice", "upgradePrice", "sizes", "category", "image", "description"];
 
 const ExtraKeysError = new Error("Additional keys were present");
+const InvalidValueError = new Error("Invalid values were supplied");
 
 var db, sh;
 
@@ -77,6 +78,11 @@ module.exports = {
 			var highestId = row["MAX(dishId)"];
 			dishObj.dishId = parseInt(highestId) + 1;
 
+			// data validation
+			if (dishObj.basePrice < 0 || dishObj.upgradePrice < 0) {
+				throw InvalidValueError;
+			}
+
 			var queryText = "INSERT INTO dishes (dishId, name, basePrice, upgradePrice, sizes, category, image, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			return db.run(queryText, [
 				dishObj.dishId, 
@@ -110,6 +116,12 @@ module.exports = {
 			} else {
 				keysToSet.push(keys[i]);
 				valsToSet.push(dishObj[keys[i]]);
+			}
+
+			if (keys[i] == "basePrice" || keys[i] == "upgradePrice") {
+				if (dishObj[keys[i]] < 0) {
+					throw InvalidValueError;
+				}
 			}
 		}
 

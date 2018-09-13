@@ -5,7 +5,7 @@ const NotInitiatedError = new Error("Component not initiated; run orders.init(db
 const MissingFieldsError = new Error("Not all required fields were supplied in order");
 const ExtraFieldsError = new Error("Unrecognised fields were supplied in order");
 const OrderNonexistantError = new Error("Given order ID does not exist in database");
-
+const InvalidValueError = new Error("Invalid values were supplied");
 
 const component = "orders";
 
@@ -91,6 +91,9 @@ module.exports = {
 			// Check for additional fields
 			Object.keys(toUpdate).forEach((key) => {
 				if (!allKeys.includes(key)) throw ExtraFieldsError;
+				if (key == "amtPaid" && toUpdate.amtPaid < 0) {
+					throw InvalidValueError;
+				}
 			})
 
 			// Construct query
