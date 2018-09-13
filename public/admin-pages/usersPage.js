@@ -16,6 +16,8 @@ var usersPage = {
 		this.addBtn = document.getElementById("btn-new-user");
 		this.refreshBtn = document.getElementById("users-refresh-button");
 
+		this.radioAscending = document.getElementById("users-sort-asc");
+
 		this.relativeUrl = "users";
 		this.loaded = false;
 	},
@@ -58,7 +60,14 @@ var usersPage = {
 	},
 
 	sort: function (by) {
-		this.showing.sort((a, b) => { return a[by] > b[by]? 1 : -1; });
+		if (this.radioAscending.checked) {
+			// ascending
+			this.showing.sort((a, b) => { return a[by] > b[by]? 1 : -1; });
+		} else {
+			// descending
+			this.showing.sort((a, b) => { return a[by] < b[by]? 1 : -1; });
+		}
+
 		this.clearTable();
 		this.populateTable(this.showing);
 	},

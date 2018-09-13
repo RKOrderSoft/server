@@ -16,6 +16,8 @@ var dishesPage = {
 		this.btnRefresh = document.getElementById("btn-dishes-refresh");
 		this.btnNew = document.getElementById("btn-new-dish");
 
+		this.radioAscending = document.getElementById("dishes-sort-asc");
+
 		this.relativeUrl = "dishes";
 	},
 
@@ -67,7 +69,13 @@ var dishesPage = {
 	},
 
 	sortTable: function (propertyName) {
-		var sorted = this.showing.sort((a, b) => { return a[propertyName] > b[propertyName]? 1 : -1; });
+		if (this.radioAscending.checked) {
+			// ascending
+			var sorted = this.showing.sort((a, b) => { return a[propertyName] > b[propertyName]? 1 : -1; });
+		} else {
+			// descending
+			var sorted = this.showing.sort((a, b) => { return a[propertyName] < b[propertyName]? 1 : -1; });
+		}
 		this.clearTable();
 		this.populateTable(sorted);
 	},

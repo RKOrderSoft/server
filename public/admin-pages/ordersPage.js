@@ -23,6 +23,8 @@ var ordersPage = {
 		this.filters.paidBefore = document.getElementById("paidBefore");
 		this.filters.btnRefresh = document.getElementById("orders-refresh-button");
 
+		this.radioAscending = document.getElementById("orders-sort-asc");
+
 		this.relativeUrl = "orders";
 		this.loaded = false;
 	},
@@ -51,7 +53,13 @@ var ordersPage = {
 	},
 
 	sortTable: function (propName) {
-		this.tableShowing.sort((a, b) => { return a[propName] > b[propName]? 1 : -1; });
+		if (this.radioAscending.checked) {
+			// Sort ascending
+			this.tableShowing.sort((a, b) => { return a[propName] > b[propName]? 1 : -1; });
+		} else {
+			// Sort descending
+			this.tableShowing.sort((a, b) => { return a[propName] < b[propName]? 1 : -1; });
+		}
 		this.clearTable();
 		this.populateTable(this.tableShowing);
 	},
@@ -218,6 +226,7 @@ var ordersPage = {
 		var madeTime = template.querySelector("#order-edit-made-time");
 		var paidDate = template.querySelector("#order-edit-paid-date");
 		var paidTime = template.querySelector("#order-edit-paid-time");
+		var amtPaid = template.querySelector("#order-edit-amtPaid");
 
 		template.querySelector("#order-clear-made").onclick = (() => { 
 			this.clearDateTime(madeDate, madeTime);
@@ -225,6 +234,7 @@ var ordersPage = {
 
 		template.querySelector("#order-clear-paid").onclick = (() => { 
 			this.clearDateTime(paidDate, paidTime);
+			amtPaid.value = "";
 		}).bind(this);
 
 		template.querySelector("#btn-dish-edit").onclick = (() => {

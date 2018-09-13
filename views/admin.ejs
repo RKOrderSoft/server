@@ -28,6 +28,7 @@
 					<i id="modal-close" class="fas fa-chevron-left"></i>
 					<span id="modal-title">Modal title</span>
 				</div>
+				<div id="modal-header-shadow"></div>
 				<div id="modal-content">
 					
 				</div>
@@ -45,6 +46,7 @@
 		</div>
 
 		<div id="main-content">
+			<!-- Home page -->
 			<div id="page-home" class="page">
 				<div class="page-cover" id="page-home-cover">
 					<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -59,6 +61,7 @@
 
 			</div>
 
+			<!-- Users page -->
 			<div id="page-users" class="page">
 				<div class="page-cover" id="page-users-cover">
 					<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -69,6 +72,13 @@
 				<div id="users-filters" class="filters-box">
 					<div>
 						<input class="textbox searchbox" id="users-search" placeholder="Search users..." />
+					</div>
+					<div data-balloon="Change direction of sort when clicking column headers" data-balloon-pos="up" >
+						<span>Sort direction:</span>
+						<input type="radio" id="users-sort-asc" name="users-sort-dir" checked />
+						<label for="users-sort-asc">Ascending</label>
+						<input type="radio" id="users-sort-desc" name="users-sort-dir" />
+						<label for="users-sort-desc">Descending</label>
 					</div>
 					<div>
 						<button id="users-refresh-button">Refresh</button>
@@ -89,6 +99,7 @@
 
 			</div>
 
+			<!-- Dishes page -->
 			<div id="page-dishes" class="page">
 				<div class="page-cover" id="page-dishes-cover">
 					<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -101,9 +112,9 @@
 					</div>
 					<div data-balloon="Change direction of sort when clicking column headers" data-balloon-pos="up" >
 						<span>Sort direction:</span>
-						<input type="radio" id="dishes-sort-asc" name="dishes-sort-dir" />
+						<input type="radio" id="dishes-sort-asc" name="dishes-sort-dir" checked />
 						<label for="dishes-sort-asc">Ascending</label>
-						<input type="radio" id="dishes-sort-desc" name="dishes-sort-dir" value="true" />
+						<input type="radio" id="dishes-sort-desc" name="dishes-sort-dir" />
 						<label for="dishes-sort-desc">Descending</label>
 					</div>
 					<div>
@@ -126,6 +137,7 @@
 				</table>
 			</div>
 
+			<!-- Orders page -->
 			<div id="page-orders" class="page">
 				<div class="page-cover" id="page-orders-cover">
 					<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -147,6 +159,13 @@
 						<label for="paidBefore">and</label>
 						<input id="paidBefore" type="date" class="textbox dateIn" />
 					</div>
+					<div data-balloon="Change direction of sort when clicking column headers" data-balloon-pos="up" >
+						<span>Sort direction:</span>
+						<input type="radio" id="orders-sort-asc" name="orders-sort-dir" checked />
+						<label for="orders-sort-asc">Ascending</label>
+						<input type="radio" id="orders-sort-desc" name="orders-sort-dir" />
+						<label for="orders-sort-desc">Descending</label>
+					</div>
 					<div id="orders-refresh">
 						<button id="orders-refresh-button">Refresh</button>
 					</div>
@@ -164,7 +183,8 @@
 					</tbody>
 				</table>
 			</div>
-			
+
+			<!-- Settings page -->
 			<div id="page-settings" class="page">
 				<div class="page-cover" id="page-settings-cover">
 					<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -307,6 +327,115 @@
 				<span class="form-error"></span>
 			</div>
 			<button id="btn-dish-edit">Edit order</button>
+		</template>
+		<template id="help-text">
+			<h3>Welcome to OrderSoft Admin!</h3>
+			<br />
+			<p>
+				Here, you can edit data stored within OrderSoft in real-time, with changes reflected throughout all of the client applications immediately. You are also able to edit some settings associated with your restaurant.
+			</p>
+			<br />
+			<p>
+				The interface is divided into five sections: 
+				<ul>
+					<li><b>Home</b>: provides useful info about the current state</li>
+					<li><b>Users</b>: view & edit users of your system</li>
+					<li><b>Dishes</b>: view, edit and add dishes to the menu</li>
+					<li><b>Orders</b>: modify orders currently in the system and view historical orders</li>
+					<li><b>Settings</b>: view about information & change system settings</li>
+				</ul>
+			</p>
+			<br />
+
+			<h3>Home</h3>
+			<br />
+			<p>
+				Here, the current OrderSoft Server IP is shown. This is used to initialise and log in to all the client applications. We reccommend that you leave this screen visible to the employees of the restaurant for easy access.
+			</p>
+			<br />
+
+			<h3>Users</h3>
+			<br />
+			<p>
+				On the Users screen, you can filter through and search all registered users in the database. Additionally, you have the capacity to edit, remove and add users.
+			</p>
+			<br />
+			<p>
+				To search, type a query in the search box. The table below should immediately update to reflect the results of your query.
+			</p>
+			<p>
+				To sort by a specific column, click on the column header on the table. The table should immediately sort. To change the direction of the sort, use the "Ascending/Descending" radio buttons in the filters box.
+			</p>
+			<p>
+				After any changes are made, the Refresh button will allow you to view them instantly.
+			</p>
+			<br />
+			<p>
+				By clicking on any user row, you can enter the "Edit user" screen and edit attributes of the user. Clicking the "Register new user" button will also open this screen to allow registration.
+			</p>
+			<p>
+				Rolling over any field will give useful information about the field and its use.
+			</p>
+			<p>
+				Once any required edits are made, press the "Edit/add" button to commit the changes. A success or failure message will appear above the button.
+			</p>
+			<p>
+				With the "Edit user" page open, clicking "Remove user" will delete the current user, and they will no longer have access to the system.
+			</p>
+			<br />
+
+			<h3>Dishes</h3>
+			<br />
+			<p>
+				On the Dishes page, you can view the menu of the restaurant, as well as sorting, searching and editing dishes within the menu.
+			</p>
+			<br />
+			<p>
+				To search, type a query in the search box. The table below should immediately update to reflect the results of your query.
+			</p>
+			<p>
+				To sort by a specific column, click on the column header on the table. The table should immediately sort. To change the direction of the sort, use the "Ascending/Descending" radio buttons in the filters box.
+			</p>
+			<p>
+				After any changes are made, the Refresh button will allow you to view them instantly.
+			</p>
+			<br />
+			<p>
+				Clicking a dish row or the "New dish" button will open the "Edit dishes" form. Here, changes or additions to dishes can be made.
+			</p>
+			<p>
+				Useful information on each field can be found by rolling over the field.
+			</p>
+			<p>
+				By clicking the "Edit/add" button, any changes will be committed. Pressing the "Remove dish" button will delete the dish from the menu.
+			</p>
+			<br />
+
+			<h3>Orders</h3>
+			<br />
+			<p>
+				On the Orders screen, both current and historical orders can be seen. Orders can be edited, but cannot be created or deleted by design.
+			</p>
+			<br />
+			<p>
+				To sort by a specific column, click on the column header on the table. The table should immediately sort. To change the direction of the sort, use the "Ascending/Descending" radio buttons in the filters box.
+			</p>
+			<p>
+				The checkboxes allow you to view orders that are open, unpaid or historical. When an order is completed, the dishes have left the kitchen, but the order remains unpaid. Paid orders are named historical orders.
+			</p>
+			<p>
+				The date range selectors become available when the "Paid orders" checkbox is ticked - these are <i>only</i> used to filter historical orders. When deactivated, they have no effect on the displayed orders.
+			</p>
+			<p>
+				After any changes are made, the Refresh button will allow you to view them instantly.
+			</p>
+			<br />
+			<p>
+				Editing orders allows you to set orders as completed/paid, or reverse the progress of an order i.e. if human error occurs. Any payments below the amount due (i.e. manager discounts) need to be made through this admin panel.
+			</p>
+			<p>
+				Changes made here are immediately reflected on client programs.
+			</p>
 		</template>
 	</body>
 </html>

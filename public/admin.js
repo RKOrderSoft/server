@@ -62,6 +62,9 @@ window.onload = async function () {
 	}
 
 	help.onclick = () => {
+		var helpText = document.getElementById("help-text").content.cloneNode(true);
+		populateModal([helpText]);
+		changeModalTitle("Help");
 		toggleModal(true);
 	}
 	document.getElementById("modal-close").onclick = () => {
