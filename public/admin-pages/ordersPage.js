@@ -1,3 +1,5 @@
+var hour = 3600000; // number of milliseconds in one hour
+
 var ordersPage = {
 	init: function () {
 		// set page, tab
@@ -90,10 +92,10 @@ var ordersPage = {
 			filters.isPaid = true;
 
 			if (this.filters.paidAfter.valueAsDate !== null) {
-				filters.paidAfter = dateToString(this.filters.paidAfter.valueAsDate);
+				filters.paidAfter = dateToString(new Date(this.filters.paidAfter.valueAsDate - (hour * 10)));
 			}
 			if (this.filters.paidBefore.valueAsDate !== null) {
-				filters.paidBefore = dateToString(this.filters.paidBefore.valueAsDate);
+				filters.paidBefore = dateToString(new Date(this.filters.paidBefore.valueAsDate - (hour * 10)));
 			}
 		} else {
 			filters.isPaid = false;
