@@ -53,7 +53,7 @@
 				
 				<div id="ip-box">
 					<span>OrderSoft Server Address</span>
-					<span id="ip"></span>
+					<span id="ip" class="feature"></span>
 					<span>Enter this into OrderSoft client applications</span>
 				</div>
 
@@ -99,9 +99,17 @@
 					<div>
 						<input class="textbox searchbox" id="dishes-search" placeholder="Search dishes..." />
 					</div>
+					<div data-balloon="Change direction of sort when clicking column headers" data-balloon-pos="up" >
+						<span>Sort direction:</span>
+						<input type="radio" id="dishes-sort-asc" name="dishes-sort-dir" />
+						<label for="dishes-sort-asc">Ascending</label>
+						<input type="radio" id="dishes-sort-desc" name="dishes-sort-dir" value="true" />
+						<label for="dishes-sort-desc">Descending</label>
+					</div>
 					<div>
 						<button id="btn-dishes-refresh">Refresh</button>
 					</div>
+				
 				</div>
 
 				<button class="btn-add" id="btn-new-dish">Add new dish</button>
