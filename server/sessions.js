@@ -48,6 +48,11 @@ module.exports = {
 		]).then(_ => {
 			return newSessionId;
 		});
+	},
+
+	getUserId: function (sessionId) {
+		var queryText = "SELECT userId FROM sessions WHERE sessionId = ?";
+		return sessionDatabase.get(queryText, sessionId).then(row => row.userId);
 	}
 }
 

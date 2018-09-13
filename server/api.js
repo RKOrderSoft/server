@@ -428,6 +428,23 @@ module.exports = function (app, db, auth, sessions, orders, dishes, sh) {
 
 		res.json(buildResponse(resBody));
 	});
+
+	// /api/getCurrentUser
+	//   Get the current user by sessionId
+	app.post("/api/getCurrentUser", async (req, res) => {
+		sh.log("POST /api/getCurrentUser/ from " + req.ip, component, true);
+
+		// Check client name
+		if (!checkAcceptedClient(req, res)) return;
+
+		// Check access level
+		if (!(await checkAccessLevel(sessions, req, res, 0))) return;
+
+		var sessionId = req.get("sessionId");
+		var currentUser = await sessions.getUserId(sessionId);
+
+		res.json(buildResponse({userId: currentUser}));
+	});
 }
 
 function checkAccessLevel(sessions, req, res, requiredLevel) {
